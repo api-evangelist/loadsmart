@@ -1,0 +1,78 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Loadsmart
+providerId: loadsmart
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - Freight
+  - Logistics
+description: >-
+  FOCUS-aligned FinOps definition for Loadsmart's commercial surface.
+  Loadsmart monetizes through (a) per-load freight brokerage margins on
+  shipments booked via the ShipperGuide platform, (b) SaaS subscriptions
+  for ShipperGuide TMS, Opendock Nova, NavTrac, and CarrierGuide, and (c)
+  managed-transportation (4PL) service fees. API access is bundled with
+  those subscriptions rather than billed as a metered API product.
+sources:
+  - https://loadsmart.com/
+  - https://developer.loadsmart.com/docs/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Loadsmart
+serviceCategory: Logistics and Supply Chain
+billingModel:
+  pricingCategory: Hybrid
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Subscription
+    - Purchase
+    - Adjustment
+    - Credit
+    - Tax
+  primaryUnit: shipment
+  secondaryUnits:
+    - subscription_seat
+    - dock_appointment
+    - managed_service_hour
+focusColumns:
+  ServiceName: Loadsmart Platform
+  ServiceCategory: Logistics and Supply Chain
+  ProviderName: Loadsmart
+  PublisherName: Loadsmart
+  InvoiceIssuerName: Loadsmart Inc.
+  PricingCategory: Hybrid
+chargeTypes:
+  - name: Freight brokerage
+    chargeCategory: Usage
+    description: Per-load brokerage margin on shipments booked through ShipperGuide / api.loadsmart.com.
+  - name: ShipperGuide TMS subscription
+    chargeCategory: Subscription
+    description: SaaS subscription including API access to api.loadsmart.com.
+  - name: Opendock Nova subscription
+    chargeCategory: Subscription
+    description: SaaS subscription including Neutron REST API and Subspace WebSocket access.
+  - name: NavTrac subscription
+    chargeCategory: Subscription
+    description: Yard-management and computer-vision asset-tracking subscription.
+  - name: CarrierGuide / Factoring
+    chargeCategory: Subscription
+    description: Carrier-side subscription products and factoring fees.
+  - name: Managed Transportation
+    chargeCategory: Subscription
+    description: 4PL service engagement fees.
+notes: >-
+  Loadsmart does not publish per-unit list prices or standardized FOCUS
+  exports; this definition captures the commercial structure inferred from
+  public product pages and the developer portal.

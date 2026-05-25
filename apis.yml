@@ -1,0 +1,229 @@
+aid: loadsmart
+name: Loadsmart
+description: >-
+  Loadsmart is a digital freight technology company and 4PL that connects
+  shippers, carriers, warehouses, and dock operations on a single platform.
+  Founded in 2014 by Felipe Capella and Ricardo Salgado and headquartered in
+  Chicago (with significant New York presence), Loadsmart raised more than
+  $346M from investors including BlackRock, SoftBank Latin America Fund,
+  Maersk Growth, TFI International, CSX, Ports America, and Connor Capital,
+  reaching a reported $1.3B valuation. The platform spans full and partial
+  truckload, less-than-truckload, drayage, expedited, flatbed (via Flatbed
+  Messenger), and multimodal freight, plus the ShipperGuide TMS for
+  procurement, planning, and execution; CarrierGuide TMS and a carrier
+  loadboard with factoring; Opendock for dock appointment scheduling and the
+  Nova warehouse API; and NavTrac for yard management and computer-vision
+  gate/yard visibility. FreightIntel AI provides machine-learning powered
+  freight recommendations across the suite. Loadsmart exposes a public
+  Developer Portal with two production OpenAPI surfaces — the ShipperGuide API
+  (api.loadsmart.com, JWT/RS256 authentication, with quote, book, tender,
+  track, and webhook lanes) and the Opendock Nova / Neutron API
+  (neutron.opendock.com, JWT bearer authentication) — and ships a Postman
+  collection plus partner integrations with Oracle Transportation Management,
+  MercuryGate, Blue Yonder, SAP, NetSuite, and other TMS/ERP platforms.
+type: Index
+position: Producing
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Freight
+  - Logistics
+  - Transportation
+  - Supply Chain
+  - Digital Freight
+  - Freight Brokerage
+  - Truckload
+  - LTL
+  - Drayage
+  - Flatbed
+  - Multimodal
+  - TMS
+  - Dock Scheduling
+  - Yard Management
+  - Warehouse
+  - 4PL
+  - FreightTech
+url: https://raw.githubusercontent.com/api-evangelist/loadsmart/refs/heads/main/apis.yml
+created: '2026-05-25'
+modified: '2026-05-25'
+specificationVersion: '0.20'
+apis:
+  - aid: loadsmart:loadsmart-shipperguide-api
+    name: Loadsmart ShipperGuide API
+    description: >-
+      Production REST API at https://api.loadsmart.com (sandbox
+      api.sandbox.loadsmart.com) for quoting, booking, tendering, tracking,
+      and managing freight shipments autonomously. Covers carriers,
+      shippers, shipper accounts, load offers and bids, capacity, route
+      duration, shipment documents and events, shipment scoring, and a full
+      webhook surface (quote, shipment, load, bid, and carrier events).
+      Authenticated with JWT tokens (RS256, RSA 4096) using
+      Application-JWT or User-JWT security schemes; tokens should be
+      short-lived (~1 minute) and supplied via the Authorization header.
+    humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+    baseURL: https://api.loadsmart.com
+    version: '1.0.0'
+    tags:
+      - Freight
+      - Shipping
+      - Quotes
+      - Loads
+      - Bids
+      - Webhooks
+      - Carriers
+      - Shippers
+    properties:
+      - type: Documentation
+        url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+      - type: APIReference
+        url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+      - type: OpenAPI
+        url: openapi/loadsmart-shipperguide-openapi.yml
+      - type: OpenAPISource
+        url: https://developer.loadsmart.com/api/openapi.yaml
+      - type: Webhooks
+        url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+      - type: Sandbox
+        url: https://api.sandbox.loadsmart.com
+      - type: Authentication
+        url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+      - type: Postman
+        url: https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - aid: loadsmart:loadsmart-opendock-nova-api
+    name: Opendock Nova (Neutron) API
+    description: >-
+      Production REST API at https://neutron.opendock.com (staging
+      neutron.staging.opendock.com) powering the Opendock Nova warehouse
+      dock-scheduling platform. 151 endpoints covering warehouses, docks,
+      loadtypes, appointments, carriers, users, organizations,
+      custom-forms and custom-tags, gates, yards, hours of operation, ETAs,
+      reports, billing, asset tracking, and integrations. Authenticated
+      with JWT bearer tokens in the Authorization header; complementary
+      Subspace WebSocket API streams Created/Updated/Deleted events for
+      near-real-time integrations.
+    humanURL: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+    baseURL: https://neutron.opendock.com
+    version: 'v4.144.0'
+    tags:
+      - Dock Scheduling
+      - Warehouse
+      - Appointments
+      - Yard Management
+      - Carriers
+      - Webhooks
+      - WebSockets
+    properties:
+      - type: Documentation
+        url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+      - type: APIReference
+        url: https://developer.loadsmart.com/docs/opendock/category/overview
+      - type: OpenAPI
+        url: openapi/loadsmart-opendock-openapi.yml
+      - type: OpenAPISource
+        url: https://neutron.opendock.com/docs-json
+      - type: SwaggerUI
+        url: https://neutron.opendock.com/docs
+      - type: WebSockets
+        url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+      - type: Sandbox
+        url: https://neutron.staging.opendock.com
+      - type: Postman
+        url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+      - type: Community
+        url: https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+common:
+  - type: Website
+    url: https://loadsmart.com
+  - type: DeveloperPortal
+    url: https://developer.loadsmart.com
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPI
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: About
+    url: https://loadsmart.com/about/
+  - type: Careers
+    url: https://loadsmart.com/careers/
+  - type: Contact
+    url: https://loadsmart.com/contact/
+  - type: Blog
+    url: https://blog.loadsmart.com/
+  - type: Community
+    url: https://community.loadsmart.com/
+  - type: ShipperGuide
+    url: https://loadsmart.com/shippers/shipperguide-tms/
+  - type: ManagedTransportation
+    url: https://loadsmart.com/shippers/managed-transportation/
+  - type: FreightIntelAI
+    url: https://loadsmart.com/freightintel-ai/
+  - type: PrivateFleetOptimizer
+    url: https://loadsmart.com/shippers/private-fleet-optimizer/
+  - type: FlatbedMessenger
+    url: https://loadsmart.com/flatbed-messenger/
+  - type: CarrierLoadboard
+    url: https://loadsmart.com/carriers/loadboard/
+  - type: CarrierGuide
+    url: https://loadsmart.com/carriers/carrierguide-tms/
+  - type: Factoring
+    url: https://loadsmart.com/carriers/factoring/
+  - type: Opendock
+    url: https://opendock.com/
+  - type: NavTrac
+    url: https://loadsmart.com/warehouse/navtrac/
+  - type: Integrations
+    url: https://loadsmart.com/integrations/
+  - type: OracleIntegration
+    url: https://loadsmart.com/integrations/oracle/
+  - type: MercuryGateIntegration
+    url: https://loadsmart.com/integrations/mercury-gate/
+  - type: GitHubOrganization
+    url: https://github.com/loadsmart
+  - type: Twitter
+    url: https://twitter.com/LoadSmartUS
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/loadsmart
+  - type: YouTube
+    url: https://www.youtube.com/channel/UCN-pkKcoMargmyL0Br3-H5w
+  - type: Instagram
+    url: https://www.instagram.com/loadsmart
+  - type: Facebook
+    url: https://www.facebook.com/loadsmartUS
+  - type: Plans
+    url: plans/loadsmart-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/loadsmart-rate-limits.yml
+  - type: FinOps
+    url: finops/loadsmart-finops.yml
+  - type: Features
+    data:
+      - ShipperGuide TMS for freight procurement, planning, and execution across modes
+      - Managed Transportation (4PL) services for enterprise shippers
+      - FreightIntel AI machine-learning recommendations for rate, mode, and lane decisions
+      - Private Fleet Optimizer for fleet-running shippers
+      - Flatbed Messenger marketplace for flatbed freight
+      - CarrierGuide TMS, Carrier Loadboard, and Factoring services for motor carriers
+      - Opendock Nova for dock appointment scheduling, hours of operation, gates, and yards
+      - Subspace real-time WebSocket API streaming dock appointment events
+      - Appointment Validation API for verifying PO numbers before scheduling
+      - NavTrac yard management and computer-vision asset tracking
+      - Public ShipperGuide REST API (50 paths) for quote, book, tender, track, and webhooks
+      - Public Opendock Nova/Neutron REST API (151 paths) for warehouse, dock, and appointment ops
+      - JWT/RS256 authentication for ShipperGuide; JWT bearer for Opendock Nova
+      - Sandbox environments for both API surfaces
+      - Webhook surface for quote, shipment, load, bid, and carrier lifecycle events
+      - Integrations with Oracle Transportation Management, MercuryGate, and other TMS/ERPs
+      - Postman collections for both ShipperGuide and Opendock Nova
+    sources:
+      - https://loadsmart.com/
+      - https://developer.loadsmart.com/docs/
+      - https://developer.loadsmart.com/api/openapi.yaml
+      - https://neutron.opendock.com/docs-json
+      - https://github.com/loadsmart
+    updated: '2026-05-25'
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
+    X: apievangelist
+    url: https://apievangelist.com

@@ -1,0 +1,48 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Loadsmart
+providerId: loadsmart
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - Freight
+  - Logistics
+  - Rate Limiting
+description: >-
+  Loadsmart references an "API Request Limits" section in its ShipperGuide
+  developer portal and applies fair-use throttling on api.loadsmart.com and
+  neutron.opendock.com, but does not publish numeric per-key rates, burst
+  buckets, or quota windows on its public docs at the time of profiling.
+  HTTP 429 with Retry-After is the documented throttled response per
+  industry standard; specific RPM/RPS values should be requested from the
+  Loadsmart account-management team during integration onboarding.
+sources:
+  - https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - https://developer.loadsmart.com/docs/opendock/overview/getting-started
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: unspecified
+limits:
+  - api: loadsmart-shipperguide
+    surface: https://api.loadsmart.com
+    rpm: unspecified
+    rps: unspecified
+    rpd: unspecified
+    burst: unspecified
+    notes: >-
+      Public docs reference an "API Request Limits" section; numeric
+      values not published. Contact your Account Manager.
+  - api: loadsmart-opendock-nova
+    surface: https://neutron.opendock.com
+    rpm: unspecified
+    rps: unspecified
+    rpd: unspecified
+    burst: unspecified
+    notes: >-
+      Public docs do not publish numeric Opendock Nova / Neutron rate
+      limits. Fair-use throttling applies; expect 429 with Retry-After.

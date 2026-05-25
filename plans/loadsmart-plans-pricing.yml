@@ -1,0 +1,84 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Loadsmart
+providerId: loadsmart
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - Freight
+  - Logistics
+  - TMS
+  - Dock Scheduling
+description: >-
+  Loadsmart does not publish per-tier pricing for its ShipperGuide TMS,
+  Opendock Nova, NavTrac, brokerage, or API access on its public website.
+  Commercial terms (including API access for shippers, carriers, and
+  warehouse customers) are arranged via the Loadsmart account-management
+  team. This file documents the public packaging surface and contact paths
+  in lieu of a public price list.
+sources:
+  - https://loadsmart.com/
+  - https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - https://developer.loadsmart.com/docs/opendock/overview/getting-started
+plans:
+  - id: loadsmart-shipperguide
+    name: ShipperGuide TMS
+    type: contact-sales
+    description: >-
+      Multimodal freight management platform covering procurement, planning,
+      and execution. API access (api.loadsmart.com) requires an active
+      Shipper account and credentials (Client ID + Client Secret) issued by
+      a Loadsmart Account Manager.
+    contact:
+      url: https://loadsmart.com/contact/
+      sales: https://loadsmart.com/shippers/shipperguide-tms/
+    entries: []
+  - id: loadsmart-managed-transportation
+    name: Managed Transportation (4PL)
+    type: contact-sales
+    description: >-
+      4PL managed-transportation engagement combining freight brokerage,
+      ShipperGuide TMS, and Loadsmart operational staff.
+    contact:
+      url: https://loadsmart.com/shippers/managed-transportation/
+    entries: []
+  - id: loadsmart-brokerage
+    name: Freight Brokerage
+    type: marketplace
+    description: >-
+      Spot and contract freight brokerage across FTL, LTL, PTL, drayage,
+      expedited, flatbed (Flatbed Messenger), and multimodal. Priced
+      per-load via quotes returned by the ShipperGuide quote endpoints.
+    contact:
+      url: https://loadsmart.com/
+    entries: []
+  - id: loadsmart-carrierguide
+    name: CarrierGuide / Loadboard / Factoring
+    type: contact-sales
+    description: >-
+      Carrier-side products: CarrierGuide TMS, Carrier Loadboard, and
+      Factoring. Pricing not publicly disclosed.
+    contact:
+      url: https://loadsmart.com/carriers/
+    entries: []
+  - id: loadsmart-opendock-nova
+    name: Opendock Nova
+    type: contact-sales
+    description: >-
+      Dock appointment scheduling for warehouses and carriers with the
+      Neutron REST API, Subspace real-time WebSocket API, and Appointment
+      Validation API. Subscription pricing is contract-based.
+    contact:
+      url: https://opendock.com/
+    entries: []
+  - id: loadsmart-navtrac
+    name: NavTrac
+    type: contact-sales
+    description: >-
+      Yard management and computer-vision asset tracking for gates and
+      yards. Contract pricing.
+    contact:
+      url: https://loadsmart.com/warehouse/navtrac/
+    entries: []
