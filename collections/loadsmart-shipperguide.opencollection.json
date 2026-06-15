@@ -1,0 +1,1597 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loadsmart API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Carrier",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search a carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/search",
+            "params": [
+              {
+                "name": "mc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dot",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search a carrier by dot or mc\n"
+        },
+        {
+          "info": {
+            "name": "List of integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/integrations",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List the integrations that the intermediary have with loadsmart\n"
+        },
+        {
+          "info": {
+            "name": "List Carrier Integration Request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/integration-request",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List partner's integration requests\n"
+        },
+        {
+          "info": {
+            "name": "Request Integration for a Carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/carrier/integration-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "3PP can integrate a carrier and create a Carrier Account\n"
+        },
+        {
+          "info": {
+            "name": "Detail Carrier Integration Request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/integration-request/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "3PP can check the Integrate Status of a Carrier\n"
+        },
+        {
+          "info": {
+            "name": "Upload document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/carrier/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "document_type",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "document",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Uploads Carrier related documents, such as Form W9, Insurance and"
+        },
+        {
+          "info": {
+            "name": "List drivers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/drivers",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List drivers for this carrier."
+        },
+        {
+          "info": {
+            "name": "Create driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/carrier/drivers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create driver"
+        },
+        {
+          "info": {
+            "name": "Retrieve driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/carrier/:driver_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve driver"
+        },
+        {
+          "info": {
+            "name": "Update driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.loadsmart.com/api/v2/carrier/:driver_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update driver"
+        },
+        {
+          "info": {
+            "name": "Delete a driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/carrier/:driver_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a driver"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set empty location",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/empty_location",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Allows a three party partner to set an empty location for a taken load.\n"
+        },
+        {
+          "info": {
+            "name": "Assign Driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/assign_driver",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Allows a three party partner to set a driver for a taken load.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve details from a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve details from a shipment"
+        },
+        {
+          "info": {
+            "name": "Cancel a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a shipment"
+        },
+        {
+          "info": {
+            "name": "Show interest in a shipment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/interested",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Inform us about interest in a shipment and request a call."
+        },
+        {
+          "info": {
+            "name": "Create shipment action log entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/action-logs",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appends an action to the shipment's action log.\n"
+        },
+        {
+          "info": {
+            "name": "Create shipment document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipment-documents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "shipment",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file_obj",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file_name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "type",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a shipment document for audit it can be a proof of delivery, carrier invoice or any other document."
+        },
+        {
+          "info": {
+            "name": "List shipment documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shipment-documents/?shipment=$:shipment",
+            "params": [
+              {
+                "name": "shipment_uuid_or_loadsmart_ref_number",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List of shipment documents sent via shipment-documents."
+        },
+        {
+          "info": {
+            "name": "Retrieve shipment scores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shipmentscores",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for shipment scores"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for shipment scores"
+              },
+              {
+                "name": "shipper_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter shipment scores by shipper"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve shipment scores"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shippers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create shipper",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shippers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create shipper"
+        },
+        {
+          "info": {
+            "name": "Update shipper",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.loadsmart.com/api/v2/shippers/:shipper_id",
+            "params": [
+              {
+                "name": "shipper_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update shipper"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipper Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shippers/accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create account"
+        },
+        {
+          "info": {
+            "name": "Retrieve account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shippers/accounts/:account_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns shipper account details"
+        },
+        {
+          "info": {
+            "name": "Update account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.loadsmart.com/api/v2/shippers/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates data of the current account (according to the token)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipper Accounting Info",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Shipper Accounting Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shippers/:shipper_id/info"
+          },
+          "docs": "Retrieve Shipper Accounting Info"
+        },
+        {
+          "info": {
+            "name": "Create shipper billing info",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shippers/:shipper_id/info",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create shipper billing info"
+        },
+        {
+          "info": {
+            "name": "Update shipper billing info",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.loadsmart.com/api/v2/shippers/:shipper_id/info",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update shipper billing info"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipment Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List shipment events.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/events",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List shipment events."
+        },
+        {
+          "info": {
+            "name": "Create shipment event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/events",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "When moving the load always start the flow with the shipment:en-route-to-pickup event."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipment Stops",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Confirm stop appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.loadsmart.com/api/v2/shipments/:shipment_id/stops/:stop_id/confirm_appointment",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "stop_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Confirm the time and date of the appointment for the stop"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Quotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create quote request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/quotes-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Request quotes for a future shipment.\n\nReturns a unique identifier (`id`) for the quote request. After creating the quote request, the\n[Retrieve details from a quote request](#tag/Quotes/paths/~1api~1v2~1quotes-request~1{uuid}/get) endpoint must\nbe polled in order to retrieve the result of this quote request.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve details from a quote request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/quotes-request/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "A quote can either be `available`, `rejected`, `expired` or `booked`.  If\nit's available, a price and expiration date will be returned.  In the case\nthe quote is rejected, the reason will be detailed in the response.\n\nRejections could be a temporary condition. Retrying the request may\nor may not provide the caller with an available quote.\n\n#### List of possible reject reasons\n\n**Note**: we constantly add and remove reject reasons from this list.\nTo make sure the client will continue to work prop"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Load Offers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/offers",
+            "params": [
+              {
+                "name": "alcohol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "equipment_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_lat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_lon",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_radius",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_lat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_lon",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_radius",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "mc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dot",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search offers\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve offer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/offers/:offer_id",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve offer"
+        },
+        {
+          "info": {
+            "name": "Accept an offer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/offers/:offer_id/accept",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Accept an Offer for a Carrier\n"
+        },
+        {
+          "info": {
+            "name": "Search related offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/offers/:offer_id/related",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "relation",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search related offers of another offer\n"
+        },
+        {
+          "info": {
+            "name": "List loads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/loads/",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List accepted loads"
+        },
+        {
+          "info": {
+            "name": "Retrieve a load",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/loads/:load_id",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve an accepted load"
+        },
+        {
+          "info": {
+            "name": "Drop a load",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/loads/:load_id",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Drop a load"
+        },
+        {
+          "info": {
+            "name": "Download ratecon",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/loads/:load_id/rate_confirmation",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Download rate confirmation PDF file"
+        },
+        {
+          "info": {
+            "name": "Search related offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/loads/:load_id/related-offers",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "relation",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search related offers of a Load\n"
+        },
+        {
+          "info": {
+            "name": "List webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/webhooks",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List configured webhooks\n"
+        },
+        {
+          "info": {
+            "name": "Register webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create webhooks configuration\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete webhook configuration\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Bids",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Bids",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/bids",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the bid"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List Bids"
+        },
+        {
+          "info": {
+            "name": "Create Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/bids",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create Bid"
+        },
+        {
+          "info": {
+            "name": "Retrieve Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/bids/:bid_id",
+            "params": [
+              {
+                "name": "bid_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve Bid"
+        },
+        {
+          "info": {
+            "name": "Accept Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/load-offers/bids/:bid_id/accept",
+            "params": [
+              {
+                "name": "bid_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Accept Bid"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Loads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Load Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/loads/:load_id/events",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "\nProvides a list of the events (rejected, accepted, etc) regarding a load previously tendered to Loadsmart.\n\nThis is an alternative way to obtain feedback whether a tendered load was accepted or rejected (you can also receive load events by Webhooks - see [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section).\nThe List Load Events endpoint was designed to be polled, so you don't need to expose an endpoint where Loadsmart would send the accepted/rejected webhook.\n\nAlthough loads and s"
+        },
+        {
+          "info": {
+            "name": "Create tender",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/loads/tender",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Tender a load to Loadsmart. The load could be either a spot or contracted one. If the endpoint returns\na successful status code, it means that we have received the load.\n\nIn order to see if the load was accepted or rejected, you must listen for the `load:accepted` and\n`load:rejected` webhooks, respectively. See [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section.\n\nImportant: the uuid returned identifies a load uniquely in Loadsmart systems. This means that,\n for two or more respons"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Routes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Estimate distance and duration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/routes/estimate-trip-duration",
+            "params": [
+              {
+                "name": "origin",
+                "value": "",
+                "type": "query",
+                "description": "Address (complete or partial) for the origin"
+              },
+              {
+                "name": "destination",
+                "value": "",
+                "type": "query",
+                "description": "Address (complete or partial) for the destination"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Estimate the distance and trip duration between an origin and\ndestination.\n\nOrigin and destination can be any valid address.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Capacity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create capacity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/capacity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Inform us about a list of available trucks.\n\nThe available trucks must have at least a point of pickup, the\ndelivery is not mandatory but will increase the chances of best\nmatching for our loads.\n\nThe capacity represents an empty truck position. For different\nempty positions for the same truck, the available trucks and\ntheir ids must be different. We suggest that you use an uuid to\nrepresent the `ref_number` attribute on your side, because this\nidentifier will be reused across other endpoints.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Capacity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/capacity/:capacity_ref_number",
+            "params": [
+              {
+                "name": "ref_number",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a Capacity"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/webhooks/url",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all webhooks registered for the authenticated client\n"
+        },
+        {
+          "info": {
+            "name": "Register webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/api/v2/webhooks/url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create webhooks configuration\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.loadsmart.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.loadsmart.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.loadsmart.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Quote Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/quote-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a quote is triggered.\n\nThe quote event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - quote:booked\n  - quote:rejected\n"
+        },
+        {
+          "info": {
+            "name": "Shipment Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/shipment-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a shipment is triggered.\n\nThe shipment event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - shipment:appointment-pickup\n  - shipment:appointment-delivery\n  - shipment:en-route-to-pickup\n  - shipment:check-in-pickup\n  - shipment:check-out-pickup\n  - shipment:check-in-deliver"
+        },
+        {
+          "info": {
+            "name": "Load Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/load-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a load is triggered.\n\nThe load event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nDifference between load and shipment:\n\nAlthough loads and shipments usually refer to the same thing, Loadsmart handles them\nas two slightly different entities. Up to the point when a load is tendered and booked,\nthe"
+        },
+        {
+          "info": {
+            "name": "Bid Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/bid-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a Bid is triggered.\nThe bid event payload has the same schema for all bid event types.\n"
+        },
+        {
+          "info": {
+            "name": "Carrier Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/carrier-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a Carrier is triggered.\n"
+        },
+        {
+          "info": {
+            "name": "Integration Request Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.loadsmart.com/integration-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about an integration request is triggered.\n\nThe event payload has the same schema for both integration-request events.\n\nList of event types:\n  - integration-request:accepted\n  - integration-request:rejected\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

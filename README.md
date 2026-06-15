@@ -1,24 +1,142 @@
-# Loadsmart
+# Loadsmart (loadsmart)
 
-Loadsmart — digital freight + transportation platform (US). Founded 2014, headquartered in Chicago. Connects shippers, carriers, warehouses, and docks via the ShipperGuide TMS, Opendock dock-scheduling, NavTrac yard management, and a public REST API surface backed by ShipperGuide (api.loadsmart.com) and Opendock Nova / Neutron (neutron.opendock.com).
+Loadsmart is a digital freight technology company and 4PL that connects shippers, carriers, warehouses, and dock operations on a single platform. Founded in 2014 by Felipe Capella and Ricardo Salgado and headquartered in Chicago (with significant New York presence), Loadsmart raised more than $346M from investors including BlackRock, SoftBank Latin America Fund, Maersk Growth, TFI International, CSX, Ports America, and Connor Capital, reaching a reported $1.3B valuation. The platform spans full and partial truckload, less-than-truckload, drayage, expedited, flatbed (via Flatbed Messenger), and multimodal freight, plus the ShipperGuide TMS for procurement, planning, and execution; CarrierGuide TMS and a carrier loadboard with factoring; Opendock for dock appointment scheduling and the Nova warehouse API; and NavTrac for yard management and computer-vision gate/yard visibility. FreightIntel AI provides machine-learning powered freight recommendations across the suite. Loadsmart exposes a public Developer Portal with two production OpenAPI surfaces — the ShipperGuide API (api.loadsmart.com, JWT/RS256 authentication, with quote, book, tender, track, and webhook lanes) and the Opendock Nova / Neutron API (neutron.opendock.com, JWT bearer authentication) — and ships a Postman collection plus partner integrations with Oracle Transportation Management, MercuryGate, Blue Yonder, SAP, NetSuite, and other TMS/ERP platforms.
+
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/loadsmart/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/loadsmart/refs/heads/main/apis.yml)
+
+## Scope
+
+- **Type:** Index
+- **Position:** Producing
+- **Access:** 3rd-Party
+
+## Tags
+
+- Freight
+- Logistics
+- Transportation
+- Supply Chain
+- Digital Freight
+- Freight Brokerage
+- Truckload
+- LTL
+- Drayage
+- Flatbed
+- Multimodal
+- TMS
+- Dock Scheduling
+- Yard Management
+- Warehouse
+- 4PL
+- FreightTech
+
+## Timestamps
+
+- **Created:** 2026-05-25
+- **Modified:** 2026-05-25
 
 ## APIs
 
-| API | Base URL | Spec |
-|---|---|---|
-| Loadsmart ShipperGuide API | https://api.loadsmart.com | [openapi/loadsmart-shipperguide-openapi.yml](openapi/loadsmart-shipperguide-openapi.yml) |
-| Opendock Nova (Neutron) API | https://neutron.opendock.com | [openapi/loadsmart-opendock-openapi.yml](openapi/loadsmart-opendock-openapi.yml) |
+### Loadsmart ShipperGuide API
 
-## Resources
+Production REST API at https://api.loadsmart.com (sandbox api.sandbox.loadsmart.com) for quoting, booking, tendering, tracking, and managing freight shipments autonomously. Covers carriers, shippers, shipper accounts, load offers and bids, capacity, route duration, shipment documents and events, shipment scoring, and a full webhook surface (quote, shipment, load, bid, and carrier events). Authenticated with JWT tokens (RS256, RSA 4096) using Application-JWT or User-JWT security schemes; tokens should be short-lived (~1 minute) and supplied via the Authorization header.
 
-- Developer Portal — https://developer.loadsmart.com
-- ShipperGuide Docs — https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
-- Opendock Docs — https://developer.loadsmart.com/docs/opendock/overview/getting-started
-- ShipperGuide OpenAPI source — https://developer.loadsmart.com/api/openapi.yaml
-- Opendock Nova OpenAPI source — https://neutron.opendock.com/docs-json
-- Opendock Swagger UI — https://neutron.opendock.com/docs
-- Postman (ShipperGuide) — https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
-- Postman (Opendock Nova) — https://www.postman.com/opendock/workspace/public-nova-workspace/
-- GitHub — https://github.com/loadsmart
-- Blog — https://blog.loadsmart.com
-- Community — https://community.loadsmart.com
+- **Human URL:** [https://developer.loadsmart.com/docs/shipperguide/overview/getting-started](https://developer.loadsmart.com/docs/shipperguide/overview/getting-started)
+- **Base URL:** `https://api.loadsmart.com`
+
+#### Tags
+
+- Freight
+- Shipping
+- Quotes
+- Loads
+- Bids
+- Webhooks
+- Carriers
+- Shippers
+
+#### Properties
+
+- [Documentation](https://developer.loadsmart.com/docs/shipperguide/overview/getting-started)
+- [API Reference](https://developer.loadsmart.com/docs/shipperguide/api-reference)
+- [OpenAPI](openapi/loadsmart-shipperguide-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/loadsmart-shipperguide.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/loadsmart-shipperguide.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Open A P I Source](https://developer.loadsmart.com/api/openapi.yaml)
+- [Webhooks](https://developer.loadsmart.com/docs/shipperguide/api-reference)
+- [Sandbox](https://api.sandbox.loadsmart.com)
+- [Authentication](https://developer.loadsmart.com/docs/shipperguide/overview/getting-started)
+- [Postman](https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+
+### Opendock Nova (Neutron) API
+
+Production REST API at https://neutron.opendock.com (staging neutron.staging.opendock.com) powering the Opendock Nova warehouse dock-scheduling platform. 151 endpoints covering warehouses, docks, loadtypes, appointments, carriers, users, organizations, custom-forms and custom-tags, gates, yards, hours of operation, ETAs, reports, billing, asset tracking, and integrations. Authenticated with JWT bearer tokens in the Authorization header; complementary Subspace WebSocket API streams Created/Updated/Deleted events for near-real-time integrations.
+
+- **Human URL:** [https://developer.loadsmart.com/docs/opendock/overview/getting-started](https://developer.loadsmart.com/docs/opendock/overview/getting-started)
+- **Base URL:** `https://neutron.opendock.com`
+
+#### Tags
+
+- Dock Scheduling
+- Warehouse
+- Appointments
+- Yard Management
+- Carriers
+- Webhooks
+- WebSockets
+
+#### Properties
+
+- [Documentation](https://developer.loadsmart.com/docs/opendock/overview/getting-started)
+- [API Reference](https://developer.loadsmart.com/docs/opendock/category/overview)
+- [OpenAPI](openapi/loadsmart-opendock-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/loadsmart-opendock.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/loadsmart-opendock.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Open A P I Source](https://neutron.opendock.com/docs-json)
+- [Swagger U I](https://neutron.opendock.com/docs)
+- [Web Sockets](https://developer.loadsmart.com/docs/opendock/overview/websockets)
+- [Sandbox](https://neutron.staging.opendock.com)
+- [Postman](https://www.postman.com/opendock/workspace/public-nova-workspace/) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Community](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)
+
+## Common Properties
+
+- [Website](https://loadsmart.com)
+- [Developer Portal](https://developer.loadsmart.com)
+- [Documentation](https://developer.loadsmart.com/docs/)
+- [API Reference](https://developer.loadsmart.com/docs/shipperguide/api-reference)
+- [OpenAPI](https://developer.loadsmart.com/api/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [About](https://loadsmart.com/about/)
+- [Careers](https://loadsmart.com/careers/)
+- [Contact](https://loadsmart.com/contact/)
+- [Blog](https://blog.loadsmart.com/)
+- [Community](https://community.loadsmart.com/)
+- [Shipper Guide](https://loadsmart.com/shippers/shipperguide-tms/)
+- [Managed Transportation](https://loadsmart.com/shippers/managed-transportation/)
+- [Freight Intel A I](https://loadsmart.com/freightintel-ai/)
+- [Private Fleet Optimizer](https://loadsmart.com/shippers/private-fleet-optimizer/)
+- [Flatbed Messenger](https://loadsmart.com/flatbed-messenger/)
+- [Carrier Loadboard](https://loadsmart.com/carriers/loadboard/)
+- [Carrier Guide](https://loadsmart.com/carriers/carrierguide-tms/)
+- [Factoring](https://loadsmart.com/carriers/factoring/)
+- [Opendock](https://opendock.com/)
+- [Nav Trac](https://loadsmart.com/warehouse/navtrac/)
+- [Integrations](https://loadsmart.com/integrations/)
+- [Oracle Integration](https://loadsmart.com/integrations/oracle/)
+- [Mercury Gate Integration](https://loadsmart.com/integrations/mercury-gate/)
+- [GitHub Organization](https://github.com/loadsmart)
+- [Twitter](https://twitter.com/LoadSmartUS)
+- [LinkedIn](https://www.linkedin.com/company/loadsmart)
+- [YouTube](https://www.youtube.com/channel/UCN-pkKcoMargmyL0Br3-H5w)
+- [Instagram](https://www.instagram.com/loadsmart)
+- [Facebook](https://www.facebook.com/loadsmartUS)
+- [Plans](plans/loadsmart-plans-pricing.yml)
+- [Rate Limits](rate-limits/loadsmart-rate-limits.yml)
+- [Fin Ops](finops/loadsmart-finops.yml)
+- [Features](undefined)
+
+## Maintainers
+
+**FN:** Kin Lane
+**Email:** info@apievangelist.com
+**URL:** https://apievangelist.com
