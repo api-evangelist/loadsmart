@@ -132,6 +132,10 @@ apis:
       - type: Community
         url: https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
 common:
+  - type: DomainSecurity
+    url: security/loadsmart-domain-security.yml
+  - type: Authentication
+    url: authentication/loadsmart-authentication.yml
   - type: Website
     url: https://loadsmart.com
   - type: DeveloperPortal
