@@ -1,0 +1,1510 @@
+openapi: 3.0.0
+info:
+  title: Opendock Nova API Documentation Appointments Quotes API
+  description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
+  version: v4.144.0 - 39b4253
+  contact: {}
+servers:
+- url: https://neutron.opendock.com
+  description: Production Server
+- url: https://neutron.staging.opendock.com
+  description: Staging Server
+tags:
+- name: Quotes
+  description: 'Quotes provide the price and conditions for a future shipment.
+
+    To create a shipment, you need first to request a valid quote.
+
+    '
+paths:
+  /api/v2/quotes-request:
+    post:
+      summary: Create quote request
+      description: 'Request quotes for a future shipment.
+
+
+        Returns a unique identifier (`id`) for the quote request. After creating the quote request, the
+
+        [Retrieve details from a quote request](#tag/Quotes/paths/~1api~1v2~1quotes-request~1{uuid}/get) endpoint must
+
+        be polled in order to retrieve the result of this quote request.
+
+        '
+      security:
+      - User-JWT:
+        - quote_write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shipment_mode:
+                  allOf:
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          default: FTL
+                          enum:
+                          - FTL
+                          - LTL
+                          - PTL
+                          - RAIL
+                          description: 'The transportation mode of the load. Allowed values are:
+
+                            - FTL: Full Truckload
+
+                            - LTL: Less-than-Truckload
+
+                            - PTL: Partial Truckload
+
+                            - RAIL: Intermodal rail (53'' containers)
+
+                            '
+                    x-external: true
+                equipments:
+                  allOf:
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - DRV
+                          - FBE
+                          - RFR
+                          - IMC
+                          description: "Equipment required to transport the shipment. Recognized equipments are:\n  - DRV: Dry Van\n  - FBE: Flatbed\n  - RFR: Reefer\n  - IMC: Intermodal\n"
+                    maxItems: 1
+                    minItems: 1
+                    x-external: true
+                total_width:
+                  type: number
+                  description: The load total width expressed in 'ft'
+                  minimum: 0
+                total_length:
+                  type: number
+                  description: The load total length expressed in 'ft'
+                  minimum: 0
+                total_height:
+                  type: number
+                  description: The load total height expressed in 'ft'
+                  minimum: 0
+                requirements:
+                  nullable: true
+                  type: object
+                  description: Requirements that needs to be fulfilled in order to transport the load
+                  properties:
+                    hazmat:
+                      type: boolean
+                      description: The commodity being moved consists of hazard material
+                    tarp:
+                      type: object
+                      description: If present in 'requirements', it means the shipment needs a tarp
+                      properties:
+                        size:
+                          type: number
+                          format: float
+                          minimum: 0
+                          description: size in expressed in 'ft'
+                        type:
+                          type: string
+                          enum:
+                          - lumber
+                          - steel
+                          - smoke
+                          - parachute
+                          - machinery
+                          - canvas
+                          - hay
+                          - poly
+                      required:
+                      - size
+                    dunnage:
+                      type: boolean
+                      description: Extra rack added to the truck
+                    beer:
+                      type: boolean
+                      description: The carrier must be able to transport alcohool
+                    teams:
+                      type: boolean
+                      description: If it requires a team of drivers
+                customer_reference:
+                  type: string
+                  maxLength: 255
+                  description: Internal client's reference, such as an ID, of the load
+                accessorials:
+                  type: array
+                  description: Accessorials are extra charges/services that exist outside the 'normal' standard operating procedure. They are upcharged by the Carriers, and are qualifiers for Carrier Eligibility. FTL loads do not accept accessorials on the quote request.
+                  items:
+                    type: string
+                    enum:
+                    - protect_from_freeze
+                    - lift-gate-pickup
+                    - residential-pickup
+                    - inside-pickup
+                    - tradeshow_pickup
+                    - limited-access-pickup
+                    - construction-site-pickup
+                    - non-commercial-pickup-storage-facility
+                    - appointment-pickup
+                    - notify-prior-to-arrival-delivery
+                    - lift-gate-delivery
+                    - residential-delivery
+                    - inside-delivery
+                    - limited-access-delivery
+                    - non-commercial-delivery-storage-facility
+                    - tradeshow_delivery
+                    - construction-site-delivery
+                    - appointment-delivery
+                    - sort-and-segregate
+                    - notify-prior-to-arrival
+                stops:
+                  type: array
+                  description: Points of interest where the truck makes a stop to either pickup or deliver a shipment. Usually a quote has one pickup stop and one delivery stop, but in some cases there will be multiple delivery stops.
+                  items:
+                    oneOf:
+                    - type: object
+                      title: Zipcode; Window
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                          description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                        address:
+                          type: string
+                        zipcode:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        window:
+                          type: object
+                          description: "A time window indicating when the truck should be at the stop.\nIf the stop date is not defined in the request payload, the API will estimate it based on the trip duration.\nThis will only occur when:\n  i) pickup date is undefined and all delivery dates are defined\n  ii) pickup date is defined and any delivery date is undefined.\nIf a request does not define all stop dates and does not comply with i or ii, then a validation error will be returned\n"
+                          properties:
+                            start:
+                              type: string
+                              format: date-time
+                            end:
+                              type: string
+                              format: date-time
+                          required:
+                          - start
+                          - end
+                      required:
+                      - zipcode
+                      - country
+                    - type: object
+                      title: City & State; Window
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                          description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        window:
+                          type: object
+                          description: "A time window indicating when the truck should be at the stop.\nIf the stop date is not defined in the request payload, the API will estimate it based on the trip duration.\nThis will only occur when:\n  i) pickup date is undefined and all delivery dates are defined\n  ii) pickup date is defined and any delivery date is undefined.\nIf a request does not define all stop dates and does not comply with i or ii, then a validation error will be returned\n"
+                          properties:
+                            start:
+                              type: string
+                              format: date-time
+                            end:
+                              type: string
+                              format: date-time
+                          required:
+                          - start
+                          - end
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        accessorials:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - protect_from_freeze
+                            - lift-gate-pickup
+                            - residential-pickup
+                            - inside-pickup
+                            - tradeshow_pickup
+                            - limited-access-pickup
+                            - construction-site-pickup
+                            - non-commercial-pickup-storage-facility
+                            - appointment-pickup
+                            - notify-prior-to-arrival-delivery
+                            - lift-gate-delivery
+                            - residential-delivery
+                            - inside-delivery
+                            - limited-access-delivery
+                            - non-commercial-delivery-storage-facility
+                            - tradeshow_delivery
+                            - construction-site-delivery
+                            - appointment-delivery
+                            - sort-and-segregate
+                            - notify-prior-to-arrival
+                      required:
+                      - city
+                      - state
+                      - country
+                      - window
+                    - type: object
+                      title: Zipcode; Window Start
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                          description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                        address:
+                          type: string
+                        zipcode:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        date:
+                          type: string
+                          format: date
+                          description: A date indicating when the truck should be at the stop.
+                        window_start:
+                          type: string
+                          format: date-time
+                          description: A date-time indicating when the truck should be at the stop. This field is required for the pickup stop if "window" is not provided. The next stops can use "date".
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        accessorials:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - protect_from_freeze
+                            - lift-gate-pickup
+                            - residential-pickup
+                            - inside-pickup
+                            - tradeshow_pickup
+                            - limited-access-pickup
+                            - construction-site-pickup
+                            - non-commercial-pickup-storage-facility
+                            - appointment-pickup
+                            - notify-prior-to-arrival-delivery
+                            - lift-gate-delivery
+                            - residential-delivery
+                            - inside-delivery
+                            - limited-access-delivery
+                            - non-commercial-delivery-storage-facility
+                            - tradeshow_delivery
+                            - construction-site-delivery
+                            - appointment-delivery
+                            - sort-and-segregate
+                            - notify-prior-to-arrival
+                      required:
+                      - zipcode
+                      - country
+                      - window_start
+                    - type: object
+                      title: City & State; Window Start
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                          description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        date:
+                          type: string
+                          format: date
+                          description: A date indicating when the truck should be at the stop.
+                        window_start:
+                          type: string
+                          format: date-time
+                          description: A date-time indicating when the truck should be at the stop. This field is required for the pickup stop if "window" is not provided. The next stops can use "date".
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        accessorials:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - protect_from_freeze
+                            - lift-gate-pickup
+                            - residential-pickup
+                            - inside-pickup
+                            - tradeshow_pickup
+                            - limited-access-pickup
+                            - construction-site-pickup
+                            - non-commercial-pickup-storage-facility
+                            - appointment-pickup
+                            - notify-prior-to-arrival-delivery
+                            - lift-gate-delivery
+                            - residential-delivery
+                            - inside-delivery
+                            - limited-access-delivery
+                            - non-commercial-delivery-storage-facility
+                            - tradeshow_delivery
+                            - construction-site-delivery
+                            - appointment-delivery
+                            - sort-and-segregate
+                            - notify-prior-to-arrival
+                      required:
+                      - city
+                      - state
+                      - country
+                      - window_start
+                  minItems: 2
+                items:
+                  type: array
+                  description: A list of actual packages that will be moved within the load. One quote - that later will become a shipment - may have none or many Items. These Items will have a lot of different attributes related to it, but specially Dimensions, Weight, Freight Class among some others
+                  items:
+                    type: object
+                    properties:
+                      items_count:
+                        oneOf:
+                        - type: number
+                        - type: string
+                        description: How many of this specific item we will have. This is not the quantity of records in the database.
+                      length:
+                        oneOf:
+                        - type: number
+                        - type: string
+                        description: Length of the shipping item
+                      width:
+                        oneOf:
+                        - type: number
+                        - type: string
+                        description: Width of the shipping item
+                      height:
+                        oneOf:
+                        - type: number
+                        - type: string
+                        description: Height of the shipping item
+                      classification:
+                        type: string
+                        description: Classification representing the Class of the shipping item
+                        enum:
+                        - '50'
+                        - '55'
+                        - '60'
+                        - '65'
+                        - '70'
+                        - '77.5'
+                        - '85'
+                        - '92.5'
+                        - '100'
+                        - '110'
+                        - '125'
+                        - '150'
+                        - '175'
+                        - '200'
+                        - '250'
+                        - '300'
+                        - '400'
+                        - '500'
+                      nmfc_code:
+                        type: string
+                        description: The NMFC Number associated with the shipping item
+                      package_type:
+                        type: string
+                        description: Package type
+                        enum:
+                        - std_pallets
+                        - pallets_non_std
+                        - bags
+                        - bales
+                        - boxes
+                        - bunches
+                        - carpets
+                        - coils
+                        - crates
+                        - cylinders
+                        - drums
+                        - pails
+                        - reels
+                        - rolls
+                        - tubes_pipes
+                        - loose
+                        - ubox
+                      hazmat:
+                        type: boolean
+                        description: The commodity being moved consists of hazard material
+                      hazmat_class:
+                        type: string
+                        description: Hazmat class
+                        enum:
+                        - explosive_non_specified
+                        - mass_explosive
+                        - projection_explosive
+                        - minor_fire_explosive
+                        - minor_explosive
+                        - insensitive_mass_explosive
+                        - insensitive_minor_explosive
+                        - gas_non_specified
+                        - flammable_gas
+                        - non_flammable_non_poisonous_or_oxygen_gas
+                        - poison_gas
+                        - flammable_liquid
+                        - solid_non_specified
+                        - flammable_solid
+                        - spontaneously_combustible_solid
+                        - dangerous_when_wet
+                        - oxidizer_non_specified
+                        - oxidizer
+                        - organic_peroxide
+                        - poison
+                        - radioactive
+                      un_number:
+                        type: string
+                        description: UN numbers are four-digit numbers that identify hazardous materials, and articles in the framework of international transport.
+                      stackable:
+                        type: boolean
+                        description: Indicates if the item is stackable on the truck
+                      description:
+                        type: string
+                        maxLength: 255
+                        description: Name of the commodity that will be shipped
+                      weight:
+                        oneOf:
+                        - type: number
+                        - type: string
+                        description: 'The total weight, in pounds, of the shipment. Acceptable values must be positive numbers with up to 2 decimal digits.
+
+                          Any other type will cause a validation error. Note that the minimum value is 1 and the maximum value
+
+                          depends on the chosen equipment_type: 45000 for DRV, 43000 for RFR and 50000 for FBE.
+
+                          If the weight is not provided, it is set to the maximum allowed for the equipment_type.
+
+                          '
+                        minimum: 1
+                        maximum: 50000
+                    required:
+                    - items_count
+                    - length
+                    - width
+                    - height
+                    - classification
+                    - description
+                    - package_type
+                    - hazmat
+                    - stackable
+                    - weight
+                  properties: {}
+                properties:
+                  type: object
+                  description: 'General information about the load.
+
+                    This is an open JSON field that allows passing special properties with meaning on the customer context, such as the order numbers, must_arrive_by_date, priority and others.
+
+                    '
+              required:
+              - shipment_mode
+              - equipments
+              - stops
+            examples:
+              Request:
+                value:
+                  shipment_mode:
+                  - LTL
+                  equipments:
+                  - type: DRV
+                  - type: FBE
+                  customer_reference: a reference for the quote
+                  total_height: 10.5
+                  total_length: 52
+                  total_width: 7
+                  requirements:
+                    hazmat: false
+                  stops:
+                  - type: PU
+                    address: 12345 E 16th avenue
+                    city: Miami Beach
+                    state: FL
+                    drop_trailer: true
+                    zipcode: '33140'
+                    country: USA
+                    window:
+                      start: 2018-06-20 09:00:00
+                      end: 2018-06-20 11:00:00
+                    accessorials:
+                    - sort-and-segregate
+                    - inside-pickup
+                  - type: DEL
+                    address: 54321 E 16th avenue
+                    city: New York
+                    state: NY
+                    drop_trailer: false
+                    zipcode: '33140'
+                    country: USA
+                  items:
+                  - items_count: 1
+                    length: 12
+                    width: 18
+                    height: 24
+                    classification: '80'
+                    nmfc_code: 19874
+                    package_type: std_pallets
+                    hazmat: true
+                    hazmat_class: mass_explosive
+                    un_number: 1485
+                    stackable: false
+                    description: apples
+                    weight: 20000
+      responses:
+        '202':
+          description: Quote request was accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: A unique identifier for the quote request
+                    required:
+                    - id
+                required:
+                - data
+              examples:
+                AcceptedQuote:
+                  value:
+                    data:
+                      id: 3802fab9-bcbe-42b4-9132-2e0a65c11e1d
+                RejectedQuote:
+                  value:
+                    data:
+                      id: 3802fab9-bcbe-42b4-9132-2e0a65c11e1d
+        '422':
+          description: Invalid or missing data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                    - invalid_data
+                  error_description:
+                    type: string
+                    description: Description of what happened
+                  errors:
+                    type: object
+                    description: Object where each field is a key and the value is an array of errors
+                required:
+                - error
+                - error_description
+              example:
+                error: invalid_data
+                error_description: Can't create the object
+                errors:
+                  field_name:
+                  - This field is required.
+                  other_field:
+                  - Expected string but received integer.
+      tags:
+      - Quotes
+  /api/v2/quotes-request/{uuid}:
+    get:
+      summary: Retrieve details from a quote request
+      description: 'A quote can either be `available`, `rejected`, `expired` or `booked`.  If
+
+        it''s available, a price and expiration date will be returned.  In the case
+
+        the quote is rejected, the reason will be detailed in the response.
+
+
+        Rejections could be a temporary condition. Retrying the request may
+
+        or may not provide the caller with an available quote.
+
+
+        #### List of possible reject reasons
+
+
+        **Note**: we constantly add and remove reject reasons from this list.
+
+        To make sure the client will continue to work properly in case
+
+        a new reject reason is added, you can use the message on
+
+        `reject_description` field to show to users what happened.
+
+
+        * forbidden-date: Date is valid but not allowed
+
+        * price-unavailable: Could not get price
+
+        * shipper-over-capacity: Shipper over Capacity
+
+        * lane-not-permitted: Lane not Permitted
+
+        * shipper-daily-quotes-over-capacity: Shipper daily quotes over capacity
+
+        * mileage-unavailable: Could not get mileage
+
+        * next-day-shipment-not-allow: Next day quotes are not allowed
+
+        * inactive-shipper-daily-quotes-over-capacity: Inactive shipper daily quotes over capacity
+
+        * weekend-pickup-not-allowed: Pickups are not allowed to happen on weekends
+
+        * same-day-shipment-not-allow: Same day quote is not allowed
+
+        * market-size-too-large: Market Size too Large
+
+        * flatbed-not-allowed: Flatbed not allowed
+
+        * shipper-profile-is-incomplete: Shipper profile is incomplete
+
+        '
+      tags:
+      - Quotes
+      security:
+      - User-JWT:
+        - quote_write
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          description: Unique Quote Request identifier
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      status:
+                        type: string
+                      reject_reason:
+                        type: string
+                      mileage:
+                        type: number
+                      quotes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            quote_id:
+                              type: string
+                              maxLength: 40
+                              description: Reference for the quote that should be used to book the load
+                            asset_carrier_quote_id:
+                              type: string
+                              maxLength: 64
+                              description: Reference for the asset carrier quote.
+                            expires_at:
+                              type: datetime
+                            status:
+                              enum:
+                              - pending
+                              - available
+                              - rejected
+                            shipment_mode:
+                              type: array
+                              items:
+                                type: string
+                                default: FTL
+                                enum:
+                                - FTL
+                                - LTL
+                                - PTL
+                                - RAIL
+                                description: 'The transportation mode of the load. Allowed values are:
+
+                                  - FTL: Full Truckload
+
+                                  - LTL: Less-than-Truckload
+
+                                  - PTL: Partial Truckload
+
+                                  - RAIL: Intermodal rail (53'' containers)
+
+                                  '
+                            customer_reference:
+                              type: string
+                              maxLength: 255
+                              description: Internal client's reference, such as an ID, of the quote
+                            service_level:
+                              type: string
+                              maxLength: 255
+                              description: A guarantee given by the carrier of deliverying the load on the specified time. Often a higher service level means a higher price
+                            carriers:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  uuid:
+                                    type: string
+                                    format: uuid
+                                  priority:
+                                    type: string
+                                    enum:
+                                    - favorited
+                                    - restricted
+                                    - neutral
+                                  scac:
+                                    type: string
+                                    maxLength: 4
+                                    description: Standard Carrier Alpha Code (for `LTL`/`VLTL` quotes only)
+                            price:
+                              type: object
+                              properties:
+                                total:
+                                  type: number
+                                components:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                      price:
+                                        type: number
+                            equipment:
+                              type: string
+                              enum:
+                              - DRV
+                              - FBE
+                              - RFR
+                              description: The type of truck used to transport the shipment. Allowed values are DRV (dry van), FBE (flatbed) and RFR (reefer)
+                            stops:
+                              type: array
+                              description: Points of interest where the truck makes a stop to either pickup or deliver a shipment. Usually a quote has one pickup stop and one delivery stop, but in some cases there will be multiple delivery stops.
+                              items:
+                                oneOf:
+                                - type: object
+                                  title: Zipcode
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                      - PU
+                                      - DEL
+                                      description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                                    facility_name:
+                                      type: string
+                                      description: Name of the facility at this stop
+                                    contacts:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          name:
+                                            type: string
+                                            description: Name of the person who is the contact at this stop
+                                            maxLength: 255
+                                          email:
+                                            type: string
+                                            format: email
+                                            description: Email of the contact. Required if no phone number is provided
+                                            maxLength: 254
+                                          phone_number:
+                                            description: Phone number of the contact. Required if email is provided
+                                            type: string
+                                            pattern: \+\d{4,15}
+                                            maxLength: 16
+                                        required:
+                                        - name
+                                    city:
+                                      type: string
+                                    state:
+                                      type: string
+                                    address:
+                                      type: string
+                                    country:
+                                      type: string
+                                    zipcode:
+                                      type: string
+                                      pattern: ^[A-Z]{3}$
+                                      description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                                    window:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          start:
+                                            type: string
+                                            format: naive date-time
+                                            description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                                          end:
+                                            type: string
+                                            format: naive date-time
+                                            description: A window end indicating the end local time of the truck stop at the stop
+                                    instructions:
+                                      type: string
+                                      description: Instructions for the driver
+                                  required:
+                                  - zipcode
+                                  - country
+                                  - window_start
+                                - type: object
+                                  title: City & State
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                      - PU
+                                      - DEL
+                                      description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                                    facility_name:
+                                      type: string
+                                      description: Name of the facility at this stop
+                                    contacts:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          name:
+                                            type: string
+                                            description: Name of the person who is the contact at this stop
+                                            maxLength: 255
+                                          email:
+                                            type: string
+                                            format: email
+                                            description: Email of the contact. Required if no phone number is provided
+                                            maxLength: 254
+                                          phone_number:
+                                            description: Phone number of the contact. Required if email is provided
+                                            type: string
+                                            pattern: \+\d{4,15}
+                                            maxLength: 16
+                                        required:
+                                        - name
+                                    city:
+                                      type: string
+                                    state:
+                                      type: string
+                                    address:
+                                      type: string
+                                    country:
+                                      type: string
+                                    zipcode:
+                                      type: string
+                                      pattern: ^[A-Z]{3}$
+                                      description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                                    window_start:
+                                      description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                                      type: string
+                                      format: naive date-time
+                                    window_end:
+                                      description: A window end indicating the end local time of the truck stop at the stop
+                                      type: string
+                                      format: naive date-time
+                                    instructions:
+                                      type: string
+                                      description: Instructions for the driver
+                                  required:
+                                  - city
+                                  - state
+                                  - country
+                                  - window_start
+                                  - window_end
+                          required:
+                          - id
+                          - status
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            items_count:
+                              oneOf:
+                              - type: number
+                              - type: string
+                              description: How many of this specific item we will have. This is not the quantity of records in the database.
+                            length:
+                              oneOf:
+                              - type: number
+                              - type: string
+                              description: Length of the shipping item
+                            width:
+                              oneOf:
+                              - type: number
+                              - type: string
+                              description: Width of the shipping item
+                            height:
+                              oneOf:
+                              - type: number
+                              - type: string
+                              description: Height of the shipping item
+                            classification:
+                              type: string
+                              description: Classification representing the Class of the shipping item
+                              enum:
+                              - '50'
+                              - '55'
+                              - '60'
+                              - '65'
+                              - '70'
+                              - '77.5'
+                              - '85'
+                              - '92.5'
+                              - '100'
+                              - '110'
+                              - '125'
+                              - '150'
+                              - '175'
+                              - '200'
+                              - '250'
+                              - '300'
+                              - '400'
+                              - '500'
+                            nmfc_code:
+                              type: string
+                              description: The NMFC Number associated with the shipping item
+                            package_type:
+                              type: string
+                              description: Package type
+                              enum:
+                              - std_pallets
+                              - pallets_non_std
+                              - bags
+                              - bales
+                              - boxes
+                              - bunches
+                              - carpets
+                              - coils
+                              - crates
+                              - cylinders
+                              - drums
+                              - pails
+                              - reels
+                              - rolls
+                              - tubes_pipes
+                              - loose
+                              - ubox
+                            hazmat:
+                              type: boolean
+                              description: The commodity being moved consists of hazard material
+                            hazmat_class:
+                              type: string
+                              description: Hazmat class
+                              enum:
+                              - explosive_non_specified
+                              - mass_explosive
+                              - projection_explosive
+                              - minor_fire_explosive
+                              - minor_explosive
+                              - insensitive_mass_explosive
+                              - insensitive_minor_explosive
+                              - gas_non_specified
+                              - flammable_gas
+                              - non_flammable_non_poisonous_or_oxygen_gas
+                              - poison_gas
+                              - flammable_liquid
+                              - solid_non_specified
+                              - flammable_solid
+                              - spontaneously_combustible_solid
+                              - dangerous_when_wet
+                              - oxidizer_non_specified
+                              - oxidizer
+                              - organic_peroxide
+                              - poison
+                              - radioactive
+                            un_number:
+                              type: string
+                              description: UN numbers are four-digit numbers that identify hazardous materials, and articles in the framework of international transport.
+                            stackable:
+                              type: boolean
+                              description: Indicates if the item is stackable on the truck
+                            description:
+                              type: string
+                              maxLength: 255
+                              description: Name of the commodity that will be shipped
+                            weight:
+                              oneOf:
+                              - type: number
+                              - type: string
+                              description: 'The total weight, in pounds, of the shipment. Acceptable values must be positive numbers with up to 2 decimal digits.
+
+                                Any other type will cause a validation error. Note that the minimum value is 1 and the maximum value
+
+                                depends on the chosen equipment_type: 45000 for DRV, 43000 for RFR and 50000 for FBE.
+
+                                If the weight is not provided, it is set to the maximum allowed for the equipment_type.
+
+                                '
+                              minimum: 1
+                              maximum: 50000
+                          required:
+                          - items_count
+                          - length
+                          - width
+                          - height
+                          - classification
+                          - description
+                          - package_type
+                          - hazmat
+                          - stackable
+                          - weight
+                      stops:
+                        type: array
+                        items:
+                          oneOf:
+                          - type: object
+                            title: Zipcode
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - PU
+                                - DEL
+                                description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                              facility_name:
+                                type: string
+                                description: Name of the facility at this stop
+                              contacts:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Name of the person who is the contact at this stop
+                                      maxLength: 255
+                                    email:
+                                      type: string
+                                      format: email
+                                      description: Email of the contact. Required if no phone number is provided
+                                      maxLength: 254
+                                    phone_number:
+                                      description: Phone number of the contact. Required if email is provided
+                                      type: string
+                                      pattern: \+\d{4,15}
+                                      maxLength: 16
+                                  required:
+                                  - name
+                              city:
+                                type: string
+                              state:
+                                type: string
+                              address:
+                                type: string
+                              country:
+                                type: string
+                              zipcode:
+                                type: string
+                                pattern: ^[A-Z]{3}$
+                                description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                              window:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    start:
+                                      type: string
+                                      format: naive date-time
+                                      description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                                    end:
+                                      type: string
+                                      format: naive date-time
+                                      description: A window end indicating the end local time of the truck stop at the stop
+                              instructions:
+                                type: string
+                                description: Instructions for the driver
+                            required:
+                            - zipcode
+                            - country
+                            - window_start
+                          - type: object
+                            title: City & State
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - PU
+                                - DEL
+                                description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                              facility_name:
+                                type: string
+                                description: Name of the facility at this stop
+                              contacts:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Name of the person who is the contact at this stop
+                                      maxLength: 255
+                                    email:
+                                      type: string
+                                      format: email
+                                      description: Email of the contact. Required if no phone number is provided
+                                      maxLength: 254
+                                    phone_number:
+                                      description: Phone number of the contact. Required if email is provided
+                                      type: string
+                                      pattern: \+\d{4,15}
+                                      maxLength: 16
+                                  required:
+                                  - name
+                              city:
+                                type: string
+                              state:
+                                type: string
+                              address:
+                                type: string
+                              country:
+                                type: string
+                              zipcode:
+                                type: string
+                                pattern: ^[A-Z]{3}$
+                                description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                              window_start:
+                                description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                                type: string
+                                format: naive date-time
+                              window_end:
+                                description: A window end indicating the end local time of the truck stop at the stop
+                                type: string
+                                format: naive date-time
+                              instructions:
+                                type: string
+                                description: Instructions for the driver
+                            required:
+                            - city
+                            - state
+                            - country
+                            - window_start
+                            - window_end
+                      suggested_mode:
+                        type: string
+                        enum:
+                        - LTL
+                        - PTL
+                        - FTL
+                      equipments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - DRV
+                              - FBE
+                              - RFR
+                              - CON
+                              - CUR
+                              - DDP
+                              - IMC
+                              - SDK
+                              - STK
+                              - BLK
+                              - TNK
+                              - OTH
+                              description: "Equipment required to transport the shipment. Recognized equipments are:\n  - DRV: Dry Van\n  - FBE: Flatbed\n  - RFR: Reefer\n  - CON: Conestoga\n  - CUR: Curtainside\n  - DDP: Double Drop\n  - IMC: Intermodal\n  - SDK: Step Deck\n  - STK: Straight truck\n  - BLK: Bulk\n  - TNK: Tanker\n  - OTH: Other equipment not explicited listed\n"
+                      total_width:
+                        type: number
+                        description: The load total width expressed in 'ft'
+                        minimum: 0
+                      total_length:
+                        type: number
+                        description: The load total length expressed in 'ft'
+                        minimum: 0
+                      total_height:
+                        type: number
+                        description: The load total height expressed in 'ft'
+                        minimum: 0
+                      requirements:
+                        nullable: true
+                        type: object
+                        description: Requirements that needs to be fulfilled in order to transport the load
+                        properties:
+                          hazmat:
+                            type: boolean
+                            description: The commodity being moved consists of hazard material
+                          tarp:
+                            type: object
+                            description: If present in 'requirements', it means the shipment needs a tarp
+                            properties:
+                              size:
+                                type: number
+                                format: float
+                                minimum: 0
+                                description: size in expressed in 'ft'
+                              type:
+                                type: string
+                                enum:
+                                - lumber
+                                - steel
+                                - smoke
+                                - parachute
+                                - machinery
+                                - canvas
+                                - hay
+                                - poly
+                            required:
+                            - size
+                          dunnage:
+                            type: boolean
+                            description: Extra rack added to the truck
+                          beer:
+                            type: boolean
+                            description: The carrier must be able to transport alcohool
+                          teams:
+                            type: boolean
+                            description: If it requires a team of drivers
+                required:
+                - data
+              example:
+                data:
+                  id: 3802fab9-bcbe-42b4-9132-2e0a65c11e1d
+                  status: available
+                  reject_reason: null
+                  mileage: 1453
+                  suggested_mode: LTL
+                  equipments:
+                  - type: DRV
+                  quotes:
+                  - quote_id: quote_a844d1dfef1bed1ba777
+                    asset_carrier_quote_id: JDHFK832748
+                    expires_at: 2018-10-26 17:00:00+00:00
+                    status: available
+                    shipment_mode: LTL
+                    service_level: Standard
+                    customer_reference: AB123CD
+                    carriers:
+                    - name: ABC Freight
+                      uuid: c4e81940-fd8e-44ff-81f0-6d178489db0d
+                      priority: neutral
+                      scac: ABCF
+                    price:
+                      total: 1543.45
+                      components:
+                      - type: haul
+                        price: 1543.45
+                    equipment:
+                      type: DRV
+                    stops:
+                    - type: PU
+                      facility_name: Brothers & Sons Inc.
+                      contacts:
+                      - name: John Doe
+                        email: john@example.com
+                        phone_number: '+17895551234'
+                      city: Miami Beach
+                      state: FL
+                      address: 12345 E 16th avenue
+                      country: USA
+                      zipcode: 33139
+                      window:
+                        start: 2020-06-20 09:00:00
+                        end: 2020-06-20 11:00:00
+                      instructions: Driver must arrive on time. These instructions will be sent to driver.
+                    - type": DEL
+                      facility_name: Space Ghost Coast to Coast Inc.
+                      contacts:
+                      - name: Space Ghost
+                        email: space@ghost.com
+                        phone_number: '+17124832133'
+                      city: New York
+                      state: NY
+                      address: 54321 E 16th avenue
+                      country: USA
+                      zipcode: 10010
+                      window:
+                        start: 2020-06-21 16:00:00
+                        end: 2020-06-21 18:00:00
+                  - quote_id: quote_bd030c027543ffe032dd
+                    asset_carrier_quote_id: F1CT10N4L1D228
+                    expires_at: 2018-10-26 17:00:00+00:00
+                    status: available
+                    shipment_mode: LTL
+                    service_level: Guaranteed by 3PM
+                    customer_reference: 88ACA02
+                    carriers:
+                    - name: Fictional Freight
+                      uuid: 956dcd70-95cd-419a-af5c-96d394d8ee53
+                      priority: restricted
+                    price:
+                      total: 1876.9
+                      components:
+                      - type: haul
+                        price: 1726.9
+                      - type: fuel_surcharge
+                        price: 150
+                    equipment:
+                      type: DRV
+                    stops:
+                    - type: PU
+                      facility_name: Brothers & Sons Inc.
+                      items:
+                      - items_count: 1
+                        length: 12
+                        width: 18
+                        height: 24
+                        classification: '70'
+                        nmfc_code: 19874
+                        package_type: std_pallets
+                        hazmat: true
+                        hazmat_class: mass_explosive
+                        un_number: 1485
+                        stackable: false
+                        description: apples
+                        weight: 20000
+                      contacts:
+                      - name: John Doe
+                        email: john@example.com
+                        phone_number: '+17895551234'
+                      city: Miami Beach
+                      state: FL
+                      address: 12345 E 16th avenue
+                      country: USA
+                      zipcode: 33139
+                      window:
+                        start: 2020-06-20 09:00:00
+                        end: 2020-06-20 11:00:00
+                      instructions: Driver must arrive on time. These instructions will be sent to driver.
+                    - type": DEL
+                      facility_name: Space Ghost Coast to Coast Inc.
+                      contacts:
+                      - name: Space Ghost
+                        email: space@ghost.com
+                        phone_number: '+17124832133'
+                      city: New York
+                      state: NY
+                      address: 321 E 7th avenue
+                      country: USA
+                      zipcode: 10010
+                      window:
+                        start: 2020-06-22 16:00:00
+                        end: 2020-06-22 18:00:00
+                      instructions: No special instructions here.
+                  items:
+                  - items_count: 1
+                    length: 12
+                    width: 18
+                    height: 24
+                    classification: '80'
+                    nmfc_code: 19874
+                    package_type: std_pallets
+                    hazmat: true
+                    hazmat_class: mass_explosive
+                    un_number: 1485
+                    stackable: false
+                    description: apples
+                    weight: 20000
+                  stops:
+                  - type: PU
+                    address: 12345 E 16th avenue
+                    city: Miami Beach
+                    state: FL
+                    drop_trailer: true
+                    zipcode: '33140'
+                    country: USA
+                    window:
+                      start: 2018-06-20 09:00:00
+                      end: 2018-06-20 11:00:00
+                    accessorials:
+                    - sort-and-segregate
+                    - inside-pickup
+                  - type: DEL
+                    address: 54321 E 16th avenue
+                    city: New York
+                    state: NY
+                    drop_trailer: false
+                    zipcode: '33140'
+                    country: USA
+        '404':
+          description: Quote Request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                    - invalid_data
+                  error_description:
+                    type: string
+                    description: Description of what happened
+                  errors:
+                    type: object
+                    description: Object where each field is a key and the value is an array of errors
+                required:
+                - error
+                - error_description
+              example:
+                error: object_not_found
+                error_description: Object not found
+        '410':
+          description: Quote request is no longer available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                    - invalid_data
+                  error_description:
+                    type: string
+                    description: Description of what happened
+                  errors:
+                    type: object
+                    description: Object where each field is a key and the value is an array of errors
+                required:
+                - error
+                - error_description
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http

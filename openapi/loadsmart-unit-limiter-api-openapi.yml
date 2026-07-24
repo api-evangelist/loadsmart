@@ -1,0 +1,343 @@
+openapi: 3.0.0
+info:
+  title: Opendock Nova API Documentation Appointments Unit Limiter API
+  description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
+  version: v4.144.0 - 39b4253
+  contact: {}
+servers:
+- url: https://neutron.opendock.com
+  description: Production Server
+- url: https://neutron.staging.opendock.com
+  description: Staging Server
+tags:
+- name: Unit Limiter
+paths:
+  /loadtype-group:
+    post:
+      operationId: LoadTypeGroupController_createLoadTypeGroup
+      summary: Create a new load type group
+      description: Creates a load type group, which is a collection of load types that can be managed together for unit limiting purposes. Load type groups allow you to apply the same unit limits to multiple load types simultaneously, simplifying capacity management.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLoadTypeGroupDto'
+      responses:
+        '200':
+          description: Load type group successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLoadTypeGroupDto'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+    get:
+      operationId: LoadTypeGroupController_getLoadTypeGroups
+      summary: Retrieve load type groups
+      description: Fetches all load type groups for a specific warehouse. Returns a list of groups with their associated load types, useful for displaying configuration options or managing unit limits.
+      parameters: []
+      responses:
+        '200':
+          description: List of load type groups for the specified warehouse
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseLoadTypeGroupDto'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+  /loadtype-group/{id}:
+    patch:
+      operationId: LoadTypeGroupController_updateLoadTypeGroup
+      summary: Update an existing load type group
+      description: Updates the name or load type membership of an existing load type group. This allows you to modify which load types are included in the group without recreating it.
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: The unique identifier of the load type group to update
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLoadTypeGroupDto'
+      responses:
+        '200':
+          description: Load type group successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLoadTypeGroupDto'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+    delete:
+      operationId: LoadTypeGroupController_deleteLoadTypeGroup
+      summary: Delete a load type group
+      description: Deletes a load type group. This removes the group itself but does not affect the individual load types that were part of the group. Any unit limits referencing this group will need to be reconfigured.
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: The unique identifier of the load type group to delete
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteLoadTypeGroupDto'
+      responses:
+        '200':
+          description: Load type group successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+  /unit-limit/configuration:
+    post:
+      operationId: UnitLimitController_setUpConfiguration
+      summary: Create or update unit limit configuration
+      description: Configures unit limits for a warehouse based on grouping criteria (warehouse, dock, load type, or load type group). Unit limits control how many appointment or handling units (pallets, etc.) can be scheduled within specific time periods. This helps manage warehouse capacity and prevent overbooking.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitLimitConfigurationWriteDTO'
+      responses:
+        '200':
+          description: Unit limit configuration successfully created or updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 123e4567-e89b-12d3-a456-426614174000
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+    get:
+      operationId: UnitLimitController_getConfiguration
+      summary: Retrieve unit limit configurations
+      description: Fetches unit limit configurations based on specified filters such as warehouse, grouper type (dock, load type, or load type group), and unit type. Returns all matching configurations for the authenticated user's organization.
+      parameters: []
+      responses:
+        '200':
+          description: List of unit limit configurations matching the query parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitLimit'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+  /unit-limit/count:
+    get:
+      operationId: UnitLimitController_getCount
+      summary: Get unit limit counts for specific configurations
+      description: Retrieves actual unit counts for specified unit limit configurations within a date range. This shows how many units have been scheduled against each limit, helping track capacity utilization.
+      parameters: []
+      responses:
+        '200':
+          description: List of unit counts for the requested unit limits and date range
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitLimitCount'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+  /unit-limit/validate:
+    post:
+      operationId: UnitLimitController_validateUnitLimit
+      summary: Validate if scheduling at a given time would breach unit limits
+      description: Checks whether creating an appointment with the specified warehouse, dock, load type, and time interval would violate any configured unit limits. Returns an array of results for each day in the interval.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitLimitValidateDTO'
+      responses:
+        '200':
+          description: Unit limits validation results for each day in the requested interval
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    valid:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: Unit limits validation passed
+                    date:
+                      type: string
+                      example: '2025-11-05'
+      tags:
+      - Unit Limiter
+      security:
+      - bearer: []
+components:
+  schemas:
+    UnitLimit:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+    CreateLoadTypeGroupDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    UnitLimitValidateDTO:
+      type: object
+      properties:
+        tags:
+          type: object
+        warehouseId:
+          type: string
+          description: The warehouse of the unit limit configuration
+          example: 550e8400-e29b-41d4-a716-446655440000
+        dockId:
+          type: string
+          description: The dock of the unit limit configuration
+          example: 550e8400-e29b-41d4-a716-446655440001
+        loadTypeId:
+          type: string
+          description: The load type of the unit limit configuration
+          example: 550e8400-e29b-41d4-a716-446655440002
+        start:
+          type: string
+          description: Start date of the unit limit validation period
+          example: '2025-11-01'
+        end:
+          type: string
+          description: End date of the unit limit validation period (must be within 5 days of start date)
+          example: '2025-11-04'
+        requestedUnits:
+          type: number
+          description: Number of units requested within the specified date range
+          example: 10
+      required:
+      - warehouseId
+      - dockId
+      - loadTypeId
+      - start
+      - end
+    ResponseLoadTypeGroupDto:
+      type: object
+      properties: {}
+    UnitLimitCount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+    UpdateLoadTypeGroupDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    DeleteLoadTypeGroupDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    UnitLimitConfigurationWriteDTO:
+      type: object
+      properties:
+        tags:
+          type: object
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http

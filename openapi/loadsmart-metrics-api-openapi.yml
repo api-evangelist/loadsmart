@@ -1,0 +1,890 @@
+openapi: 3.0.0
+info:
+  title: Opendock Nova API Documentation Appointments Metrics API
+  description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
+  version: v4.144.0 - 39b4253
+  contact: {}
+servers:
+- url: https://neutron.opendock.com
+  description: Production Server
+- url: https://neutron.staging.opendock.com
+  description: Staging Server
+tags:
+- name: Metrics
+paths:
+  /metrics/appointment-volume/load-type:
+    get:
+      operationId: MetricsController_getLoadTypeVolume
+      summary: Appointment volume by load type and week day
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByLoadTypeResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/time-of-day:
+    get:
+      operationId: MetricsController_getTimeOfDayVolume
+      summary: Appointment volume by time of day
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByTimeOfDayResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/date:
+    get:
+      operationId: MetricsController_getDateVolume
+      summary: Appointment volume by date
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByDateResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/carrier:
+    get:
+      operationId: MetricsController_getCarrierVolume
+      summary: Appointment volume by carrier
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByCarrierResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/average-duration-by-load-type:
+    get:
+      operationId: MetricsController_getAverageDurationByLoadType
+      summary: Appointment duration average by load type
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAverageDurationByLoadTypeResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/day-of-week:
+    get:
+      operationId: MetricsController_getDayOfWeekVolume
+      summary: Appointment duration average by dock and day of week
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByDayOfWeekResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/status:
+    get:
+      operationId: MetricsController_getStatusVolume
+      summary: Appointment duration average by status
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByStatusResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointment-volume/status-by-dock:
+    get:
+      operationId: MetricsController_getStatusByDockVolume
+      summary: Appointment duration average by dock and status
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentVolumeByStatusByDockResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointments/status-times:
+    post:
+      operationId: MetricsController_getStatusTimes
+      summary: The average time spent in each appointment status
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentMetricsDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/appointments/excel:
+    post:
+      operationId: MetricsController_getExcelReport
+      summary: 'Retrieve file link with the appointment list that matches the criteria described in the request body, '
+      description: The link will point to an XLSX file external to Nova
+      parameters:
+      - name: emailCCs
+        required: true
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentMetricsListDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/yard/excel:
+    post:
+      operationId: MetricsController_getYardExcelReport
+      summary: Retrieve file link with the yard data list that matches the criteria described in the request body
+      description: The link will point to an XLSX file external to Nova
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/YardExportDataDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/asset-visits/excel:
+    post:
+      operationId: MetricsController_getAssetVisitExcelReport
+      summary: Retrieve file link with the asset visits (check-ins) list that matches the criteria described in the request body
+      description: The link will point to an XLSX file external to Nova
+      parameters:
+      - name: emailCCs
+        required: true
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetVisitExcelExportDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/warehouse/capacity-usage:
+    post:
+      operationId: MetricsController_getWarehouseCapacityUsage
+      summary: Retrieve warehouse dock capacity usage information per warehouse
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentMetricsCapacityDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/warehouse:
+    post:
+      operationId: MetricsController_getWarehouseMetrics
+      summary: Retrieve warehouse insights
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WarehouseMetricsDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsCarrierStatusPercentageResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/carrier/status-percentages:
+    get:
+      operationId: MetricsController_getCarrierStatusPercentages
+      summary: Retrieve carrier insights data with each status percentage
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsCarrierStatusPercentageResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/dock/dwell-time:
+    get:
+      operationId: MetricsController_getDockDwellTime
+      summary: Retrieve dock metrics of dwell time by day of week
+      parameters:
+      - name: fromDate
+        required: false
+        in: query
+        description: From date to filter
+        schema: {}
+      - name: toDate
+        required: false
+        in: query
+        description: To date to filter
+        schema: {}
+      - name: warehouseId
+        required: false
+        in: query
+        description: Warehouse ID to filter
+        schema: {}
+      - name: dockId
+        required: false
+        in: query
+        description: Dock ID to filter
+        schema: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsDockDwellTimeResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/counts/appointment-count-for-docks:
+    get:
+      operationId: MetricsController_getAppointmentCountForDocks
+      summary: Appointment count per dock
+      parameters:
+      - name: dockIds
+        required: true
+        in: query
+        description: Dock IDs array
+        schema: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsCountsAppointmentCountForDocksResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/counts/appointment-count-for-carrier:
+    get:
+      operationId: MetricsController_getAppointmentCountForCarrier
+      summary: Appointment count per carrier
+      parameters:
+      - name: carrierId
+        required: true
+        in: query
+        description: Carrier ID
+        schema: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsCountsAppointmentCountForCarrierResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/counts/appointment-count-for-carrier/status:
+    get:
+      operationId: MetricsController_getAppointmentCountByStatusForCarrier
+      summary: Appointment count by status for current carrier
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/counts/reserve-count-for-user:
+    get:
+      operationId: MetricsController_getReserveCountForUser
+      summary: Reserve count for user
+      parameters:
+      - name: userId
+        required: false
+        in: query
+        description: User ID
+        schema: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsCountsReserveCountForUserResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics/loadtype/first-avail-appt:
+    post:
+      operationId: MetricsController_getFirstAvailAppts
+      summary: Finds the next available appointment time for each dock and loadtype, starting from the current date and time onward
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadTypeMetricsDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics-v2/appointments:
+    post:
+      operationId: MetricsV2Controller_getAppointmentsList
+      summary: Retrieve an appointment list that matches the criteria described in the request body
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentMetricsListV2Dto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsAppointmentListResponse'
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+  /metrics-v2/asset-visits:
+    post:
+      operationId: MetricsV2Controller_getAssetVisitsList
+      summary: Retrieve an asset visit list that matches the criteria described in the request body
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetVisitMetricsListDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+      - Metrics
+      security:
+      - bearer: []
+      - bearer: []
+components:
+  schemas:
+    YardExportDataDto:
+      type: object
+      properties: {}
+    MetricsCountsAppointmentCountForCarrierResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+          - org_name: My carrier org name
+            appointmentCount: 45
+      required:
+      - data
+    MetricsAppointmentVolumeByStatusResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            Scheduled: '6'
+            Arrived: '2'
+            Completed: '5'
+            NoShow: '1'
+            Cancelled: '0'
+      required:
+      - data
+    AppointmentMetricsCapacityDto:
+      type: object
+      properties:
+        dockIds:
+          type: array
+          items:
+            type: string
+    AssetVisitExcelExportDto:
+      type: object
+      properties:
+        warehouseIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        statuses:
+          type: array
+          items:
+            type: string
+            enum:
+            - Arrived
+            - Docked
+            - Departed
+            - Canceled
+        fromDate:
+          type: string
+        toDate:
+          type: string
+        dateField:
+          type: string
+          enum:
+          - checkInDate
+          - checkOutDate
+        exportFields:
+          type: array
+          items:
+            type: string
+    MetricsCountsAppointmentCountForDocksResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+          - dock_id: c09e393a-0916-444a-a1a8-4e605a07618e
+            count: 72
+      required:
+      - data
+    MetricsAppointmentVolumeByDateResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            05/16/2023: '1'
+            05/30/2023: '1'
+            06/02/2023: '1'
+            06/09/2023: '2'
+      required:
+      - data
+    MetricsAppointmentVolumeByLoadTypeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyLoadType:
+              sunday: 0
+              monday: 3
+              tuesday: 2
+              wednesday: 5
+              thursday: 7
+              friday: 5
+              saturday: 0
+            AnotherLoadType:
+              sunday: 0
+              monday: 2
+              tuesday: 3
+              wednesday: 2
+              thursday: 5
+              friday: 4
+              saturday: 0
+      required:
+      - data
+    MetricsAppointmentVolumeByCarrierResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            Raphael: '5'
+            Josh: '7'
+            Mike: '3'
+      required:
+      - data
+    MetricsAverageDurationByLoadTypeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyLoadType: 36
+            AnotherLoadType: 20
+      required:
+      - data
+    MetricsCountsReserveCountForUserResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            reserveCount: 3
+      required:
+      - data
+    MetricsAppointmentVolumeByTimeOfDayResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            '8': '1'
+            '9': '1'
+            '10': '2'
+            '11': '2'
+            '13': '4'
+            '14': '4'
+            '15': '3'
+            '16': '3'
+      required:
+      - data
+    MetricsAppointmentListResponse:
+      type: object
+      properties: {}
+    MetricsDockDwellTimeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            day:
+              Dock2:
+                Tuesday: 45
+                Friday: 30
+              MyDock:
+                Monday: 30
+                Tuesday: 45
+            all:
+              Dock2: 45
+              MyDock: 45
+      required:
+      - data
+    WarehouseMetricsDto:
+      type: object
+      properties: {}
+    MetricsAppointmentVolumeByStatusByDockResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyDock:
+              Scheduled: '6'
+              Arrived: '2'
+              Completed: '5'
+              NoShow: '1'
+              Cancelled: '0'
+            AlternativeDock:
+              Scheduled: '1'
+              Arrived: '2'
+              Completed: '2'
+              NoShow: '1'
+              Cancelled: '0'
+      required:
+      - data
+    AppointmentMetricsListDto:
+      type: object
+      properties:
+        limit:
+          type: number
+        dockIds:
+          type: array
+          items:
+            type: string
+        loadTypeIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        dateField:
+          type: object
+        appointmentTypes:
+          type: array
+          items:
+            type: string
+        allCarriers:
+          type: boolean
+        exportFields:
+          type: array
+          items:
+            type: string
+        skipCustomFields:
+          type: boolean
+    AppointmentMetricsListV2Dto:
+      type: object
+      properties:
+        dockIds:
+          type: array
+          items:
+            type: string
+        loadTypeIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        dateField:
+          type: object
+        appointmentTypes:
+          type: array
+          items:
+            type: string
+        allCarriers:
+          type: boolean
+        exportFields:
+          type: array
+          items:
+            type: string
+        skipCustomFields:
+          type: boolean
+    MetricsAppointmentVolumeByDayOfWeekResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyDock:
+              sunday: 0
+              monday: 6
+              tuesday: 2
+              wednesday: 3
+              thursday: 7
+              friday: 3
+              saturday: 0
+            AlternativeDock:
+              sunday: 0
+              monday: 2
+              tuesday: 2
+              wednesday: 1
+              thursday: 3
+              friday: 2
+              saturday: 0
+      required:
+      - data
+    AppointmentMetricsDto:
+      type: object
+      properties: {}
+    AssetVisitMetricsListDto:
+      type: object
+      properties:
+        warehouseIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        statuses:
+          type: array
+          items:
+            type: string
+            enum:
+            - Arrived
+            - Docked
+            - Departed
+            - Canceled
+        fromDate:
+          type: string
+        toDate:
+          type: string
+        dateField:
+          type: string
+          enum:
+          - checkInDate
+          - checkOutDate
+        page:
+          type: number
+        pageSize:
+          type: number
+        exportFields:
+          type: array
+          items:
+            type: string
+      required:
+      - page
+      - pageSize
+    LoadTypeMetricsDto:
+      type: object
+      properties: {}
+    MetricsCarrierStatusPercentageResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            list:
+            - id: 2968b3b1-ffe0-4005-8114-7c584e0893f6
+              name: Carrier 1
+              scac: 99M
+              appointmentIds:
+              - 6eae2369-9c29-4f23-b091-24d831112b9f
+              - c66fef39-66ea-4249-8c67-23ecf6710ba3
+              totalAppointments: '2'
+              totalLateAppointments: '0'
+              totalOnTimeAppointments: '1'
+              totalNoShowAppointments: '0'
+              totalRescheduledAppointments: '0'
+              totalCancelledAppointments: '1'
+              onTimePct: '50.0'
+              latePct: '0.0'
+              noShowPct: '0.0'
+              rescheduledPct: '0.0'
+              cancelPct: '50.0'
+              avgCancelLeadTimeInMinutes: '-149.2320333333333333'
+            - id: 3c36909b-1a09-462f-99e1-a9152b3306d0
+              name: Carrier2
+              scac: 98M
+              appointmentIds:
+              - 0a5cc02a-fdda-4645-8b7c-3097ec6b5a16
+              - 27de0365-b6fc-4cdc-a586-a2a3a1b3036b
+              - 29b270d5-4148-4a0b-9439-30fd9a7329ac
+              - 315e19d0-574d-4f55-8728-c4c3fba71c1c
+              - 89c390b7-9e78-4852-b67d-db4250a27256
+              - a8fa27d4-f441-4f5c-8dc5-9c1e1dd213f1
+              totalAppointments: '11'
+              totalLateAppointments: '5'
+              totalOnTimeAppointments: '0'
+              totalNoShowAppointments: '2'
+              totalRescheduledAppointments: '1'
+              totalCancelledAppointments: '0'
+              onTimePct: '0.0'
+              latePct: '45.5'
+              noShowPct: '18.2'
+              rescheduledPct: '9.1'
+              cancelPct: '0.0'
+              avgCancelLeadTimeInMinutes: null
+            total:
+              totalCarriers: 2
+              totalAppointments: 13
+              avgAppointmentsPerCarrier: 6
+              totalOnTimeAppointments: 1
+              totalLateAppointments: 5
+              totalNoShowAppointments: 2
+              totalRescheduledAppointments: 1
+              totalCancelledAppointments: 1
+              onTimePct: '7.7'
+              latePct: '38.5'
+              cancelPct: '7.7'
+              noShowPct: '15.4'
+              rescheduledPct: '7.7'
+              avgCancelLeadTimeInMinutes: -75
+      required:
+      - data
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http

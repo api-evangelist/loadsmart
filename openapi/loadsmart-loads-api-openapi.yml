@@ -1,0 +1,589 @@
+openapi: 3.0.0
+info:
+  title: Opendock Nova API Documentation Appointments Loads API
+  description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
+  version: v4.144.0 - 39b4253
+  contact: {}
+servers:
+- url: https://neutron.opendock.com
+  description: Production Server
+- url: https://neutron.staging.opendock.com
+  description: Staging Server
+tags:
+- name: Loads
+  description: 'This endpoint will be the entrypoint for our integrations. It will receive loads.
+
+    '
+paths:
+  /api/v2/loads/{load_id}/events:
+    get:
+      summary: List Load Events
+      description: "\nProvides a list of the events (rejected, accepted, etc) regarding a load previously tendered to Loadsmart.\n\nThis is an alternative way to obtain feedback whether a tendered load was accepted or rejected (you can also receive load events by Webhooks - see [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section).\nThe List Load Events endpoint was designed to be polled, so you don't need to expose an endpoint where Loadsmart would send the accepted/rejected webhook.\n\nAlthough loads and shipments usually refer to the same thing, Loadsmart handles them as two slightly different entities.\nUp to the point when a load is tendered and booked, the entity in play is a “load”.\nAfter this load is booked, it becomes a shipment. From this point on, communication is done with the shipment.\n\nList of event types/actions:\n  - awarded\n  - accepted\n  - canceled\n  - rejected\n"
+      security:
+      - User-JWT:
+        - load_read
+      responses:
+        '200':
+          description: Load was found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    description: Number of objects found
+                    type: number
+                    format: integer
+                  next:
+                    description: URL for next page of results
+                    type: string
+                    format: url
+                  previous:
+                    description: URL for previous page of results
+                    type: string
+                    format: url
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                      - type: object
+                        properties:
+                          id:
+                            description: Load event unique identifier
+                            type: string
+                            format: uuid
+                          action:
+                            description: Event type
+                            type: string
+                          created:
+                            description: The date and time of the event creation
+                            type: string
+                            format: date-time
+                          load_id:
+                            description: Load unique identifier
+                            type: string
+                            format: uuid
+              example:
+                count: 2
+                next: null
+                previous: null
+                data:
+                - id: 54b8e6cb-d038-455f-af44-d78fed519172
+                  action: awarded
+                  created: 2021-01-06 17:15:12.275594+00:00
+                  load_id: 20eccb85-b1cf-4d40-b904-9e2e05981911
+                - id: 81c5c1ac-9f6f-4725-81f7-887bd5a9da61
+                  action: accepted
+                  created: 2021-01-06 17:18:12.552749+00:00
+                  load_id: 20eccb85-b1cf-4d40-b904-9e2e05981911
+        '404':
+          description: Load was not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                    - invalid_data
+                  error_description:
+                    type: string
+                    description: Description of what happened
+                  errors:
+                    type: object
+                    description: Object where each field is a key and the value is an array of errors
+                required:
+                - error
+                - error_description
+              example:
+                error: object_not_found
+                error_description: Object not found
+      tags:
+      - Loads
+  /api/v2/loads/tender:
+    post:
+      summary: Create tender
+      description: "Tender a load to Loadsmart. The load could be either a spot or contracted one. If the endpoint returns\na successful status code, it means that we have received the load.\n\nIn order to see if the load was accepted or rejected, you must listen for the `load:accepted` and\n`load:rejected` webhooks, respectively. See [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section.\n\nImportant: the uuid returned identifies a load uniquely in Loadsmart systems. This means that,\n for two or more responses, if they contain the same uuid, they are related to the exact same load.\n\nQuotes that have been created using the `/quote` endpoint can be booked with the tender endpoint if\nthe `quote_id` parameter, provided by the [Create Quote](#tag/Quotes/paths/~1api~1v2~1quotes/post) endpoint, is sent.\n"
+      security:
+      - User-JWT:
+        - tender_write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode:
+                  default: FTL
+                  allOf:
+                  - x-external: true
+                    type: string
+                    default: FTL
+                    enum:
+                    - FTL
+                    - LTL
+                    description: 'The transportation mode of the load. Allowed values are:
+
+                      - FTL: Full Truckload
+
+                      - LTL: Less-than-Truckload
+
+                      '
+                equipment_type:
+                  type: string
+                  enum:
+                  - DRV
+                  - FBE
+                  - RFR
+                  - CON
+                  - CUR
+                  - DDP
+                  - IMC
+                  - SDK
+                  - STK
+                  - BLK
+                  - TNK
+                  - OTH
+                  description: "Equipment required to transport the shipment. Recognized equipments are:\n  - DRV: Dry Van\n  - FBE: Flatbed\n  - RFR: Reefer\n  - CON: Conestoga\n  - CUR: Curtainside\n  - DDP: Double Drop\n  - IMC: Intermodal\n  - SDK: Step Deck\n  - STK: Straight truck\n  - BLK: Bulk\n  - TNK: Tanker\n  - OTH: Other equipment not explicited listed\n"
+                customer_ref:
+                  type: string
+                  maxLength: 255
+                  description: Internal client's reference, such as an ID, of the tender
+                quote_id:
+                  type: string
+                  maxLength: 40
+                  description: Reference for the quote that should be used to book the load
+                commodity:
+                  type: string
+                  maxLength: 255
+                  description: Name of the commodity that will be shipped
+                source:
+                  type: string
+                  maxLength: 64
+                  description: Field used to indicate the context where the tender request was made (in a contract, routing guide process or spot bid, for example)
+                weight:
+                  oneOf:
+                  - type: number
+                  - type: string
+                  description: 'The total weight, in pounds, of the shipment. Acceptable values must be positive numbers with up to 2 decimal digits.
+
+                    Any other type will cause a validation error. Note that the minimum value is 1 and the maximum value
+
+                    depends on the chosen equipment_type: 45000 for DRV, 43000 for RFR and 50000 for FBE.
+
+                    If the weight is not provided, it is set to the maximum allowed for the equipment_type.
+
+                    '
+                  minimum: 1
+                  maximum: 50000
+                stops:
+                  type: array
+                  description: Points of interest where the truck makes a stop to either pickup or deliver a shipment. Usually a tender has one pickup stop and one delivery stop, but in some cases there will be multiple delivery stops.
+                  items:
+                    oneOf:
+                    - type: object
+                      title: Zipcode
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                          description: The type of the stop, can be PU (Pickup) or DEL (Delivery)
+                        facility_name:
+                          type: string
+                          description: Name of the facility at this stop
+                        facility_ref:
+                          type: string
+                          description: A reference used to identify the facility among tenders requests
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        zipcode:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        contacts:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                description: Name of the person who is the contact at this stop
+                                maxLength: 255
+                              email:
+                                type: string
+                                format: email
+                                description: Email of the contact. Required if no phone number is provided
+                                maxLength: 254
+                              phone_number:
+                                description: Phone number of the contact. Required if email is provided
+                                type: string
+                                pattern: \+\d{4,15}
+                                maxLength: 16
+                            required:
+                            - name
+                        window_start:
+                          description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                          type: string
+                          format: naive date-time
+                        window_end:
+                          description: A window end indicating the end local time of the truck stop at the stop
+                          type: string
+                          format: naive date-time
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        stop_customer_ref:
+                          type: string
+                          description: Shipper identifier for this stop
+                        instructions:
+                          type: string
+                          description: Instructions for the driver
+                        requirements:
+                          type: object
+                          description: An object with specific requirements for this stop
+                          properties:
+                            loading_type:
+                              type: string
+                              enum:
+                              - floor_loaded
+                              - palletized
+                              description: 'Indicates if the load should be floor loaded in this stop, or if it''s palletized
+
+                                '
+                      required:
+                      - zipcode
+                      - country
+                      - window_start
+                    - type: object
+                      title: City & State
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - PU
+                          - DEL
+                        facility_name:
+                          type: string
+                          description: Name of the facility at this stop
+                        facility_ref:
+                          type: string
+                          description: A reference used to identify the facility among tenders requests
+                        stop_customer_ref:
+                          type: string
+                          description: Shipper identifier for this stop
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                          description: two-letters state code
+                        zipcode:
+                          type: string
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                        contacts:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                description: Name of the person who is the contact at this stop
+                                maxLength: 255
+                              email:
+                                type: string
+                                format: email
+                                description: Email of the contact. Required if no phone number is provided
+                                maxLength: 254
+                              phone_number:
+                                description: Phone number of the contact. Required if email is provided
+                                type: string
+                                pattern: \+\d{4,15}
+                                maxLength: 16
+                            required:
+                            - name
+                        window_start:
+                          description: A window start indicating the start local time of the truck at the stop (required for first stop)
+                          type: string
+                          format: naive date-time
+                        window_end:
+                          description: A window end indicating the end local time of the truck stop at the stop (required for first stop)
+                          type: string
+                          format: naive date-time
+                        drop_trailer:
+                          type: boolean
+                          description: Indicates whether the truck will drop the trailer at the stop
+                        instructions:
+                          type: string
+                          description: Instructions for the driver
+                      required:
+                      - city
+                      - state
+                      - country
+                      - window_start
+                      - window_end
+                  minItems: 2
+                contacts:
+                  type: array
+                  description: At least name or phone number should be provided for each contact.
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Name of the person who is the contact at this stop
+                        maxLength: 255
+                      email:
+                        type: string
+                        format: email
+                        description: Email of the contact. Required if no phone number is provided
+                        maxLength: 254
+                      phone_number:
+                        description: Phone number of the contact. Required if email is provided
+                        type: string
+                        pattern: \+\d{4,15}
+                        maxLength: 16
+                    required:
+                    - name
+                purchase_order_numbers:
+                  type: array
+                  description: Purchase Order Numbers for the load
+                  items:
+                    type: object
+                    properties:
+                      po_number:
+                        type: string
+                        description: Purchase order number
+                properties:
+                  type: object
+                  description: 'General information about the load.
+
+                    This is an open JSON field that allows passing special properties with meaning on the customer context, such as the order numbers, must_arrive_by_date, and others.
+
+                    '
+                  properties: {}
+                requirements:
+                  type: object
+                  description: An object with any specific requirement for this tender
+                  properties:
+                    promotion_load:
+                      type: boolean
+                      description: Indicates the load requires expediting since customer needs the product for an in-store promotion
+                    emergency_response:
+                      type: boolean
+                      description: An emergency response flag
+                    hazmat:
+                      type: boolean
+                      description: Indicates that the load  must consider the presence of hazardous materials
+                    beer:
+                      type: boolean
+                      description: Indicates that the load requires permission to move beer
+                    twic:
+                      type: boolean
+                      description: Indicates if the carrier is required to have a TWIC card
+                    ctpat:
+                      type: boolean
+                      description: CTPAT recognition
+                    teams:
+                      type: boolean
+                      description: Indicates if the load requires a team of drivers
+                    food_grade:
+                      type: boolean
+                      description: Indicates if load requires food grade trailers
+                    frozen:
+                      type: boolean
+                      description: Indicates if load requires to be moved frozen
+                    produce:
+                      type: boolean
+                      description: Indicates if the load contains produce
+                    pharmaceuticals:
+                      type: boolean
+                      description: Indicates if the load contains pharmaceuticals
+                    chemicals:
+                      type: boolean
+                      description: Indicates if the load contains chemicals
+                    tsa:
+                      type: boolean
+                      description: Indicates if the carrier is required to have a TSA card
+                    hvhr:
+                      type: boolean
+                      description: Indicates if the load is high value or high risk
+                    vented_vans:
+                      type: boolean
+                      description: Indicates if the load requires vented vans
+                bill_to:
+                  type: object
+                  description: An object with billing information
+                  properties:
+                    company_name:
+                      type: string
+                      maxLength: 255
+                      description: Bill to Company Name
+                    address1:
+                      type: string
+                      maxLength: 255
+                      description: Bill to address
+                    address2:
+                      type: string
+                      maxLength: 255
+                      description: Continuation of bill to address
+                    city:
+                      type: string
+                      maxLength: 255
+                      description: Bill to city
+                    zipcode:
+                      type: string
+                      maxLength: 255
+                      description: Bill to zipcode
+                    state:
+                      type: string
+                      maxLength: 255
+                      description: Bill to state
+                    country:
+                      type: string
+                      maxLength: 255
+                      pattern: ^[A-Z]{3}$
+                      description: 3-letter country code, uppercase (ISO 3166-1 alpha-3)
+                bol_number:
+                  type: string
+                  maxLength: 255
+                  description: the bill of lading number for the tender
+              required:
+              - customer_ref
+              - equipment_type
+              - stops
+            example:
+              equipment_type: DRV
+              commodity: apples
+              weight: 20000
+              customer_ref: a reference for the tender
+              properties:
+                private_id: CAR-7725B
+                my_numbers:
+                - 44234
+                - 10534
+                - 8875
+              requirements:
+                hazmat: true
+              bol_number: the bill of lading number for the tender
+              quote_id: quote_12345643
+              purchase_order_numbers:
+              - '12345'
+              - ABCDE
+              stops:
+              - type: PU
+                facility_name: Brothers & Sons Inc.
+                facility_ref: asjf1984jd112o8
+                address: 101 Collins Avenue
+                city: Miami Beach
+                state: FL
+                country: USA
+                contacts:
+                - name: John Doe
+                  email: john@example.com
+                  phone_number: '+17895551234'
+                drop_trailer: false
+                stop_customer_ref: ABC123
+                zipcode: '33139'
+                window_start: 2018-06-20 09:00:00
+                window_end: 2018-06-20 11:00:00
+                instructions: Driver must arrive on time. These instructions will be sent to driver.
+                requirements:
+                  loading_type: palletized
+              - type: DEL
+                facility_name: Space Ghost Coast to Coast Inc.
+                facility_ref: ascm1394u
+                address: 2022 Collins Avenue
+                city: Miami Beach
+                state: FL
+                country: USA
+                zipcode: '33140'
+                contacts:
+                - name: Space Ghost
+                  email: space@ghost.com
+                  phone_number: '+17124832133'
+                drop_trailer: false
+                stop_customer_ref: 343254-TP
+                window_start: 2018-06-21 16:00:00
+                window_end: 2018-06-21 18:00:00
+                instructions: No special instructions here.
+                requirements:
+                  loading_type: palletized
+              bill_to:
+                company_name: Acme
+                address1: 1st Street
+                address2: null
+                city: Springfield
+                zipcode: 12345
+                state: TX
+                country: USA
+      responses:
+        '200':
+          description: Tender was posted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for this load. Use this id to later match with the Webhook/load with the acceptance of the load.
+                        readOnly: true
+                    required:
+                    - id
+              example:
+                data:
+                  id: 3fa68364-4f39-4cf1-a042-5e57215b7150
+        '422':
+          description: Invalid or missing data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                    - invalid_data
+                  error_description:
+                    type: string
+                    description: Description of what happened
+                  errors:
+                    type: object
+                    description: Object where each field is a key and the value is an array of errors
+                required:
+                - error
+                - error_description
+              example:
+                error: invalid_data
+                error_description: Can't create the object
+                errors:
+                  field_name:
+                  - This field is required.
+                  other_field:
+                  - Expected string but received integer.
+      tags:
+      - Loads
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
