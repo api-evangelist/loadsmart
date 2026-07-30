@@ -22,9 +22,22 @@ description: >-
   collection plus partner integrations with Oracle Transportation Management,
   MercuryGate, Blue Yonder, SAP, NetSuite, and other TMS/ERP platforms.
 type: Index
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Producing
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/loadsmart.png
 tags:
   - Freight
   - Logistics
@@ -48,89 +61,2370 @@ created: '2026-05-25'
 modified: '2026-05-25'
 specificationVersion: '0.20'
 apis:
-  - aid: loadsmart:loadsmart-shipperguide-api
-    name: Loadsmart ShipperGuide API
-    description: >-
-      Production REST API at https://api.loadsmart.com (sandbox
-      api.sandbox.loadsmart.com) for quoting, booking, tendering, tracking,
-      and managing freight shipments autonomously. Covers carriers,
-      shippers, shipper accounts, load offers and bids, capacity, route
-      duration, shipment documents and events, shipment scoring, and a full
-      webhook surface (quote, shipment, load, bid, and carrier events).
-      Authenticated with JWT tokens (RS256, RSA 4096) using
-      Application-JWT or User-JWT security schemes; tokens should be
-      short-lived (~1 minute) and supplied via the Authorization header.
-    humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
-    baseURL: https://api.loadsmart.com
-    version: '1.0.0'
-    tags:
-      - Freight
-      - Shipping
-      - Quotes
-      - Loads
-      - Bids
-      - Webhooks
-      - Carriers
-      - Shippers
-    properties:
-      - type: Documentation
-        url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
-      - type: APIReference
-        url: https://developer.loadsmart.com/docs/shipperguide/api-reference
-      - type: OpenAPI
-        url: openapi/loadsmart-shipperguide-openapi.yml
-      - type: OpenAPISource
-        url: https://developer.loadsmart.com/api/openapi.yaml
-      - type: Webhooks
-        url: https://developer.loadsmart.com/docs/shipperguide/api-reference
-      - type: Sandbox
-        url: https://api.sandbox.loadsmart.com
-      - type: Authentication
-        url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
-      - type: Postman
-        url: https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
-  - aid: loadsmart:loadsmart-opendock-nova-api
-    name: Opendock Nova (Neutron) API
-    description: >-
-      Production REST API at https://neutron.opendock.com (staging
-      neutron.staging.opendock.com) powering the Opendock Nova warehouse
-      dock-scheduling platform. 151 endpoints covering warehouses, docks,
-      loadtypes, appointments, carriers, users, organizations,
-      custom-forms and custom-tags, gates, yards, hours of operation, ETAs,
-      reports, billing, asset tracking, and integrations. Authenticated
-      with JWT bearer tokens in the Authorization header; complementary
-      Subspace WebSocket API streams Created/Updated/Deleted events for
-      near-real-time integrations.
-    humanURL: https://developer.loadsmart.com/docs/opendock/overview/getting-started
-    baseURL: https://neutron.opendock.com
-    version: 'v4.144.0'
-    tags:
-      - Dock Scheduling
-      - Warehouse
-      - Appointments
-      - Yard Management
-      - Carriers
-      - Webhooks
-      - WebSockets
-    properties:
-      - type: Documentation
-        url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
-      - type: APIReference
-        url: https://developer.loadsmart.com/docs/opendock/category/overview
-      - type: OpenAPI
-        url: openapi/loadsmart-opendock-openapi.yml
-      - type: OpenAPISource
-        url: https://neutron.opendock.com/docs-json
-      - type: SwaggerUI
-        url: https://neutron.opendock.com/docs
-      - type: WebSockets
-        url: https://developer.loadsmart.com/docs/opendock/overview/websockets
-      - type: Sandbox
-        url: https://neutron.staging.opendock.com
-      - type: Postman
-        url: https://www.postman.com/opendock/workspace/public-nova-workspace/
-      - type: Community
-        url: https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-appointments-api
+  name: Loadsmart Appointments API
+  description: The Appointments API from Loadsmart — 10 operation(s) for appointments.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Appointments
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-appointments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-asset-container-api
+  name: Loadsmart Asset Container API
+  description: The Asset Container API from Loadsmart — 5 operation(s) for asset container.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Asset Container
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-asset-container-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-asset-visit-api
+  name: Loadsmart Asset Visit API
+  description: The Asset Visit API from Loadsmart — 10 operation(s) for asset visit.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Asset Visit
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-asset-visit-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-audit-log-api
+  name: Loadsmart Audit Log API
+  description: The Audit Log API from Loadsmart — 1 operation(s) for audit log.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Audit Log
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-audit-log-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-authentication-api
+  name: Loadsmart Authentication API
+  description: The Authentication API from Loadsmart — 4 operation(s) for authentication.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-bids-api
+  name: Loadsmart Bids API
+  description: This API allows third parties to create, list, retrieve and accept bids.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Bids
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-bids-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-bol-api
+  name: Loadsmart BOL API
+  description: The BOL API from Loadsmart — 3 operation(s) for bol.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - BOL
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-bol-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-capacity-api
+  name: Loadsmart Capacity API
+  description: >-
+    Manages new capacity. A capacity is a truck that is
+
+    empty and it's location.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Capacity
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-capacity-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-carrier-api
+  name: Loadsmart Carrier API
+  description: >-
+    This API allows partners to request integration for Carriers and also manage Carrier's information.
+
+
+    The usage of this API is detailed at https://developer.loadsmart.com/carrier-integrations/how-tos/how-to-connect.html.
+
+
+    To sum up how to integrate a Carrier, follow these steps:
+
+    * `Search a carrier` by its MC# or DOT;
+
+    * `Request Integration for a Carrier`;
+
+    * Check the status by `Detail Carrier Integration Request status`;
+
+    * Once the status is `ACCEPTED`, do requests on behalf of this carrier.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Carrier
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-carrier-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-carrier-companies-api
+  name: Loadsmart Carrier Companies API
+  description: The Carrier Companies API from Loadsmart — 2 operation(s) for carrier companies.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Carrier Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-carrier-companies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-carrier-users-api
+  name: Loadsmart Carrier Users API
+  description: The Carrier Users API from Loadsmart — 8 operation(s) for carrier users.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Carrier Users
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-carrier-users-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-data-api
+  name: Loadsmart Custom Forms - Data API
+  description: >-
+    Data entities store the actual values submitted through Forms. Each form submission creates multiple
+    Data records - one for each Form Field with a value. These records maintain the relationship between
+    the entity (like an appointment), the form field, and the submitted value.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Data
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-data-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-fields-api
+  name: Loadsmart Custom Forms - Fields API
+  description: >-
+    Fields are global definitions that specify fundamental attributes like data type (text, number, dropdown,
+    etc.), validation rules, and base properties. Fields are organization-wide resources that can be instantiated
+    as Form Fields across multiple Forms.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-fields-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-flows-api
+  name: Loadsmart Custom Forms - Flows API
+  description: >-
+    Flows define the sequence and logic of form presentation. Each Flow must have a primary "fromForm"
+    and may optionally include a secondary "formTo" that appears after the first form is completed. Flows
+    connect Triggers to the actual Forms that collect data.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Flows
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-flows-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-form-fields-api
+  name: Loadsmart Custom Forms - Form Fields API
+  description: >-
+    Form Fields are instances of global Field definitions within a specific Form. While Fields define
+    the data type and general properties, Form Fields customize these instances with form-specific attributes
+    like required status, custom labels, and validation rules.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Form Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-form-fields-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-forms-api
+  name: Loadsmart Custom Forms - Forms API
+  description: >-
+    Forms are collections of form fields that represent a complete data entry interface. Each Form belongs
+    to a Flow and captures related data points in a structured way. Forms provide the user interface for
+    data collection.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Forms
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-forms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-custom-forms-triggers-api
+  name: Loadsmart Custom Forms - Triggers API
+  description: >-
+    Triggers are event listeners that activate on specific API or UI events. Each Trigger is associated
+    with exactly one Flow. When a Trigger fires, it initiates its associated Flow, which in turn presents
+    one or two Forms sequentially.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Custom Forms - Triggers
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-custom-forms-triggers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-docks-api
+  name: Loadsmart Docks API
+  description: The Docks API from Loadsmart — 8 operation(s) for docks.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Docks
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-docks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-documents-api
+  name: Loadsmart Documents API
+  description: The Documents API from Loadsmart — 2 operation(s) for documents.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-documents-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-gates-api
+  name: Loadsmart Gates API
+  description: The Gates API from Loadsmart — 1 operation(s) for gates.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Gates
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-gates-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-general-api
+  name: Loadsmart General API
+  description: The General API from Loadsmart — 3 operation(s) for general.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - General
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-general-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-load-offers-api
+  name: Loadsmart Load Offers API
+  description: >-
+    This API allows third parties to search and accept
+
+    available Offers.
+
+
+    ## Webhook events
+
+
+    There are few webhook events that can be triggered related to Load Offers API.
+
+    The following example refers to the webhook events `load_carrier_bounced` and `load_cancelled`:
+
+    ```
+
+    {
+      "event": "load_carrier_bounced",
+      "data": {
+        "load_id": "2ed37107-ebe7-4a60-a20f-01d4e74355c8",
+        "load": {
+          "id": "2ed37107-ebe7-4a60-a20f-01d4e74355c8",
+          "active_offer": {
+            "id": "ccd37107-ebe7-4a60-a20f-01d4e74355c8",
+            "price": 1234.56
+          },
+          "carrier": {
+            "id": "89ef54c7-52d5-44a0-b94d-df41eb1aab15",
+            "mc": 123456,
+            "dot": 987654
+          },
+          "commodity": "BOTTLED WATER",
+          "distance": 353.6,
+          "equipment_type": "DRV",
+          "requirements": {
+            "beer": false,
+            "chemicals": null,
+            "ctpat": null,
+            "food_grade": null,
+            "frozen": null,
+            "hazmat": null,
+            "hvhr": null,
+            "pharmaceuticals": null,
+            "produce": null,
+            "teams": null,
+            "tsa": null,
+            "twic": null,
+            "vented_vans": null,
+          },
+          "stops": [
+            {
+              "address": "109 Poland Spring Dr",
+              "city": "Poland",
+              "country": "USA",
+              "latitude": 44.031602,
+              "longitude": -70.355065,
+              "state": "ME",
+              "type": "PU",
+              "window_end": "2019-11-28T08:00:00+00:00",
+              "window_start": "2019-11-28T06:00:00+00:00",
+              "window_timezone": "America/New_York",
+              "requirements": null,
+              "facility_info": {
+                "avg_time_spent":{
+                  "pickup":40,
+                  "delivery": null
+                },
+                "detention_rate": 4
+              }
+            },
+            {
+              "address": "6 Westbelt",
+              "city": "Wayne",
+              "country": "USA",
+              "latitude": 40.900033,
+              "longitude": -74.264872,
+              "state": "NJ",
+              "type": "DEL",
+              "window_end": "2019-11-29T19:00:00+00:00",
+              "window_start": "2019-11-29T17:00:00+00:00",
+              "window_timezone": "America/New_York",
+              "requirements": null,
+              "facility_info": {
+                "avg_time_spent":{
+                  "pickup":null,
+                  "delivery": 20
+                },
+                "detention_rate": 9
+              }
+             },
+          ],
+          "numberweight": 45000.0,
+          "dimensions": {"width": 8.00, "height": 9.00, "length": 54.00}
+          "ref_number": "41324"
+        }
+      }
+    }
+
+    ```
+
+
+    The following example refers to the webhook events `offer_created` and `offer_removed`:
+
+    ```
+
+    {
+      "event": "offer_created",
+      "data": {
+        "offer": {
+          "id": "ccd37107-ebe7-4a60-a20f-01d4e74355c8",
+          "price": 1234.56,
+          "load": {
+            "equipment_type": "DRV",
+            "commodity": "apples",
+            "weight": 20000,
+            "dimensions": {"width": 8.00, "height": 9.00, "length": 54.00}
+            "distance": 50000,
+            "stops": [
+              {
+                "type": "PU",
+                "address": "101 Collins Avenue",
+                "city": "Miami Beach",
+                "state": "FL",
+                "country": "USA",
+                "requirements": {
+                  "blind_bol": false,
+                  "drop_trailer": false,
+                  "heavy_scale_ticket": false,
+                  "light_scale_ticket": false
+                },
+                "facility_info": {
+                  "avg_time_spent":{
+                    "pickup":40,
+                    "delivery": null
+                  },
+                  "detention_rate": 4
+                }
+                "zipcode": "33139",
+                "window_start": "2020-02-13T09:00:00",
+                "window_end": "2018-02-13T11:00:00",
+                "window_timezone": "America/New_York"
+              },
+              {
+                "type": "DEL",
+                "address": "2022 Collins Avenue",
+                "city": "Miami Beach",
+                "state": "FL",
+                "country": "USA",
+                "requirements": {
+                  "blind_bol": false,
+                  "drop_trailer": false,
+                  "heavy_scale_ticket": false,
+                  "light_scale_ticket": false
+                },
+                "facility_info": {
+                  "avg_time_spent":{
+                    "pickup":null,
+                    "delivery": 20
+                  },
+                  "detention_rate": 9
+                }
+                "window_start": "2018-02-14T16:00:00",
+                "window_end": "2018-02-14T18:00:00",
+                "window_timezone": "America/New_York"
+              }
+            ],
+            "requirements": {
+              "beer": false,
+              "chemicals": false,
+              "ctpat": false,
+              "food_grade": false,
+              "frozen": false,
+              "hazmat": false,
+              "hvhr": false,
+              "pharmaceuticals": false,
+              "produce": false,
+              "teams": false,
+              "tsa": false,
+              "twic": false,
+              "vented_vans": false
+            },
+            "ref_number": "425631"
+          },
+          "actions": {
+            "redirect_url": "https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098",
+            "accept_url": "https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept"
+          }
+        }
+      }
+    }
+
+    ```
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Load Offers
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-load-offers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-load-type-groups-api
+  name: Loadsmart Load Type Groups API
+  description: The Load Type Groups API from Loadsmart — 2 operation(s) for load type groups.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Load Type Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-load-type-groups-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-load-types-api
+  name: Loadsmart Load Types API
+  description: The Load Types API from Loadsmart — 4 operation(s) for load types.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Load Types
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-load-types-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-loads-api
+  name: Loadsmart Loads API
+  description: This endpoint will be the entrypoint for our integrations. It will receive loads.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Loads
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-loads-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-metrics-api
+  name: Loadsmart Metrics API
+  description: The Metrics API from Loadsmart — 23 operation(s) for metrics.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-metrics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-observations-api
+  name: Loadsmart Observations API
+  description: The Observations API from Loadsmart — 3 operation(s) for observations.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Observations
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-observations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-orgs-api
+  name: Loadsmart Orgs API
+  description: The Orgs API from Loadsmart — 5 operation(s) for orgs.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Orgs
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-orgs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-quotes-api
+  name: Loadsmart Quotes API
+  description: >-
+    Quotes provide the price and conditions for a future shipment.
+
+    To create a shipment, you need first to request a valid quote.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-routes-api
+  name: Loadsmart Routes API
+  description: Provides information about routing
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Routes
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-routes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-saml-api
+  name: Loadsmart SAML API
+  description: The SAML API from Loadsmart — 5 operation(s) for saml.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - SAML
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-saml-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-settings-metadata-api
+  name: Loadsmart Settings Metadata API
+  description: The Settings Metadata API from Loadsmart — 3 operation(s) for settings metadata.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Settings Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-settings-metadata-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shipment-events-api
+  name: Loadsmart Shipment Events API
+  description: >-
+    Our API supports fetch and change of a variety of shipments status, the main ones are
+
+    responsible to move the shipment from booked to in transit and delivered, They must
+
+    obey the following order:
+
+
+    * **shipment:en-route-to-pickup** - The first state responsible to start the haul.
+
+    * **shipment:check-in-pickup** - Used when driver arrives at pickup facility.
+
+    * **shipment:check-out-pickup** - Used when driver leaves the pickup facility.
+
+    * **shipment:check-in-delivery** - Used when driver arrives at delivery facility.
+
+    * **shipment:check-out-delivery** - Used when the driver delivers the shipment.
+
+
+    NOTE: These events are allowed to be changed via API.
+
+
+    There are other events to support the main flow, they are available on webhooks or can be listed via
+    API
+
+
+    Shipment events, specific events that can happen for a shipment:
+
+    * **shipment:incident** - When a incident is registered to a shipment.
+
+    * **shipment:canceled** - When the shipment is canceled for some reason.
+
+
+    Appointment events, these events are normally set before the load starts to move:
+
+
+    * **shipment:appointment-pickup** - Used to set an appointment at pickup.
+
+    * **shipment:appointment-delivery** - Used to set an appointment at delivery.
+
+
+    Carrier related events, indicate changes in the carrier, drop, etc. normally happens before the load
+    starts to move:
+
+
+    * **shipment:carrier-updated** - Used for changes on a load related to a carrier, i.e. trailer # change.
+
+    * **shipment:carrier-dropped** - Indicates a carrier drop for a particular shipment.
+
+    * **shipment:driver-assigned** - A carrier driver assignment.
+
+    * **shipment:driver-unassigned** - A carrier driver unassignment.
+
+
+    Carrier location update, happens while the load is in transit until final delivery:
+
+
+    * **shipment:location-updated** - Used to indicate the geographic coordinates of the carrier.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shipment Events
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shipment-events-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shipment-stops-api
+  name: Loadsmart Shipment Stops API
+  description: Stops of a shipment
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shipment Stops
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shipment-stops-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shipments-api
+  name: Loadsmart Shipments API
+  description: Manage shipments
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shipments
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shipments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shipper-accounting-info-api
+  name: Loadsmart Shipper Accounting Info API
+  description: >-
+    The Shipper Accounting Info API from Loadsmart — 1 operation(s) for shipper accounting info.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shipper Accounting Info
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shipper-accounting-info-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shipper-accounts-api
+  name: Loadsmart Shipper Accounts API
+  description: >-
+    Manage the accounts associated with shippers. An account
+
+    represents an user.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shipper Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shipper-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-shippers-api
+  name: Loadsmart Shippers API
+  description: >-
+    Manage shippers. A shipper is a company that creates and manages
+
+    loads on Loadsmart platform.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Shippers
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-shippers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-storage-api
+  name: Loadsmart Storage API
+  description: The Storage API from Loadsmart — 2 operation(s) for storage.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-storage-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-unit-limiter-api
+  name: Loadsmart Unit Limiter API
+  description: The Unit Limiter API from Loadsmart — 5 operation(s) for unit limiter.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Unit Limiter
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-unit-limiter-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-users-api
+  name: Loadsmart Users API
+  description: The Users API from Loadsmart — 6 operation(s) for users.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-users-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-warehouse-groups-api
+  name: Loadsmart Warehouse Groups API
+  description: The Warehouse Groups API from Loadsmart — 2 operation(s) for warehouse groups.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Warehouse Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-warehouse-groups-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-warehouses-api
+  name: Loadsmart Warehouses API
+  description: The Warehouses API from Loadsmart — 4 operation(s) for warehouses.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Warehouses
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-warehouses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-webhooks-api
+  name: Loadsmart Webhooks API
+  description: >-
+    Webhooks allow you to receive certain events from Loadsmart. When one of those events is
+
+    triggered, we'll send an HTTP POST request to the webhook's configured URL(s). This URL(s)
+
+    should be sent to Loadsmart as part of the onboarding process. Webhooks can be used to update your
+
+    own system with information from Loadsmart.
+
+
+    ## Authentication
+
+    Loadsmart Webhooks use the same authentication scheme used in the API, except in this case,
+
+    Loadsmart generates the JWT tokens and the TMS authenticates our requests with these tokens.
+
+    During the setup process Loadsmart will send to TMS the public key and the TMS will be responsible
+    for validating the token.
+
+
+    ### Token structure
+
+
+    The JWT token header will be:
+
+    ```
+
+    {
+      "alg": "RS256",
+      "typ": "JWT"
+    }
+
+    ```
+
+
+    The token payload will have:
+
+    ```
+
+    {
+      "iss": "loadsmart", // the token issuer
+      "iat": 1517239022, // unix timestamp when the token was issued
+      "exp": 1626239022  //unix timestamp when the token will expire
+    }
+
+    ```
+
+
+    The JWT token will be present in the Authorization header on all requests, as in the following example:
+
+
+    ```
+
+    Authorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM
+
+    ```
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-yms-spot-api
+  name: Loadsmart YMS - Spot API
+  description: The YMS - Spot API from Loadsmart — 8 operation(s) for yms - spot.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - YMS - Spot
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-yms-spot-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-yms-spot-area-api
+  name: Loadsmart YMS - Spot Area API
+  description: The YMS - Spot Area API from Loadsmart — 2 operation(s) for yms - spot area.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - YMS - Spot Area
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-yms-spot-area-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-yms-spot-assignment-api
+  name: Loadsmart YMS - Spot Assignment API
+  description: The YMS - Spot Assignment API from Loadsmart — 4 operation(s) for yms - spot assignment.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - YMS - Spot Assignment
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-yms-spot-assignment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
+- aid: loadsmart:loadsmart-yms-yard-view-api
+  name: Loadsmart YMS - Yard View API
+  description: The YMS - Yard View API from Loadsmart — 4 operation(s) for yms - yard view.
+  humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  baseURL: https://api.loadsmart.com
+  tags:
+  - YMS - Yard View
+  properties:
+  - type: OpenAPI
+    url: openapi/loadsmart-yms-yard-view-api-openapi.yml
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: OpenAPISource
+    url: https://developer.loadsmart.com/api/openapi.yaml
+  - type: Webhooks
+    url: https://developer.loadsmart.com/docs/shipperguide/api-reference
+  - type: Sandbox
+    url: https://api.sandbox.loadsmart.com
+  - type: Authentication
+    url: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
+  - type: Postman
+    url: >-
+      https://community.loadsmart.com/hc/en-us/articles/14945962355091-Importing-the-Postman-Collection
+  - type: Documentation
+    url: https://developer.loadsmart.com/docs/opendock/overview/getting-started
+  - type: APIReference
+    url: https://developer.loadsmart.com/docs/opendock/category/overview
+  - type: OpenAPISource
+    url: https://neutron.opendock.com/docs-json
+  - type: SwaggerUI
+    url: https://neutron.opendock.com/docs
+  - type: WebSockets
+    url: https://developer.loadsmart.com/docs/opendock/overview/websockets
+  - type: Sandbox
+    url: https://neutron.staging.opendock.com
+  - type: Postman
+    url: https://www.postman.com/opendock/workspace/public-nova-workspace/
+  - type: Community
+    url: >-
+      https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
 common:
   - type: AgenticAccess
     url: agentic-access/loadsmart-agentic-access.yml
