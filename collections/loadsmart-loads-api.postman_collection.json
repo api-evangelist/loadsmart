@@ -1,0 +1,290 @@
+{
+  "item": [
+    {
+      "id": "aa8f82bc-3b99-4f04-970b-5e1fe5da4d47",
+      "name": "Loads",
+      "description": {
+        "content": "This endpoint will be the entrypoint for our integrations. It will receive loads.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "57f7b85f-c2e2-4e17-915f-853fabbc7bbf",
+          "name": "List Load Events",
+          "request": {
+            "name": "List Load Events",
+            "description": {
+              "content": "\nProvides a list of the events (rejected, accepted, etc) regarding a load previously tendered to Loadsmart.\n\nThis is an alternative way to obtain feedback whether a tendered load was accepted or rejected (you can also receive load events by Webhooks - see [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section).\nThe List Load Events endpoint was designed to be polled, so you don't need to expose an endpoint where Loadsmart would send the accepted/rejected webhook.\n\nAlthough loads and shipments usually refer to the same thing, Loadsmart handles them as two slightly different entities.\nUp to the point when a load is tendered and booked, the entity in play is a “load”.\nAfter this load is booked, it becomes a shipment. From this point on, communication is done with the shipment.\n\nList of event types/actions:\n  - awarded\n  - accepted\n  - canceled\n  - rejected\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "loads",
+                ":load_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "4e98f64f-7e01-46fe-9228-f7c8fb667127",
+              "name": "Load was found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "loads",
+                    ":load_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2,\n  \"next\": null,\n  \"previous\": null,\n  \"data\": [\n    {\n      \"id\": \"54b8e6cb-d038-455f-af44-d78fed519172\",\n      \"action\": \"awarded\",\n      \"created\": \"2021-01-06 17:15:12.275594+00:00\",\n      \"load_id\": \"20eccb85-b1cf-4d40-b904-9e2e05981911\"\n    },\n    {\n      \"id\": \"81c5c1ac-9f6f-4725-81f7-887bd5a9da61\",\n      \"action\": \"accepted\",\n      \"created\": \"2021-01-06 17:18:12.552749+00:00\",\n      \"load_id\": \"20eccb85-b1cf-4d40-b904-9e2e05981911\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "015a35bd-d4c4-42e7-8a10-320b226cda40",
+              "name": "Load was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "loads",
+                    ":load_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe7c72bb-0a08-4992-b166-029efc2175ba",
+          "name": "Create tender",
+          "request": {
+            "name": "Create tender",
+            "description": {
+              "content": "Tender a load to Loadsmart. The load could be either a spot or contracted one. If the endpoint returns\na successful status code, it means that we have received the load.\n\nIn order to see if the load was accepted or rejected, you must listen for the `load:accepted` and\n`load:rejected` webhooks, respectively. See [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section.\n\nImportant: the uuid returned identifies a load uniquely in Loadsmart systems. This means that,\n for two or more responses, if they contain the same uuid, they are related to the exact same load.\n\nQuotes that have been created using the `/quote` endpoint can be booked with the tender endpoint if\nthe `quote_id` parameter, provided by the [Create Quote](#tag/Quotes/paths/~1api~1v2~1quotes/post) endpoint, is sent.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "loads",
+                "tender"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_ref\": \"<string>\",\n  \"equipment_type\": \"<string>\",\n  \"stops\": [\n    {\n      \"zipcode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"window_start\": \"<naive date-time>\",\n      \"type\": \"<string>\",\n      \"facility_name\": \"<string>\",\n      \"facility_ref\": \"<string>\",\n      \"address\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"contacts\": [\n        {\n          \"name\": \"<string>\",\n          \"email\": \"<email>\",\n          \"phone_number\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"email\": \"<email>\",\n          \"phone_number\": \"<string>\"\n        }\n      ],\n      \"window_end\": \"<naive date-time>\",\n      \"drop_trailer\": \"<boolean>\",\n      \"stop_customer_ref\": \"<string>\",\n      \"instructions\": \"<string>\",\n      \"requirements\": {\n        \"loading_type\": \"<string>\"\n      }\n    },\n    {\n      \"zipcode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"window_start\": \"<naive date-time>\",\n      \"type\": \"<string>\",\n      \"facility_name\": \"<string>\",\n      \"facility_ref\": \"<string>\",\n      \"address\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"contacts\": [\n        {\n          \"name\": \"<string>\",\n          \"email\": \"<email>\",\n          \"phone_number\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"email\": \"<email>\",\n          \"phone_number\": \"<string>\"\n        }\n      ],\n      \"window_end\": \"<naive date-time>\",\n      \"drop_trailer\": \"<boolean>\",\n      \"stop_customer_ref\": \"<string>\",\n      \"instructions\": \"<string>\",\n      \"requirements\": {\n        \"loading_type\": \"<string>\"\n      }\n    }\n  ],\n  \"mode\": \"FTL\",\n  \"quote_id\": \"<string>\",\n  \"commodity\": \"<string>\",\n  \"source\": \"<string>\",\n  \"weight\": \"<number>\",\n  \"contacts\": [\n    {\n      \"name\": \"<string>\",\n      \"email\": \"<email>\",\n      \"phone_number\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"email\": \"<email>\",\n      \"phone_number\": \"<string>\"\n    }\n  ],\n  \"purchase_order_numbers\": [\n    {\n      \"po_number\": \"<string>\"\n    },\n    {\n      \"po_number\": \"<string>\"\n    }\n  ],\n  \"properties\": {},\n  \"requirements\": {\n    \"promotion_load\": \"<boolean>\",\n    \"emergency_response\": \"<boolean>\",\n    \"hazmat\": \"<boolean>\",\n    \"beer\": \"<boolean>\",\n    \"twic\": \"<boolean>\",\n    \"ctpat\": \"<boolean>\",\n    \"teams\": \"<boolean>\",\n    \"food_grade\": \"<boolean>\",\n    \"frozen\": \"<boolean>\",\n    \"produce\": \"<boolean>\",\n    \"pharmaceuticals\": \"<boolean>\",\n    \"chemicals\": \"<boolean>\",\n    \"tsa\": \"<boolean>\",\n    \"hvhr\": \"<boolean>\",\n    \"vented_vans\": \"<boolean>\"\n  },\n  \"bill_to\": {\n    \"company_name\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"zipcode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  \"bol_number\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "695f886d-3e80-487b-b760-9785e3028592",
+              "name": "Tender was posted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "loads",
+                    "tender"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipment_type\": \"DRV\",\n  \"commodity\": \"apples\",\n  \"weight\": 20000,\n  \"customer_ref\": \"a reference for the tender\",\n  \"properties\": {\n    \"private_id\": \"CAR-7725B\",\n    \"my_numbers\": [\n      44234,\n      10534,\n      8875\n    ]\n  },\n  \"requirements\": {\n    \"hazmat\": true\n  },\n  \"bol_number\": \"the bill of lading number for the tender\",\n  \"quote_id\": \"quote_12345643\",\n  \"purchase_order_numbers\": [\n    \"12345\",\n    \"ABCDE\"\n  ],\n  \"stops\": [\n    {\n      \"type\": \"PU\",\n      \"facility_name\": \"Brothers & Sons Inc.\",\n      \"facility_ref\": \"asjf1984jd112o8\",\n      \"address\": \"101 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"contacts\": [\n        {\n          \"name\": \"John Doe\",\n          \"email\": \"john@example.com\",\n          \"phone_number\": \"+17895551234\"\n        }\n      ],\n      \"drop_trailer\": false,\n      \"stop_customer_ref\": \"ABC123\",\n      \"zipcode\": \"33139\",\n      \"window_start\": \"2018-06-20 09:00:00\",\n      \"window_end\": \"2018-06-20 11:00:00\",\n      \"instructions\": \"Driver must arrive on time. These instructions will be sent to driver.\",\n      \"requirements\": {\n        \"loading_type\": \"palletized\"\n      }\n    },\n    {\n      \"type\": \"DEL\",\n      \"facility_name\": \"Space Ghost Coast to Coast Inc.\",\n      \"facility_ref\": \"ascm1394u\",\n      \"address\": \"2022 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"zipcode\": \"33140\",\n      \"contacts\": [\n        {\n          \"name\": \"Space Ghost\",\n          \"email\": \"space@ghost.com\",\n          \"phone_number\": \"+17124832133\"\n        }\n      ],\n      \"drop_trailer\": false,\n      \"stop_customer_ref\": \"343254-TP\",\n      \"window_start\": \"2018-06-21 16:00:00\",\n      \"window_end\": \"2018-06-21 18:00:00\",\n      \"instructions\": \"No special instructions here.\",\n      \"requirements\": {\n        \"loading_type\": \"palletized\"\n      }\n    }\n  ],\n  \"bill_to\": {\n    \"company_name\": \"Acme\",\n    \"address1\": \"1st Street\",\n    \"address2\": null,\n    \"city\": \"Springfield\",\n    \"zipcode\": 12345,\n    \"state\": \"TX\",\n    \"country\": \"USA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3fa68364-4f39-4cf1-a042-5e57215b7150\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e2af1e0-267b-4d22-b62f-6eca8a8633ae",
+              "name": "Invalid or missing data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "loads",
+                    "tender"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipment_type\": \"DRV\",\n  \"commodity\": \"apples\",\n  \"weight\": 20000,\n  \"customer_ref\": \"a reference for the tender\",\n  \"properties\": {\n    \"private_id\": \"CAR-7725B\",\n    \"my_numbers\": [\n      44234,\n      10534,\n      8875\n    ]\n  },\n  \"requirements\": {\n    \"hazmat\": true\n  },\n  \"bol_number\": \"the bill of lading number for the tender\",\n  \"quote_id\": \"quote_12345643\",\n  \"purchase_order_numbers\": [\n    \"12345\",\n    \"ABCDE\"\n  ],\n  \"stops\": [\n    {\n      \"type\": \"PU\",\n      \"facility_name\": \"Brothers & Sons Inc.\",\n      \"facility_ref\": \"asjf1984jd112o8\",\n      \"address\": \"101 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"contacts\": [\n        {\n          \"name\": \"John Doe\",\n          \"email\": \"john@example.com\",\n          \"phone_number\": \"+17895551234\"\n        }\n      ],\n      \"drop_trailer\": false,\n      \"stop_customer_ref\": \"ABC123\",\n      \"zipcode\": \"33139\",\n      \"window_start\": \"2018-06-20 09:00:00\",\n      \"window_end\": \"2018-06-20 11:00:00\",\n      \"instructions\": \"Driver must arrive on time. These instructions will be sent to driver.\",\n      \"requirements\": {\n        \"loading_type\": \"palletized\"\n      }\n    },\n    {\n      \"type\": \"DEL\",\n      \"facility_name\": \"Space Ghost Coast to Coast Inc.\",\n      \"facility_ref\": \"ascm1394u\",\n      \"address\": \"2022 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"zipcode\": \"33140\",\n      \"contacts\": [\n        {\n          \"name\": \"Space Ghost\",\n          \"email\": \"space@ghost.com\",\n          \"phone_number\": \"+17124832133\"\n        }\n      ],\n      \"drop_trailer\": false,\n      \"stop_customer_ref\": \"343254-TP\",\n      \"window_start\": \"2018-06-21 16:00:00\",\n      \"window_end\": \"2018-06-21 18:00:00\",\n      \"instructions\": \"No special instructions here.\",\n      \"requirements\": {\n        \"loading_type\": \"palletized\"\n      }\n    }\n  ],\n  \"bill_to\": {\n    \"company_name\": \"Acme\",\n    \"address1\": \"1st Street\",\n    \"address2\": null,\n    \"city\": \"Springfield\",\n    \"zipcode\": 12345,\n    \"state\": \"TX\",\n    \"country\": \"USA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d55239cc-69fa-4cfd-b8d5-25030d6a4e89",
+    "name": "Opendock Nova API Documentation Appointments Loads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

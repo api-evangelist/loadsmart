@@ -1,0 +1,185 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Carrier API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Carrier",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search a carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/search",
+            "params": [
+              {
+                "name": "mc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dot",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search a carrier by dot or mc\n"
+        },
+        {
+          "info": {
+            "name": "List of integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/integrations"
+          },
+          "docs": "List the integrations that the intermediary have with loadsmart\n"
+        },
+        {
+          "info": {
+            "name": "List Carrier Integration Request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/integration-request"
+          },
+          "docs": "List partner's integration requests\n"
+        },
+        {
+          "info": {
+            "name": "Request Integration for a Carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/carrier/integration-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "3PP can integrate a carrier and create a Carrier Account\n"
+        },
+        {
+          "info": {
+            "name": "Detail Carrier Integration Request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/integration-request/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "3PP can check the Integrate Status of a Carrier\n"
+        },
+        {
+          "info": {
+            "name": "Upload document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/carrier/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "document_type",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "document",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads Carrier related documents, such as Form W9, Insurance and"
+        },
+        {
+          "info": {
+            "name": "List drivers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/drivers"
+          },
+          "docs": "List drivers for this carrier."
+        },
+        {
+          "info": {
+            "name": "Create driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/carrier/drivers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create driver"
+        },
+        {
+          "info": {
+            "name": "Retrieve driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/carrier/:driver_id"
+          },
+          "docs": "Retrieve driver"
+        },
+        {
+          "info": {
+            "name": "Update driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://neutron.opendock.com/api/v2/carrier/:driver_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update driver"
+        },
+        {
+          "info": {
+            "name": "Delete a driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/carrier/:driver_id"
+          },
+          "docs": "Delete a driver"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

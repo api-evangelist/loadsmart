@@ -1,0 +1,1708 @@
+{
+  "item": [
+    {
+      "id": "fd1248e4-fbed-4a9a-a4fa-1324facefb3b",
+      "name": "Asset Visit",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b94e39be-d68d-435e-acd2-8621c6a6b02d",
+          "name": "Create a single AssetVisit",
+          "request": {
+            "name": "Create a single AssetVisit",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouseId\": \"<uuid>\",\n  \"phone\": \"<string>\",\n  \"useWhatsApp\": \"<boolean>\",\n  \"tags\": \"<object>\",\n  \"appointmentId\": \"<uuid>\",\n  \"licensePlate\": \"<object>\",\n  \"dotNumber\": \"<object>\",\n  \"companyId\": \"<uuid>\",\n  \"isPlanned\": \"<boolean>\",\n  \"companyHint\": \"<string>\",\n  \"visitType\": \"<string>\",\n  \"driverNotes\": \"<string>\",\n  \"driverAppointmentIdentifier\": \"<string>\",\n  \"hasArrived\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d5a929c9-e015-4a58-8e87-c7c689227b6b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"warehouseId\": \"<uuid>\",\n  \"phone\": \"<string>\",\n  \"useWhatsApp\": \"<boolean>\",\n  \"tags\": \"<object>\",\n  \"appointmentId\": \"<uuid>\",\n  \"licensePlate\": \"<object>\",\n  \"dotNumber\": \"<object>\",\n  \"companyId\": \"<uuid>\",\n  \"isPlanned\": \"<boolean>\",\n  \"companyHint\": \"<string>\",\n  \"visitType\": \"<string>\",\n  \"driverNotes\": \"<string>\",\n  \"driverAppointmentIdentifier\": \"<string>\",\n  \"hasArrived\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "894344b4-9f5e-42da-95d3-235f79ab89b1",
+              "name": "Get create one base response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"warehouseId\": \"<uuid>\",\n  \"phone\": \"<string>\",\n  \"useWhatsApp\": \"<boolean>\",\n  \"tags\": \"<object>\",\n  \"appointmentId\": \"<uuid>\",\n  \"licensePlate\": \"<object>\",\n  \"dotNumber\": \"<object>\",\n  \"companyId\": \"<uuid>\",\n  \"isPlanned\": \"<boolean>\",\n  \"companyHint\": \"<string>\",\n  \"visitType\": \"Live\",\n  \"driverNotes\": \"<string>\",\n  \"driverAppointmentIdentifier\": \"<string>\",\n  \"hasArrived\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a930d1cc-579f-406d-9554-e848bf4bedfb",
+          "name": "Retrieve multiple AssetVisits",
+          "request": {
+            "name": "Retrieve multiple AssetVisits",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "excludeStatuses",
+                  "value": "<string>",
+                  "description": "Event types to exclude. Asset visits with any event matching these types will be filtered out."
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeStatuses",
+                  "value": "<string>",
+                  "description": "Event types to exclude. Asset visits with any event matching these types will be filtered out."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "s",
+                  "value": "<string>",
+                  "description": "Adds search condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#search\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Adds filter condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#filter\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Adds filter condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#filter\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "or",
+                  "value": "<string>",
+                  "description": "Adds OR condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#or\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "or",
+                  "value": "<string>",
+                  "description": "Adds OR condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#or\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Adds sort by field. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#sort\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Adds sort by field. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#sort\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "join",
+                  "value": "<string>",
+                  "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "join",
+                  "value": "<string>",
+                  "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Limit amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#limit\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Offset amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#offset\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page portion of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#page\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cache",
+                  "value": "<integer>",
+                  "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "592c34d2-77a2-4feb-9194-f610abad0232",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "excludeStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "excludeStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "s",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "or",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "or",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "join",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "join",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cache",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3a581fc-3329-4100-b70a-df86158099ec",
+          "name": "Update a single AssetVisit",
+          "request": {
+            "name": "Update a single AssetVisit",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": \"<object>\",\n  \"appointmentId\": \"<uuid>\",\n  \"companyId\": \"<object>\",\n  \"licensePlate\": \"<string>\",\n  \"dotNumber\": \"<string>\",\n  \"companyHint\": \"<string>\",\n  \"visitType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "463ccb12-9e6b-440d-9516-30dd96f95f3e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tags\": \"<object>\",\n  \"appointmentId\": \"<uuid>\",\n  \"companyId\": \"<object>\",\n  \"licensePlate\": \"<string>\",\n  \"dotNumber\": \"<string>\",\n  \"companyHint\": \"<string>\",\n  \"visitType\": \"Live\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "114590d5-a22a-447f-8e36-3149b4832b37",
+          "name": "Retrieve a single AssetVisit",
+          "request": {
+            "name": "Retrieve a single AssetVisit",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "join",
+                  "value": "<string>",
+                  "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "join",
+                  "value": "<string>",
+                  "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cache",
+                  "value": "<integer>",
+                  "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "420cc3cd-3a23-4021-b6f6-0a8f0fe6ddef",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "join",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "join",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cache",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "550e39d7-209a-4fd2-987f-b5f75d57736f",
+          "name": "Delete a single AssetVisit",
+          "request": {
+            "name": "Delete a single AssetVisit",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "02e5b55a-8eb3-4c8d-9ef5-5707b196448c",
+              "name": "Delete one base response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "692e3428-fefd-456b-a734-f0f4b47c7376",
+          "name": "Asset Visit Controller create Asset Visit Event",
+          "request": {
+            "name": "Asset Visit Controller create Asset Visit Event",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                "event"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac5a3179-2557-4780-8428-6e647159214b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    "event"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tags\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8c57ff4e-c637-4b26-ac47-65029c5ecefe",
+          "name": "Asset Visit Controller get Asset Visit Events",
+          "request": {
+            "name": "Asset Visit Controller get Asset Visit Events",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id",
+                "yard-events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7696147d-1245-45d2-a66a-741c44f6abc1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id",
+                    "yard-events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4fc8ab74-eac4-4830-a28f-f58426cade96",
+          "name": "Asset Visit Controller get Arrival Asset Container For Visit",
+          "request": {
+            "name": "Asset Visit Controller get Arrival Asset Container For Visit",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id",
+                "arrival-container"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "295ab0a9-1085-4fe5-a687-757fa414e815",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id",
+                    "arrival-container"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n    \"createDateTime\": \"2023-10-01T12:00:00Z\",\n    \"createdBy\": {},\n    \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n    \"type\": \"Reefer\",\n    \"code\": \"AC001\",\n    \"orgId\": \"b70536b5-408a-2b23-8f86-615391c61a52\",\n    \"warehouseId\": \"43534fb9-7741-c559-6e69-12e29bbd9ea6\",\n    \"pickupAppointmentId\": \"9c2b6e3e-39e9-d7ae-263a-376365e1b148\",\n    \"state\": \"Partially Loaded\",\n    \"notes\": \"Asset container for storing goods\",\n    \"lastLocationCheckConfirmedAt\": {},\n    \"assetVisitId\": \"d14194bb-e4ca-950d-f38e-7a046615c747\",\n    \"dropAppointmentId\": \"ca38ceee-b54d-d40f-1948-c5ee841a9a06\",\n    \"companyId\": \"5a20bdb0-f362-f069-39de-3522fb02ea08\"\n  },\n  {\n    \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n    \"createDateTime\": \"2023-10-01T12:00:00Z\",\n    \"createdBy\": {},\n    \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n    \"type\": \"Chassis\",\n    \"code\": \"AC001\",\n    \"orgId\": \"722b8df4-4410-436c-b6fd-9aecb8c1b425\",\n    \"warehouseId\": \"da5b97f0-5573-8738-2446-638fb6259199\",\n    \"pickupAppointmentId\": \"cadbe38a-06d1-c8a4-2669-28d0b879b7d4\",\n    \"state\": \"Partially Loaded\",\n    \"notes\": \"Asset container for storing goods\",\n    \"lastLocationCheckConfirmedAt\": {},\n    \"assetVisitId\": \"70fd0b83-3519-a535-040e-6031d5911ab2\",\n    \"dropAppointmentId\": \"3500e3e8-6038-0664-4069-96565c796e96\",\n    \"companyId\": \"eb0d579d-ed84-84c6-3012-08369b807fe5\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c37ba13-1961-4d56-9ce7-612792d312a2",
+          "name": "Asset Visit Controller update Check In Acknowledgment",
+          "request": {
+            "name": "Asset Visit Controller update Check In Acknowledgment",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id",
+                "check-in-acknowledgment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "62514edf-aec8-4853-a49d-916ae6711a96",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id",
+                    "check-in-acknowledgment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tags\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5\",\n  \"createDateTime\": \"2023-10-01T12:00:00Z\",\n  \"createdBy\": {},\n  \"lastChangedDateTime\": \"2023-10-01T12:00:00Z\",\n  \"orgId\": \"5cc1f945-3820-9386-530b-27d8bc86f4b3\",\n  \"warehouseId\": \"e96924f7-f011-02a2-4353-49a2fb677121\",\n  \"phone\": \"+14155552671\",\n  \"isPlanned\": false,\n  \"appointmentId\": \"4e835002-6afe-bdc7-4c3a-8ca35ba30dbe\",\n  \"secondaryAppointmentId\": \"87d4b4ac-b0b6-4a18-d6ca-a251b4d7599e\",\n  \"companyId\": \"c8d74024-45a6-e15d-6681-489ededf5bba\",\n  \"companyHint\": \"Super Company CO.\",\n  \"driverNotes\": \"My truck is broken, please help me\",\n  \"driverAppointmentIdentifier\": \"PO48593\",\n  \"visitType\": \"Live\",\n  \"checkInAcknowledged\": false,\n  \"rejectReason\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5a80d5f-654f-42f7-8ff3-3a8996430476",
+          "name": "Asset Visit Controller attach Container",
+          "request": {
+            "name": "Asset Visit Controller attach Container",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id",
+                "attach",
+                ":assetContainerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3529d886-7f32-497b-99e7-6af37b85289a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id",
+                    "attach",
+                    ":assetContainerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "23091423-c2f3-46ee-8e68-4e2a4eb825b2",
+          "name": "Asset Visit Controller detach Container",
+          "request": {
+            "name": "Asset Visit Controller detach Container",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                ":id",
+                "detach",
+                ":assetContainerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assetContainerId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f98575e9-d322-4e4f-8d3c-d3e750a377dd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    ":id",
+                    "detach",
+                    ":assetContainerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assetContainerId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "999de64e-b03b-4c70-b450-cf501cb442ff",
+          "name": "Asset Visit Controller link Unplanned Checkin To Appointment",
+          "request": {
+            "name": "Asset Visit Controller link Unplanned Checkin To Appointment",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                "link-unplanned-checkin-to-appointment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"<string>\",\n  \"assetVisitId\": \"<string>\",\n  \"tags\": \"<object>\",\n  \"companyId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b70a59db-1501-4eee-9f3c-fd8ca7f7f28c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    "link-unplanned-checkin-to-appointment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appointmentId\": \"<string>\",\n  \"assetVisitId\": \"<string>\",\n  \"tags\": \"<object>\",\n  \"companyId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2fa8db96-42fc-4264-aa15-a7acfa7d0ed5",
+          "name": "Asset Visit Controller unlink Checkin From Appointment",
+          "request": {
+            "name": "Asset Visit Controller unlink Checkin From Appointment",
+            "description": {},
+            "url": {
+              "path": [
+                "asset-visit",
+                "unlink-checkin-from-appointment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"<string>\",\n  \"assetVisitId\": \"<string>\",\n  \"tags\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b42ea166-69e6-4712-b9c1-7bface4609cd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "asset-visit",
+                    "unlink-checkin-from-appointment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appointmentId\": \"<string>\",\n  \"assetVisitId\": \"<string>\",\n  \"tags\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6730547c-927b-4b2c-8262-19d530b6765d",
+    "name": "Opendock Nova API Documentation Appointments Asset Visit API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

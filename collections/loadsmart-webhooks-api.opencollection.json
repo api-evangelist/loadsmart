@@ -1,0 +1,192 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Webhooks API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/webhooks/url"
+          },
+          "docs": "Lists all webhooks registered for the authenticated client\n"
+        },
+        {
+          "info": {
+            "name": "Register webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/webhooks/url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create webhooks configuration\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://neutron.opendock.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/webhooks/url/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Quote Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/quote-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a quote is triggered.\n\nThe quote event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - quote:booked\n  - quote:rejected\n"
+        },
+        {
+          "info": {
+            "name": "Shipment Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/shipment-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a shipment is triggered.\n\nThe shipment event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - shipment:appointment-pickup\n  - shipment:appointment-delivery\n  - shipment:en-route-to-pickup\n  - shipment:check-in-pickup\n  - shipment:check-out-pickup\n  - shipment:check-in-deliver"
+        },
+        {
+          "info": {
+            "name": "Load Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/load-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a load is triggered.\n\nThe load event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nDifference between load and shipment:\n\nAlthough loads and shipments usually refer to the same thing, Loadsmart handles them\nas two slightly different entities. Up to the point when a load is tendered and booked,\nthe"
+        },
+        {
+          "info": {
+            "name": "Bid Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/bid-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a Bid is triggered.\nThe bid event payload has the same schema for all bid event types.\n"
+        },
+        {
+          "info": {
+            "name": "Carrier Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/carrier-webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about a Carrier is triggered.\n"
+        },
+        {
+          "info": {
+            "name": "Integration Request Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/integration-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a message when an event about an integration request is triggered.\n\nThe event payload has the same schema for both integration-request events.\n\nList of event types:\n  - integration-request:accepted\n  - integration-request:rejected\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

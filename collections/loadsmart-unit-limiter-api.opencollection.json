@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Unit Limiter API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Unit Limiter",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve load type groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/loadtype-group",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches all load type groups for a specific warehouse. Returns a list of groups with their associated load types, useful for displaying configuration options or managing unit limits."
+        },
+        {
+          "info": {
+            "name": "Create a new load type group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/loadtype-group",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a load type group, which is a collection of load types that can be managed together for unit limiting purposes. Load type groups allow you to apply the same unit limits to multiple load types simultaneously, simplifying capacity management."
+        },
+        {
+          "info": {
+            "name": "Update an existing load type group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/loadtype-group/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the load type group to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the name or load type membership of an existing load type group. This allows you to modify which load types are included in the group without recreating it."
+        },
+        {
+          "info": {
+            "name": "Delete a load type group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/loadtype-group/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the load type group to delete"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a load type group. This removes the group itself but does not affect the individual load types that were part of the group. Any unit limits referencing this group will need to be reconfigured."
+        },
+        {
+          "info": {
+            "name": "Retrieve unit limit configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/unit-limit/configuration",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches unit limit configurations based on specified filters such as warehouse, grouper type (dock, load type, or load type group), and unit type. Returns all matching configurations for the authenticated user's organization."
+        },
+        {
+          "info": {
+            "name": "Create or update unit limit configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/unit-limit/configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Configures unit limits for a warehouse based on grouping criteria (warehouse, dock, load type, or load type group). Unit limits control how many appointment or handling units (pallets, etc.) can be scheduled within specific time periods. This helps manage warehouse capacity and prevent overbooking."
+        },
+        {
+          "info": {
+            "name": "Get unit limit counts for specific configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/unit-limit/count",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves actual unit counts for specified unit limit configurations within a date range. This shows how many units have been scheduled against each limit, helping track capacity utilization."
+        },
+        {
+          "info": {
+            "name": "Validate if scheduling at a given time would breach unit limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/unit-limit/validate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Checks whether creating an appointment with the specified warehouse, dock, load type, and time interval would violate any configured unit limits. Returns an array of results for each day in the interval."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

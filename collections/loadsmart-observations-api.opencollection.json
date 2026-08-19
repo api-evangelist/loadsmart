@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Observations API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Observations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ObservationController_getObservations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/observations",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "ObservationController_getObservation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/observations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "ObservationController_createAssetVisit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/observations/:id/asset-visit",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

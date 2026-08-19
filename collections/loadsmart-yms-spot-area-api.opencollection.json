@@ -1,0 +1,202 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments YMS - Spot Area API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "YMS - Spot Area",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve multiple SpotAreas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/spot-area",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "s",
+                "value": "",
+                "type": "query",
+                "description": "Adds search condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#search\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Adds filter condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#filter\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "or",
+                "value": "",
+                "type": "query",
+                "description": "Adds OR condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#or\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Adds sort by field. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#sort\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#limit\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#offset\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page portion of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#page\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve multiple SpotAreas"
+        },
+        {
+          "info": {
+            "name": "Create a single SpotArea",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/yard/spot-area",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a single SpotArea"
+        },
+        {
+          "info": {
+            "name": "Retrieve a single SpotArea",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/spot-area/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a single SpotArea"
+        },
+        {
+          "info": {
+            "name": "Update a single SpotArea",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/yard/spot-area/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a single SpotArea"
+        },
+        {
+          "info": {
+            "name": "Delete a single SpotArea",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/yard/spot-area/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a single SpotArea"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

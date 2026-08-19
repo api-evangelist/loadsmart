@@ -1,0 +1,2469 @@
+{
+  "item": [
+    {
+      "id": "5a729c66-3791-42fc-997b-1b19ba57c09a",
+      "name": "Load Offers",
+      "description": {
+        "content": "This API allows third parties to search and accept\navailable Offers.\n\n## Webhook events\n\nThere are few webhook events that can be triggered related to Load Offers API.\nThe following example refers to the webhook events `load_carrier_bounced` and `load_cancelled`:\n```\n{\n  \"event\": \"load_carrier_bounced\",\n  \"data\": {\n    \"load_id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\",\n    \"load\": {\n      \"id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"active_offer\": {\n        \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n        \"price\": 1234.56\n      },\n      \"carrier\": {\n        \"id\": \"89ef54c7-52d5-44a0-b94d-df41eb1aab15\",\n        \"mc\": 123456,\n        \"dot\": 987654\n      },\n      \"commodity\": \"BOTTLED WATER\",\n      \"distance\": 353.6,\n      \"equipment_type\": \"DRV\",\n      \"requirements\": {\n        \"beer\": false,\n        \"chemicals\": null,\n        \"ctpat\": null,\n        \"food_grade\": null,\n        \"frozen\": null,\n        \"hazmat\": null,\n        \"hvhr\": null,\n        \"pharmaceuticals\": null,\n        \"produce\": null,\n        \"teams\": null,\n        \"tsa\": null,\n        \"twic\": null,\n        \"vented_vans\": null,\n      },\n      \"stops\": [\n        {\n          \"address\": \"109 Poland Spring Dr\",\n          \"city\": \"Poland\",\n          \"country\": \"USA\",\n          \"latitude\": 44.031602,\n          \"longitude\": -70.355065,\n          \"state\": \"ME\",\n          \"type\": \"PU\",\n          \"window_end\": \"2019-11-28T08:00:00+00:00\",\n          \"window_start\": \"2019-11-28T06:00:00+00:00\",\n          \"window_timezone\": \"America/New_York\",\n          \"requirements\": null,\n          \"facility_info\": {\n            \"avg_time_spent\":{\n              \"pickup\":40,\n              \"delivery\": null\n            },\n            \"detention_rate\": 4\n          }\n        },\n        {\n          \"address\": \"6 Westbelt\",\n          \"city\": \"Wayne\",\n          \"country\": \"USA\",\n          \"latitude\": 40.900033,\n          \"longitude\": -74.264872,\n          \"state\": \"NJ\",\n          \"type\": \"DEL\",\n          \"window_end\": \"2019-11-29T19:00:00+00:00\",\n          \"window_start\": \"2019-11-29T17:00:00+00:00\",\n          \"window_timezone\": \"America/New_York\",\n          \"requirements\": null,\n          \"facility_info\": {\n            \"avg_time_spent\":{\n              \"pickup\":null,\n              \"delivery\": 20\n            },\n            \"detention_rate\": 9\n          }\n         },\n      ],\n      \"numberweight\": 45000.0,\n      \"dimensions\": {\"width\": 8.00, \"height\": 9.00, \"length\": 54.00}\n      \"ref_number\": \"41324\"\n    }\n  }\n}\n```\n\nThe following example refers to the webhook events `offer_created` and `offer_removed`:\n```\n{\n  \"event\": \"offer_created\",\n  \"data\": {\n    \"offer\": {\n      \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"price\": 1234.56,\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\"width\": 8.00, \"height\": 9.00, \"length\": 54.00}\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\":{\n                \"pickup\":40,\n                \"delivery\": null\n              },\n              \"detention_rate\": 4\n            }\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13T09:00:00\",\n            \"window_end\": \"2018-02-13T11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\":{\n                \"pickup\":null,\n                \"delivery\": 20\n              },\n              \"detention_rate\": 9\n            }\n            \"window_start\": \"2018-02-14T16:00:00\",\n            \"window_end\": \"2018-02-14T18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425631\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n      }\n    }\n  }\n}\n```\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c0c55de9-afc5-4d0e-8f1f-b60d58c7e794",
+          "name": "Search offers",
+          "request": {
+            "name": "Search offers",
+            "description": {
+              "content": "Search offers\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "offers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "alcohol",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "equipment_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<YYYY-MM-DD>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<YYYY-MM-DD>"
+                },
+                {
+                  "disabled": false,
+                  "key": "origin_lat",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "origin_lon",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "origin_radius",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_lat",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_lon",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "destination_radius",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "mc",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dot",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "1e8e5626-b902-4508-b72e-a82f3a539e8e",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "alcohol",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "equipment_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<YYYY-MM-DD>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<YYYY-MM-DD>"
+                    },
+                    {
+                      "key": "origin_lat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "origin_lon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "origin_radius",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "destination_lat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "destination_lon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "destination_radius",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "mc",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dot",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2,\n  \"next\": null,\n  \"previous\": null,\n  \"results\": [\n    {\n      \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"price\": 1234.56,\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": 8,\n          \"height\": 8,\n          \"length\": 54\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 40,\n                \"delivery\": 180\n              },\n              \"detention_rate\": 4\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 20,\n                \"delivery\": 20\n              },\n              \"detention_rate\": 0\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425631\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/a440a0df-c3c2-4d70-9acd-7f03f4bc00f4\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n      }\n    },\n    {\n      \"id\": \"e79acc24-cbfa-4cc7-92ca-7001279cf064\",\n      \"price\": 1234.56,\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": null,\n          \"height\": null,\n          \"length\": null\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425821\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/e79acc24-cbfa-4cc7-92ca-7001279cf064/accept\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15690744-48dd-42f5-b663-a4bd2454e0b8",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "alcohol",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "equipment_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<YYYY-MM-DD>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<YYYY-MM-DD>"
+                    },
+                    {
+                      "key": "origin_lat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "origin_lon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "origin_radius",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "destination_lat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "destination_lon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "destination_radius",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "mc",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dot",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "72fd8ab4-6ee9-4a59-a0ce-45d056e1bfaa",
+          "name": "Retrieve offer",
+          "request": {
+            "name": "Retrieve offer",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "offers",
+                ":offer_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offer_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "3ad07003-cfb1-46fb-acc7-0f7165f2c5c7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offer_id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n  \"price\": 1234.56,\n  \"load\": {\n    \"equipment_type\": \"DRV\",\n    \"commodity\": \"apples\",\n    \"weight\": 20000,\n    \"dimensions\": {\n      \"width\": 8,\n      \"height\": 8,\n      \"length\": 54\n    },\n    \"distance\": 50000,\n    \"stops\": [\n      {\n        \"type\": \"PU\",\n        \"address\": \"101 Collins Avenue\",\n        \"city\": \"Miami Beach\",\n        \"state\": \"FL\",\n        \"country\": \"USA\",\n        \"latitude\": 41.203996,\n        \"longitude\": -96.115593,\n        \"requirements\": {\n          \"blind_bol\": false,\n          \"drop_trailer\": false,\n          \"heavy_scale_ticket\": false,\n          \"light_scale_ticket\": false\n        },\n        \"facility_info\": {\n          \"avg_time_spent\": {\n            \"pickup\": 40,\n            \"delivery\": 180\n          },\n          \"detention_rate\": 4\n        },\n        \"zipcode\": \"33139\",\n        \"window_start\": \"2020-02-13 09:00:00\",\n        \"window_end\": \"2018-02-13 11:00:00\",\n        \"window_timezone\": \"America/New_York\"\n      },\n      {\n        \"type\": \"DEL\",\n        \"address\": \"2022 Collins Avenue\",\n        \"city\": \"Miami Beach\",\n        \"state\": \"FL\",\n        \"country\": \"USA\",\n        \"latitude\": 42.535793,\n        \"longitude\": -70.966568,\n        \"requirements\": {\n          \"blind_bol\": false,\n          \"drop_trailer\": false,\n          \"heavy_scale_ticket\": false,\n          \"light_scale_ticket\": false\n        },\n        \"facility_info\": {\n          \"avg_time_spent\": {\n            \"pickup\": 20,\n            \"delivery\": 20\n          },\n          \"detention_rate\": 0\n        },\n        \"window_start\": \"2018-02-14 16:00:00\",\n        \"window_end\": \"2018-02-14 18:00:00\",\n        \"window_timezone\": \"America/New_York\"\n      }\n    ],\n    \"requirements\": {\n      \"beer\": false,\n      \"chemicals\": false,\n      \"ctpat\": false,\n      \"food_grade\": false,\n      \"frozen\": false,\n      \"hazmat\": false,\n      \"hvhr\": false,\n      \"pharmaceuticals\": false,\n      \"produce\": false,\n      \"teams\": false,\n      \"tsa\": false,\n      \"twic\": false,\n      \"vented_vans\": false\n    },\n    \"ref_number\": \"425631\"\n  },\n  \"actions\": {\n    \"redirect_url\": \"https://loadsmart.com/loads/#/a440a0df-c3c2-4d70-9acd-7f03f4bc00f4\",\n    \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c8aa4a0-d2e9-4ff7-bf0f-0b847323f390",
+          "name": "Accept an offer",
+          "request": {
+            "name": "Accept an offer",
+            "description": {
+              "content": "Accept an Offer for a Carrier\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "offers",
+                ":offer_id",
+                "accept"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "offer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "70abfb4b-e607-4932-abaf-eef52902d92b",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d34c7c5-f3b2-4dc4-b128-c816538c8032",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "840a3e8b-209e-4cab-8f42-77e2d1dfcfc9",
+              "name": "Offer not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a179a474-2aef-4cb0-bb1e-e2a9af306c50",
+              "name": "Offer no longer available",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Gone",
+              "code": 410,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffc4252b-ba31-4ea9-a4b0-48ea2d98ac6c",
+              "name": "Carrier is not eligible to move the Load",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41d49737-207f-43f7-908f-8439bf35482a",
+          "name": "Search related offers",
+          "request": {
+            "name": "Search related offers",
+            "description": {
+              "content": "Search related offers of another offer\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "offers",
+                ":offer_id",
+                "related"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "relation",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "offer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "6f6e642d-852c-4818-b9c0-6c6a200e8525",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "related"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "relation",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2,\n  \"next\": null,\n  \"previous\": null,\n  \"results\": [\n    {\n      \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"price\": 1234.56,\n      \"relation\": \"similar_lane\",\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": 8,\n          \"height\": 9,\n          \"length\": 54\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 40,\n                \"delivery\": 180\n              },\n              \"detention_rate\": 4\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 20,\n                \"delivery\": 20\n              },\n              \"detention_rate\": 0\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425631\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/a440a0df-c3c2-4d70-9acd-7f03f4bc00f4\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n      }\n    },\n    {\n      \"id\": \"e79acc24-cbfa-4cc7-92ca-7001279cf064\",\n      \"price\": 1234.56,\n      \"relation\": \"similar_pickup\",\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": null,\n          \"height\": null,\n          \"length\": null\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425821\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/e79acc24-cbfa-4cc7-92ca-7001279cf064/accept\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77ec6c17-8f7b-4edb-8a47-220b4d2dfc90",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "offers",
+                    ":offer_id",
+                    "related"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "relation",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "offer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0826677a-7c3f-4b55-8816-5a0f2cc10843",
+          "name": "List loads",
+          "request": {
+            "name": "List loads",
+            "description": {
+              "content": "List accepted loads",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "loads",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "94ffcd60-326f-4544-b673-f70e0748d560",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 1264.687347384985,\n  \"next\": \"string\",\n  \"previous\": \"string\",\n  \"results\": [\n    {\n      \"ref_number\": \"string\",\n      \"equipment_type\": \"LTL\",\n      \"id\": \"string\",\n      \"active_offer\": {\n        \"id\": \"string\",\n        \"price\": 5896.265262878514\n      },\n      \"carrier\": {\n        \"id\": \"16145dab-bde0-e8cd-5a8a-c9368e2e6285\",\n        \"dot\": \"string\",\n        \"mc\": \"string\"\n      },\n      \"commodity\": \"string\",\n      \"weight\": 2306.8265754226995,\n      \"dimensions\": {\n        \"weight\": 8311.311925220172,\n        \"height\": 5984.322719275724,\n        \"width\": 720.3206055640699\n      },\n      \"distance\": 8532.315587393745,\n      \"stops\": [\n        {\n          \"type\": \"DEL\",\n          \"address\": \"string\",\n          \"city\": \"string\",\n          \"state\": \"FL\",\n          \"country\": \"FHT\",\n          \"latitude\": 8060.8817651196905,\n          \"longitude\": 2801.3284821447737,\n          \"zipcode\": \"string\",\n          \"window_start\": \"string\",\n          \"window_end\": \"string\",\n          \"window_timezone\": \"string\",\n          \"facility_info\": {\n            \"avg_time_spent\": {\n              \"pickup\": 5397.247606962887,\n              \"delivery\": 3957.4920094912345\n            },\n            \"detention_rate\": 7220.394109603545\n          }\n        },\n        {\n          \"type\": \"DEL\",\n          \"address\": \"string\",\n          \"city\": \"string\",\n          \"state\": \"NMX\",\n          \"country\": \"XZS\",\n          \"latitude\": 1864.582353704427,\n          \"longitude\": 7121.24386481782,\n          \"zipcode\": \"string\",\n          \"window_start\": \"string\",\n          \"window_end\": \"string\",\n          \"window_timezone\": \"string\",\n          \"facility_info\": {\n            \"avg_time_spent\": {\n              \"pickup\": 4032.627611119759,\n              \"delivery\": 4732.185395667897\n            },\n            \"detention_rate\": 4528.463733003594\n          }\n        }\n      ],\n      \"requirements\": {\n        \"beer\": false,\n        \"chemicals\": false,\n        \"ctpat\": false,\n        \"food_grade\": false,\n        \"frozen\": false,\n        \"hazmat\": false,\n        \"hvhr\": false,\n        \"pharmaceuticals\": true,\n        \"produce\": true,\n        \"teams\": true,\n        \"tsa\": false,\n        \"twic\": false,\n        \"vented_vans\": true\n      }\n    },\n    {\n      \"ref_number\": \"string\",\n      \"equipment_type\": \"RFR\",\n      \"id\": \"string\",\n      \"active_offer\": {\n        \"id\": \"string\",\n        \"price\": 8787.468631913407\n      },\n      \"carrier\": {\n        \"id\": \"a925e6c0-bd37-2794-b834-f2db7a4f3c1a\",\n        \"dot\": \"string\",\n        \"mc\": \"string\"\n      },\n      \"commodity\": \"string\",\n      \"weight\": 7349.015601360226,\n      \"dimensions\": {\n        \"weight\": 4481.330655110093,\n        \"height\": 9000.592524332533,\n        \"width\": 6502.024991658437\n      },\n      \"distance\": 4404.634772254491,\n      \"stops\": [\n        {\n          \"type\": \"PU\",\n          \"address\": \"string\",\n          \"city\": \"string\",\n          \"state\": \"8\",\n          \"country\": \"ADQ\",\n          \"latitude\": 3701.257040049077,\n          \"longitude\": 3690.7465934009842,\n          \"zipcode\": \"string\",\n          \"window_start\": \"string\",\n          \"window_end\": \"string\",\n          \"window_timezone\": \"string\",\n          \"facility_info\": {\n            \"avg_time_spent\": {\n              \"pickup\": 4950.168185669312,\n              \"delivery\": 6868.0854711593365\n            },\n            \"detention_rate\": 2964.005063191352\n          }\n        },\n        {\n          \"type\": \"PU\",\n          \"address\": \"string\",\n          \"city\": \"string\",\n          \"state\": \"IK\",\n          \"country\": \"LAO\",\n          \"latitude\": 6953.763827547037,\n          \"longitude\": 6488.699948465635,\n          \"zipcode\": \"string\",\n          \"window_start\": \"string\",\n          \"window_end\": \"string\",\n          \"window_timezone\": \"string\",\n          \"facility_info\": {\n            \"avg_time_spent\": {\n              \"pickup\": 6085.910670399549,\n              \"delivery\": 9558.742778469035\n            },\n            \"detention_rate\": 645.0663422765257\n          }\n        }\n      ],\n      \"requirements\": {\n        \"beer\": true,\n        \"chemicals\": false,\n        \"ctpat\": true,\n        \"food_grade\": true,\n        \"frozen\": true,\n        \"hazmat\": true,\n        \"hvhr\": true,\n        \"pharmaceuticals\": true,\n        \"produce\": true,\n        \"teams\": true,\n        \"tsa\": true,\n        \"twic\": false,\n        \"vented_vans\": true\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98d025b6-802b-4202-bc95-2c41b439574d",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ab7fc62-a0ae-4454-a383-425031983b28",
+              "name": "Load not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69565b15-cdef-481f-a3b1-566e456c347a",
+          "name": "Retrieve a load",
+          "request": {
+            "name": "Retrieve a load",
+            "description": {
+              "content": "Retrieve an accepted load",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "loads",
+                ":load_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "load_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "13ceb86b-2b02-4e15-9330-1e6bfe9ec850",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\",\n  \"equipment_type\": \"DRV\",\n  \"commodity\": \"apples\",\n  \"weight\": 20000,\n  \"dimensions\": {\n    \"width\": 8,\n    \"height\": 9,\n    \"length\": 54\n  },\n  \"distance\": 50000,\n  \"stops\": [\n    {\n      \"type\": \"PU\",\n      \"address\": \"101 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"latitude\": 41.203996,\n      \"longitude\": -96.115593,\n      \"requirements\": {\n        \"blind_bol\": false,\n        \"drop_trailer\": false,\n        \"heavy_scale_ticket\": false,\n        \"light_scale_ticket\": false\n      },\n      \"facility_info\": {\n        \"avg_time_spent\": {\n          \"pickup\": 40,\n          \"delivery\": 180\n        },\n        \"detention_rate\": 4\n      },\n      \"zipcode\": \"33139\",\n      \"window_start\": \"2020-02-13 09:00:00\",\n      \"window_end\": \"2018-02-13 11:00:00\",\n      \"window_timezone\": \"America/New_York\"\n    },\n    {\n      \"type\": \"DEL\",\n      \"address\": \"2022 Collins Avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"country\": \"USA\",\n      \"latitude\": 42.535793,\n      \"longitude\": -70.966568,\n      \"requirements\": {\n        \"blind_bol\": false,\n        \"drop_trailer\": false,\n        \"heavy_scale_ticket\": false,\n        \"light_scale_ticket\": false\n      },\n      \"facility_info\": {\n        \"avg_time_spent\": {\n          \"pickup\": 20,\n          \"delivery\": 20\n        },\n        \"detention_rate\": 0\n      },\n      \"window_start\": \"2018-02-14 16:00:00\",\n      \"window_end\": \"2018-02-14 18:00:00\",\n      \"window_timezone\": \"America/New_York\"\n    }\n  ],\n  \"requirements\": {\n    \"beer\": false,\n    \"chemicals\": false,\n    \"ctpat\": false,\n    \"food_grade\": false,\n    \"frozen\": false,\n    \"hazmat\": false,\n    \"hvhr\": false,\n    \"pharmaceuticals\": false,\n    \"produce\": false,\n    \"teams\": false,\n    \"tsa\": false,\n    \"twic\": false,\n    \"vented_vans\": false\n  },\n  \"active_offer\": {\n    \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n    \"price\": 1234.56\n  },\n  \"carrier\": {\n    \"id\": \"89ef54c7-52d5-44a0-b94d-df41eb1aab15\",\n    \"mc\": 123456,\n    \"dot\": 987654\n  },\n  \"ref_number\": \"425631\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0efd7f94-7eba-499f-b4ac-de89437d56bf",
+              "name": "Load not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6abe641-ec60-444a-affb-f9b61d2daf64",
+          "name": "Drop a load",
+          "request": {
+            "name": "Drop a load",
+            "description": {
+              "content": "Drop a load",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "loads",
+                ":load_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "load_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "12475880-f533-4374-acce-670ebae6fce6",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e9a5b25a-d3d6-46b8-92cc-f05f622411df",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1daa77eb-86ca-4c9b-9007-190415859653",
+              "name": "Load not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fbf12754-612b-4ab7-adce-e8d92063b791",
+              "name": "Internal error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "77aeb536-e3d1-4aea-873c-94f2cc33cae0",
+          "name": "Download ratecon",
+          "request": {
+            "name": "Download ratecon",
+            "description": {
+              "content": "Download rate confirmation PDF file",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "loads",
+                ":load_id",
+                "rate_confirmation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "load_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/pdf"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "5ddc718e-75e1-45eb-98b0-533fd86288f6",
+              "name": "The Rate Confirmation file was generated and downloaded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id",
+                    "rate_confirmation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/pdf"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/pdf"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "50a52f66-7e1b-4e5c-93bf-09e0fa0eb738",
+              "name": "Invalid token type.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id",
+                    "rate_confirmation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6162a70d-78aa-4606-a4a0-e0c68831df96",
+              "name": "Load not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id",
+                    "rate_confirmation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "91864f7a-f4e8-4762-8f05-46aea80d6963",
+          "name": "Search related offers",
+          "request": {
+            "name": "Search related offers",
+            "description": {
+              "content": "Search related offers of a Load\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "loads",
+                ":load_id",
+                "related-offers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "relation",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "load_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "a248ee46-0553-41c0-b2a8-3055863a5531",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id",
+                    "related-offers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "relation",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2,\n  \"next\": null,\n  \"previous\": null,\n  \"results\": [\n    {\n      \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"price\": 1234.56,\n      \"relation\": \"similar_lane\",\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": 8,\n          \"height\": 9,\n          \"length\": 54\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 40,\n                \"delivery\": 180\n              },\n              \"detention_rate\": 4\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\": {\n                \"pickup\": 20,\n                \"delivery\": 20\n              },\n              \"detention_rate\": 0\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425631\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/a440a0df-c3c2-4d70-9acd-7f03f4bc00f4\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n      }\n    },\n    {\n      \"id\": \"e79acc24-cbfa-4cc7-92ca-7001279cf064\",\n      \"price\": 1234.56,\n      \"relation\": \"similar_pickup\",\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\n          \"width\": null,\n          \"height\": null,\n          \"length\": null\n        },\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 41.203996,\n            \"longitude\": -96.115593,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13 09:00:00\",\n            \"window_end\": \"2018-02-13 11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"latitude\": 42.535793,\n            \"longitude\": -70.966568,\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"window_start\": \"2018-02-14 16:00:00\",\n            \"window_end\": \"2018-02-14 18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425821\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/e79acc24-cbfa-4cc7-92ca-7001279cf064/accept\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d3ea5aa-bb04-4bda-84a6-952aa8064be6",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "loads",
+                    ":load_id",
+                    "related-offers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "relation",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6bd946a-57e9-44e4-9475-88fef52427c5",
+          "name": "List webhooks",
+          "request": {
+            "name": "List webhooks",
+            "description": {
+              "content": "List configured webhooks\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "f69ff7dc-e400-4ec1-9bcd-8365d7bb3b25",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2,\n  \"next\": null,\n  \"previous\": null,\n  \"results\": [\n    {\n      \"uuid\": \"d630d8fe-9859-453f-aed2-372a1b09345c\",\n      \"url\": \"https://www.example.com/my/awsome/webhook_1\",\n      \"event\": \"load_cancelled\"\n    },\n    {\n      \"uuid\": \"8f62fea9-1edb-4f31-b2e5-dcf184b5a22b\",\n      \"url\": \"https://www.example.com/my/awsome/webhook_2\",\n      \"event\": \"load_carrier_bounced\"\n    },\n    {\n      \"uuid\": \"bac6dabc-c324-40bc-91f6-ed772d72632f\",\n      \"url\": \"https://www.example.com/my/awsome/webhook_3\",\n      \"event\": \"offer_created\"\n    },\n    {\n      \"uuid\": \"f2d51c14-4750-42cf-8c7a-a68c0d7b8d11\",\n      \"url\": \"https://www.example.com/my/awsome/webhook_3\",\n      \"event\": \"offer_removed\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75e8a494-8356-44ce-b6c6-1895d2511cf6",
+          "name": "Register webhooks",
+          "request": {
+            "name": "Register webhooks",
+            "description": {
+              "content": "Create webhooks configuration\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0c05e22a-50fc-49e0-bd40-bf9763fa63ee",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"d630d8fe-9859-453f-aed2-372a1b09345c\",\n  \"url\": \"https://www.example.com/my/awsome/webhook_1\",\n  \"event\": \"load_carrier_bounced\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ea43a1d-13da-42fb-bdee-61e3217b2738",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2fc9b2a3-4b17-487a-8d12-11de1a473874",
+          "name": "Retrieve webhook",
+          "request": {
+            "name": "Retrieve webhook",
+            "description": {
+              "content": "Retrieve webhook configuration\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "webhooks",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "ed9fc9fc-86d9-421e-8f4d-5ac792a133ec",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"d630d8fe-9859-453f-aed2-372a1b09345c\",\n  \"url\": \"https://www.example.com/my/awsome/webhook_1\",\n  \"event\": \"load_carrier_bounced\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d061c597-7a24-4704-a06e-3e440e5feae4",
+              "name": "Webhook configuration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27a128f6-eee0-426c-aa26-d2a5738e18e3",
+          "name": "Update webhook",
+          "request": {
+            "name": "Update webhook",
+            "description": {
+              "content": "Update webhook configuration\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "webhooks",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "55261e7b-43c4-450e-9709-4225259dd22d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"d630d8fe-9859-453f-aed2-372a1b09345c\",\n  \"url\": \"https://www.example.com/my/awsome/webhook_1\",\n  \"event\": \"load_carrier_bounced\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adb00845-4d0f-4625-bb4f-69317b92e785",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79377617-0957-40e6-b539-696283805695",
+              "name": "Webhook configuration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"event\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c017a086-0d32-47f8-8c91-dd66061cdc6d",
+          "name": "Delete webhook",
+          "request": {
+            "name": "Delete webhook",
+            "description": {
+              "content": "Delete webhook configuration\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "load-offers",
+                "webhooks",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "803e4668-0963-4983-88e7-d6bb7c18e152",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2a72fb05-7e54-4edb-a1c7-10b9c0fc78c8",
+              "name": "Webhook configuration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "load-offers",
+                    "webhooks",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "47633288-b5e8-483e-876e-06e5564bb9c1",
+    "name": "Opendock Nova API Documentation Appointments Load Offers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

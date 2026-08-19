@@ -1,0 +1,451 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Appointments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve multiple Appointments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/appointment",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "s",
+                "value": "",
+                "type": "query",
+                "description": "Adds search condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#search\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Adds filter condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#filter\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "or",
+                "value": "",
+                "type": "query",
+                "description": "Adds OR condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#or\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Adds sort by field. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#sort\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#limit\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#offset\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page portion of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#page\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve multiple Appointments"
+        },
+        {
+          "info": {
+            "name": "Create a single Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/appointment",
+            "params": [
+              {
+                "name": "bypassCustomFieldsValidation",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a single Appointment"
+        },
+        {
+          "info": {
+            "name": "AppointmentController_getAppointmentRequirements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/appointment/requirements",
+            "params": [
+              {
+                "name": "loadTypeId",
+                "value": "",
+                "type": "query",
+                "description": "Identifies a LoadType."
+              },
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query",
+                "description": "Identifies a Warehouse."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "The start date of appointment creations."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "The end date of appointment creations."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve a single Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/appointment/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a single Appointment"
+        },
+        {
+          "info": {
+            "name": "Update a single Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/appointment/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a single Appointment"
+        },
+        {
+          "info": {
+            "name": "Delete a single Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/appointment/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a single Appointment"
+        },
+        {
+          "info": {
+            "name": "AppointmentController_getPublicAppointmentDetails",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/appointment/public/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "AppointmentController_setEta",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/appointment/:id/set-eta",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "AppointmentController_undoLatestStatus",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/appointment/:id/undo-latest-status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "AppointmentController_createReserve",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/appointment/reserve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Creates a Recurring Appointment Series based on this appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/appointment/:id/recurring",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Recurring Appointment Series based on this appointment"
+        },
+        {
+          "info": {
+            "name": "Deletes this appointment and all following appointments in the recurring series, except the original appointment used to create this series.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/appointment/:id/recurring",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes this appointment and all following appointments in the recurring series, except the original appointment used to create this series."
+        },
+        {
+          "info": {
+            "name": "AppointmentController_getAppointmentNotificationEmailHtml",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/appointment/email-notification-html/:emailKey",
+            "params": [
+              {
+                "name": "emailKey",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "AppointmentController_addAppointmentTag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/appointment/:id/tag",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "AppointmentController_removeAppointmentTag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/appointment/:id/tag",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

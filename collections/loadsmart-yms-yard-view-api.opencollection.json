@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments YMS - Yard View API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "YMS - Yard View",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get lean spot grid data optimized for grid view rendering",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/view/spot-grid",
+            "params": [
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get lean spot grid data optimized for grid view rendering"
+        },
+        {
+          "info": {
+            "name": "Get asset visits and containers waiting for spot assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/view/waiting-assets",
+            "params": [
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get asset visits and containers waiting for spot assignment"
+        },
+        {
+          "info": {
+            "name": "Get flattened list view rows (one row per container or truckless visit)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/view/list-rows",
+            "params": [
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeWaiting",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get flattened list view rows (one row per container or truckless visit)"
+        },
+        {
+          "info": {
+            "name": "Get full spot detail for drawer: spot, task, assignment, and when applicable arrival/same-appointment containers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/yard/view/spot-detail",
+            "params": [
+              {
+                "name": "spotId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get full spot detail for drawer: spot, task, assignment, and when applicable arrival/same-appointment containers"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,354 @@
+{
+  "item": [
+    {
+      "id": "694b3d4c-d0d4-47be-a06a-c66f63b27157",
+      "name": "Quotes",
+      "description": {
+        "content": "Quotes provide the price and conditions for a future shipment.\nTo create a shipment, you need first to request a valid quote.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "faaeca70-5b47-4ead-a3f0-745c15b93fdf",
+          "name": "Create quote request",
+          "request": {
+            "name": "Create quote request",
+            "description": {
+              "content": "Request quotes for a future shipment.\n\nReturns a unique identifier (`id`) for the quote request. After creating the quote request, the\n[Retrieve details from a quote request](#tag/Quotes/paths/~1api~1v2~1quotes-request~1{uuid}/get) endpoint must\nbe polled in order to retrieve the result of this quote request.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "quotes-request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipment_mode\": [\n    {\n      \"type\": \"FTL\"\n    },\n    {\n      \"type\": \"FTL\"\n    }\n  ],\n  \"equipments\": [\n    {\n      \"type\": \"<string>\"\n    }\n  ],\n  \"stops\": [\n    {\n      \"zipcode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"type\": \"<string>\",\n      \"address\": \"<string>\",\n      \"drop_trailer\": \"<boolean>\",\n      \"window\": {\n        \"start\": \"<dateTime>\",\n        \"end\": \"<dateTime>\"\n      }\n    },\n    {\n      \"zipcode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"type\": \"<string>\",\n      \"address\": \"<string>\",\n      \"drop_trailer\": \"<boolean>\",\n      \"window\": {\n        \"start\": \"<dateTime>\",\n        \"end\": \"<dateTime>\"\n      }\n    }\n  ],\n  \"total_width\": \"<number>\",\n  \"total_length\": \"<number>\",\n  \"total_height\": \"<number>\",\n  \"requirements\": {\n    \"hazmat\": \"<boolean>\",\n    \"tarp\": {\n      \"size\": \"<float>\",\n      \"type\": \"<string>\"\n    },\n    \"dunnage\": \"<boolean>\",\n    \"beer\": \"<boolean>\",\n    \"teams\": \"<boolean>\"\n  },\n  \"customer_reference\": \"<string>\",\n  \"accessorials\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"items\": {},\n  \"properties\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f82940e6-665f-4ff5-832c-db185df25520",
+              "name": "Quote request was accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "quotes-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment_mode\": [\n    \"LTL\"\n  ],\n  \"equipments\": [\n    {\n      \"type\": \"DRV\"\n    },\n    {\n      \"type\": \"FBE\"\n    }\n  ],\n  \"customer_reference\": \"a reference for the quote\",\n  \"total_height\": 10.5,\n  \"total_length\": 52,\n  \"total_width\": 7,\n  \"requirements\": {\n    \"hazmat\": false\n  },\n  \"stops\": [\n    {\n      \"type\": \"PU\",\n      \"address\": \"12345 E 16th avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"drop_trailer\": true,\n      \"zipcode\": \"33140\",\n      \"country\": \"USA\",\n      \"window\": {\n        \"start\": \"2018-06-20 09:00:00\",\n        \"end\": \"2018-06-20 11:00:00\"\n      },\n      \"accessorials\": [\n        \"sort-and-segregate\",\n        \"inside-pickup\"\n      ]\n    },\n    {\n      \"type\": \"DEL\",\n      \"address\": \"54321 E 16th avenue\",\n      \"city\": \"New York\",\n      \"state\": \"NY\",\n      \"drop_trailer\": false,\n      \"zipcode\": \"33140\",\n      \"country\": \"USA\"\n    }\n  ],\n  \"items\": [\n    {\n      \"items_count\": 1,\n      \"length\": 12,\n      \"width\": 18,\n      \"height\": 24,\n      \"classification\": \"80\",\n      \"nmfc_code\": 19874,\n      \"package_type\": \"std_pallets\",\n      \"hazmat\": true,\n      \"hazmat_class\": \"mass_explosive\",\n      \"un_number\": 1485,\n      \"stackable\": false,\n      \"description\": \"apples\",\n      \"weight\": 20000\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3802fab9-bcbe-42b4-9132-2e0a65c11e1d\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ec95cd3-5931-4f6f-995f-6c10366d1e1b",
+              "name": "Invalid or missing data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "quotes-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment_mode\": [\n    \"LTL\"\n  ],\n  \"equipments\": [\n    {\n      \"type\": \"DRV\"\n    },\n    {\n      \"type\": \"FBE\"\n    }\n  ],\n  \"customer_reference\": \"a reference for the quote\",\n  \"total_height\": 10.5,\n  \"total_length\": 52,\n  \"total_width\": 7,\n  \"requirements\": {\n    \"hazmat\": false\n  },\n  \"stops\": [\n    {\n      \"type\": \"PU\",\n      \"address\": \"12345 E 16th avenue\",\n      \"city\": \"Miami Beach\",\n      \"state\": \"FL\",\n      \"drop_trailer\": true,\n      \"zipcode\": \"33140\",\n      \"country\": \"USA\",\n      \"window\": {\n        \"start\": \"2018-06-20 09:00:00\",\n        \"end\": \"2018-06-20 11:00:00\"\n      },\n      \"accessorials\": [\n        \"sort-and-segregate\",\n        \"inside-pickup\"\n      ]\n    },\n    {\n      \"type\": \"DEL\",\n      \"address\": \"54321 E 16th avenue\",\n      \"city\": \"New York\",\n      \"state\": \"NY\",\n      \"drop_trailer\": false,\n      \"zipcode\": \"33140\",\n      \"country\": \"USA\"\n    }\n  ],\n  \"items\": [\n    {\n      \"items_count\": 1,\n      \"length\": 12,\n      \"width\": 18,\n      \"height\": 24,\n      \"classification\": \"80\",\n      \"nmfc_code\": 19874,\n      \"package_type\": \"std_pallets\",\n      \"hazmat\": true,\n      \"hazmat_class\": \"mass_explosive\",\n      \"un_number\": 1485,\n      \"stackable\": false,\n      \"description\": \"apples\",\n      \"weight\": 20000\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1499df6-860b-4728-acec-320df427cf01",
+          "name": "Retrieve details from a quote request",
+          "request": {
+            "name": "Retrieve details from a quote request",
+            "description": {
+              "content": "A quote can either be `available`, `rejected`, `expired` or `booked`.  If\nit's available, a price and expiration date will be returned.  In the case\nthe quote is rejected, the reason will be detailed in the response.\n\nRejections could be a temporary condition. Retrying the request may\nor may not provide the caller with an available quote.\n\n#### List of possible reject reasons\n\n**Note**: we constantly add and remove reject reasons from this list.\nTo make sure the client will continue to work properly in case\na new reject reason is added, you can use the message on\n`reject_description` field to show to users what happened.\n\n* forbidden-date: Date is valid but not allowed\n* price-unavailable: Could not get price\n* shipper-over-capacity: Shipper over Capacity\n* lane-not-permitted: Lane not Permitted\n* shipper-daily-quotes-over-capacity: Shipper daily quotes over capacity\n* mileage-unavailable: Could not get mileage\n* next-day-shipment-not-allow: Next day quotes are not allowed\n* inactive-shipper-daily-quotes-over-capacity: Inactive shipper daily quotes over capacity\n* weekend-pickup-not-allowed: Pickups are not allowed to happen on weekends\n* same-day-shipment-not-allow: Same day quote is not allowed\n* market-size-too-large: Market Size too Large\n* flatbed-not-allowed: Flatbed not allowed\n* shipper-profile-is-incomplete: Shipper profile is incomplete\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "quotes-request",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "62d5b84e-12c6-4e45-a09e-2445bf8a75f0",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "quotes-request",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3802fab9-bcbe-42b4-9132-2e0a65c11e1d\",\n    \"status\": \"available\",\n    \"reject_reason\": null,\n    \"mileage\": 1453,\n    \"suggested_mode\": \"LTL\",\n    \"equipments\": [\n      {\n        \"type\": \"DRV\"\n      }\n    ],\n    \"quotes\": [\n      {\n        \"quote_id\": \"quote_a844d1dfef1bed1ba777\",\n        \"asset_carrier_quote_id\": \"JDHFK832748\",\n        \"expires_at\": \"2018-10-26 17:00:00+00:00\",\n        \"status\": \"available\",\n        \"shipment_mode\": \"LTL\",\n        \"service_level\": \"Standard\",\n        \"customer_reference\": \"AB123CD\",\n        \"carriers\": [\n          {\n            \"name\": \"ABC Freight\",\n            \"uuid\": \"c4e81940-fd8e-44ff-81f0-6d178489db0d\",\n            \"priority\": \"neutral\",\n            \"scac\": \"ABCF\"\n          }\n        ],\n        \"price\": {\n          \"total\": 1543.45,\n          \"components\": [\n            {\n              \"type\": \"haul\",\n              \"price\": 1543.45\n            }\n          ]\n        },\n        \"equipment\": {\n          \"type\": \"DRV\"\n        },\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"facility_name\": \"Brothers & Sons Inc.\",\n            \"contacts\": [\n              {\n                \"name\": \"John Doe\",\n                \"email\": \"john@example.com\",\n                \"phone_number\": \"+17895551234\"\n              }\n            ],\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"address\": \"12345 E 16th avenue\",\n            \"country\": \"USA\",\n            \"zipcode\": 33139,\n            \"window\": {\n              \"start\": \"2020-06-20 09:00:00\",\n              \"end\": \"2020-06-20 11:00:00\"\n            },\n            \"instructions\": \"Driver must arrive on time. These instructions will be sent to driver.\"\n          },\n          {\n            \"type\\\"\": \"DEL\",\n            \"facility_name\": \"Space Ghost Coast to Coast Inc.\",\n            \"contacts\": [\n              {\n                \"name\": \"Space Ghost\",\n                \"email\": \"space@ghost.com\",\n                \"phone_number\": \"+17124832133\"\n              }\n            ],\n            \"city\": \"New York\",\n            \"state\": \"NY\",\n            \"address\": \"54321 E 16th avenue\",\n            \"country\": \"USA\",\n            \"zipcode\": 10010,\n            \"window\": {\n              \"start\": \"2020-06-21 16:00:00\",\n              \"end\": \"2020-06-21 18:00:00\"\n            }\n          }\n        ]\n      },\n      {\n        \"quote_id\": \"quote_bd030c027543ffe032dd\",\n        \"asset_carrier_quote_id\": \"F1CT10N4L1D228\",\n        \"expires_at\": \"2018-10-26 17:00:00+00:00\",\n        \"status\": \"available\",\n        \"shipment_mode\": \"LTL\",\n        \"service_level\": \"Guaranteed by 3PM\",\n        \"customer_reference\": \"88ACA02\",\n        \"carriers\": [\n          {\n            \"name\": \"Fictional Freight\",\n            \"uuid\": \"956dcd70-95cd-419a-af5c-96d394d8ee53\",\n            \"priority\": \"restricted\"\n          }\n        ],\n        \"price\": {\n          \"total\": 1876.9,\n          \"components\": [\n            {\n              \"type\": \"haul\",\n              \"price\": 1726.9\n            },\n            {\n              \"type\": \"fuel_surcharge\",\n              \"price\": 150\n            }\n          ]\n        },\n        \"equipment\": {\n          \"type\": \"DRV\"\n        },\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"facility_name\": \"Brothers & Sons Inc.\",\n            \"items\": [\n              {\n                \"items_count\": 1,\n                \"length\": 12,\n                \"width\": 18,\n                \"height\": 24,\n                \"classification\": \"70\",\n                \"nmfc_code\": 19874,\n                \"package_type\": \"std_pallets\",\n                \"hazmat\": true,\n                \"hazmat_class\": \"mass_explosive\",\n                \"un_number\": 1485,\n                \"stackable\": false,\n                \"description\": \"apples\",\n                \"weight\": 20000\n              }\n            ],\n            \"contacts\": [\n              {\n                \"name\": \"John Doe\",\n                \"email\": \"john@example.com\",\n                \"phone_number\": \"+17895551234\"\n              }\n            ],\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"address\": \"12345 E 16th avenue\",\n            \"country\": \"USA\",\n            \"zipcode\": 33139,\n            \"window\": {\n              \"start\": \"2020-06-20 09:00:00\",\n              \"end\": \"2020-06-20 11:00:00\"\n            },\n            \"instructions\": \"Driver must arrive on time. These instructions will be sent to driver.\"\n          },\n          {\n            \"type\\\"\": \"DEL\",\n            \"facility_name\": \"Space Ghost Coast to Coast Inc.\",\n            \"contacts\": [\n              {\n                \"name\": \"Space Ghost\",\n                \"email\": \"space@ghost.com\",\n                \"phone_number\": \"+17124832133\"\n              }\n            ],\n            \"city\": \"New York\",\n            \"state\": \"NY\",\n            \"address\": \"321 E 7th avenue\",\n            \"country\": \"USA\",\n            \"zipcode\": 10010,\n            \"window\": {\n              \"start\": \"2020-06-22 16:00:00\",\n              \"end\": \"2020-06-22 18:00:00\"\n            },\n            \"instructions\": \"No special instructions here.\"\n          }\n        ]\n      }\n    ],\n    \"items\": [\n      {\n        \"items_count\": 1,\n        \"length\": 12,\n        \"width\": 18,\n        \"height\": 24,\n        \"classification\": \"80\",\n        \"nmfc_code\": 19874,\n        \"package_type\": \"std_pallets\",\n        \"hazmat\": true,\n        \"hazmat_class\": \"mass_explosive\",\n        \"un_number\": 1485,\n        \"stackable\": false,\n        \"description\": \"apples\",\n        \"weight\": 20000\n      }\n    ],\n    \"stops\": [\n      {\n        \"type\": \"PU\",\n        \"address\": \"12345 E 16th avenue\",\n        \"city\": \"Miami Beach\",\n        \"state\": \"FL\",\n        \"drop_trailer\": true,\n        \"zipcode\": \"33140\",\n        \"country\": \"USA\",\n        \"window\": {\n          \"start\": \"2018-06-20 09:00:00\",\n          \"end\": \"2018-06-20 11:00:00\"\n        },\n        \"accessorials\": [\n          \"sort-and-segregate\",\n          \"inside-pickup\"\n        ]\n      },\n      {\n        \"type\": \"DEL\",\n        \"address\": \"54321 E 16th avenue\",\n        \"city\": \"New York\",\n        \"state\": \"NY\",\n        \"drop_trailer\": false,\n        \"zipcode\": \"33140\",\n        \"country\": \"USA\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77bbfdfe-7a3c-45c1-adb1-2e3ccc664c21",
+              "name": "Quote Request not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "quotes-request",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee163628-5461-4d56-9a75-2e3c297368cd",
+              "name": "Quote request is no longer available",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "quotes-request",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gone",
+              "code": 410,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"string\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d7d3e5e6-ad02-4abf-94b2-23a4e925bd00",
+    "name": "Opendock Nova API Documentation Appointments Quotes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

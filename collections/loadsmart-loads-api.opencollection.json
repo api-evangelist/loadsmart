@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Loads API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Load Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/loads/:load_id/events"
+          },
+          "docs": "\nProvides a list of the events (rejected, accepted, etc) regarding a load previously tendered to Loadsmart.\n\nThis is an alternative way to obtain feedback whether a tendered load was accepted or rejected (you can also receive load events by Webhooks - see [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section).\nThe List Load Events endpoint was designed to be polled, so you don't need to expose an endpoint where Loadsmart would send the accepted/rejected webhook.\n\nAlthough loads and s"
+        },
+        {
+          "info": {
+            "name": "Create tender",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/loads/tender",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Tender a load to Loadsmart. The load could be either a spot or contracted one. If the endpoint returns\na successful status code, it means that we have received the load.\n\nIn order to see if the load was accepted or rejected, you must listen for the `load:accepted` and\n`load:rejected` webhooks, respectively. See [Load Webhooks](#tag/Webhooks/paths/~1load-webhooks/post) section.\n\nImportant: the uuid returned identifies a load uniquely in Loadsmart systems. This means that,\n for two or more respons"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

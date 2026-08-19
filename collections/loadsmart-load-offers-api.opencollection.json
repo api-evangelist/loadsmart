@@ -1,0 +1,326 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Load Offers API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Load Offers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/offers",
+            "params": [
+              {
+                "name": "alcohol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "equipment_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_lat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_lon",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "origin_radius",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_lat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_lon",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "destination_radius",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "mc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dot",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search offers\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve offer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/offers/:offer_id",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve offer"
+        },
+        {
+          "info": {
+            "name": "Accept an offer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/offers/:offer_id/accept",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Accept an Offer for a Carrier\n"
+        },
+        {
+          "info": {
+            "name": "Search related offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/offers/:offer_id/related",
+            "params": [
+              {
+                "name": "offer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "relation",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search related offers of another offer\n"
+        },
+        {
+          "info": {
+            "name": "List loads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/loads/"
+          },
+          "docs": "List accepted loads"
+        },
+        {
+          "info": {
+            "name": "Retrieve a load",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/loads/:load_id",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an accepted load"
+        },
+        {
+          "info": {
+            "name": "Drop a load",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/loads/:load_id",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Drop a load"
+        },
+        {
+          "info": {
+            "name": "Download ratecon",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/loads/:load_id/rate_confirmation",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download rate confirmation PDF file"
+        },
+        {
+          "info": {
+            "name": "Search related offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/loads/:load_id/related-offers",
+            "params": [
+              {
+                "name": "load_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "relation",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search related offers of a Load\n"
+        },
+        {
+          "info": {
+            "name": "List webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/webhooks"
+          },
+          "docs": "List configured webhooks\n"
+        },
+        {
+          "info": {
+            "name": "Register webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create webhooks configuration\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update webhook configuration\n"
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/webhooks/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete webhook configuration\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,529 @@
+{
+  "item": [
+    {
+      "id": "243438a6-91f0-4a78-93e5-654d275788b2",
+      "name": "Shipment Events",
+      "description": {
+        "content": "Our API supports fetch and change of a variety of shipments status, the main ones are\nresponsible to move the shipment from booked to in transit and delivered, They must\nobey the following order:\n\n* **shipment:en-route-to-pickup** - The first state responsible to start the haul.\n* **shipment:check-in-pickup** - Used when driver arrives at pickup facility.\n* **shipment:check-out-pickup** - Used when driver leaves the pickup facility.\n* **shipment:check-in-delivery** - Used when driver arrives at delivery facility.\n* **shipment:check-out-delivery** - Used when the driver delivers the shipment.\n\nNOTE: These events are allowed to be changed via API.\n\nThere are other events to support the main flow, they are available on webhooks or can be listed via API\n\nShipment events, specific events that can happen for a shipment:\n* **shipment:incident** - When a incident is registered to a shipment.\n* **shipment:canceled** - When the shipment is canceled for some reason.\n\nAppointment events, these events are normally set before the load starts to move:\n\n* **shipment:appointment-pickup** - Used to set an appointment at pickup.\n* **shipment:appointment-delivery** - Used to set an appointment at delivery.\n\nCarrier related events, indicate changes in the carrier, drop, etc. normally happens before the load starts to move:\n\n* **shipment:carrier-updated** - Used for changes on a load related to a carrier, i.e. trailer # change.\n* **shipment:carrier-dropped** - Indicates a carrier drop for a particular shipment.\n* **shipment:driver-assigned** - A carrier driver assignment.\n* **shipment:driver-unassigned** - A carrier driver unassignment.\n\nCarrier location update, happens while the load is in transit until final delivery:\n\n* **shipment:location-updated** - Used to indicate the geographic coordinates of the carrier.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5caab45-5100-4244-9e7d-6d91c9fb0045",
+          "name": "Create shipment event",
+          "request": {
+            "name": "Create shipment event",
+            "description": {
+              "content": "When moving the load always start the flow with the shipment:en-route-to-pickup event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"event_date\": \"<dateTime>\",\n  \"stop_index\": \"<integer>\",\n  \"details\": {\n    \"late-reason\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c9dba7d5-9146-4d54-9d23-540b00102785",
+              "name": "Event successfully created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipment:check-in-pickup\",\n  \"event_date\": \"2018-06-19 14:30:00+00:00\",\n  \"stop_index\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4661f24b-a2a2-42e8-bd38-9dddef73b6a0",
+              "name": "Shipment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipment:check-in-pickup\",\n  \"event_date\": \"2018-06-19 14:30:00+00:00\",\n  \"stop_index\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c141bba4-1201-464b-914d-7137506833c2",
+              "name": "Load status transition not allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipment:check-in-pickup\",\n  \"event_date\": \"2018-06-19 14:30:00+00:00\",\n  \"stop_index\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2f271b17-a6b6-4236-9aab-90f47fb67ca2",
+              "name": "Payload is invalid and the event can't be created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"shipment:check-in-pickup\",\n  \"event_date\": \"2018-06-19 14:30:00+00:00\",\n  \"stop_index\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11e74d98-8712-4fe1-98f6-0d6aba8f0eb5",
+          "name": "List shipment events.",
+          "request": {
+            "name": "List shipment events.",
+            "description": {
+              "content": "List shipment events.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "1b84c6bf-6601-4093-afe4-555b174df9a8",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"type\": \"shipment:en-route-to-pickup\",\n      \"shipment_id\": \"ad5aa25c-3e20-4de8-aeba-3a71d3c3242c\",\n      \"created_at\": \"2018-06-19 10:30:00+00:00\",\n      \"details\": {\n        \"event_date\": \"2018-06-10 09:00:00+00:00\",\n        \"stop_index\": 0\n      }\n    },\n    {\n      \"type\": \"shipment:driver-assigned\",\n      \"shipment_id\": \"ad5aa25c-3e20-4de8-aeba-3a71d3c3242c\",\n      \"created_at\": \"2018-06-19 14:30:00+00:00\",\n      \"details\": {\n        \"driver\": {\n          \"id\": \"eb68a884-0c00-40bb-89e1-629e7397f90f\",\n          \"name\": \"David\"\n        }\n      }\n    }\n  ],\n  \"previous\": \"https://api.sandbox.loadsmart.com/api/v2/shipments/ad5aa25c-3e20-4de8-aeba-3a71d3c3242c/events?limit=2\",\n  \"next\": null,\n  \"count\": 20\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed11b80f-1c96-4d19-80c3-a5bb0d519bf8",
+              "name": "Permission denied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"permission_denied\",\n  \"error_description\": \"You do not have permission to perform this action.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f40c4613-e84d-4c46-890c-16ff62083ea3",
+              "name": "Shipment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1c11e336-52ed-4df6-b74a-042806aa635b",
+    "name": "Opendock Nova API Documentation Appointments Shipment Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

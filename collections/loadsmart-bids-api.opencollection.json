@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Bids API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bids",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Bids",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/bids",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the bid"
+              }
+            ]
+          },
+          "docs": "List Bids"
+        },
+        {
+          "info": {
+            "name": "Create Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/bids",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Bid"
+        },
+        {
+          "info": {
+            "name": "Retrieve Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/bids/:bid_id",
+            "params": [
+              {
+                "name": "bid_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve Bid"
+        },
+        {
+          "info": {
+            "name": "Accept Bid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/load-offers/bids/:bid_id/accept",
+            "params": [
+              {
+                "name": "bid_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Accept Bid"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

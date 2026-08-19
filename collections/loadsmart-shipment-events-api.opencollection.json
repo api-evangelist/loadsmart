@@ -1,0 +1,73 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Shipment Events API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipment Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List shipment events.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/events",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List shipment events."
+        },
+        {
+          "info": {
+            "name": "Create shipment event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/events",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "When moving the load always start the flow with the shipment:en-route-to-pickup event."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

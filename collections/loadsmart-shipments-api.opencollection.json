@@ -1,0 +1,209 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Shipments API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set empty location",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/empty_location",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows a three party partner to set an empty location for a taken load.\n"
+        },
+        {
+          "info": {
+            "name": "Assign Driver",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/assign_driver",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows a three party partner to set a driver for a taken load.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve details from a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id"
+          },
+          "docs": "Retrieve details from a shipment"
+        },
+        {
+          "info": {
+            "name": "Cancel a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id"
+          },
+          "docs": "Cancel a shipment"
+        },
+        {
+          "info": {
+            "name": "Show interest in a shipment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/interested",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Inform us about interest in a shipment and request a call."
+        },
+        {
+          "info": {
+            "name": "Create shipment action log entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/action-logs",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Appends an action to the shipment's action log.\n"
+        },
+        {
+          "info": {
+            "name": "Create shipment document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shipment-documents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "shipment",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file_obj",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file_name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "type",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Send a shipment document for audit it can be a proof of delivery, carrier invoice or any other document."
+        },
+        {
+          "info": {
+            "name": "List shipment documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/shipment-documents/?shipment=$:shipment",
+            "params": [
+              {
+                "name": "shipment_uuid_or_loadsmart_ref_number",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List of shipment documents sent via shipment-documents."
+        },
+        {
+          "info": {
+            "name": "Retrieve shipment scores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/shipmentscores",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for shipment scores"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for shipment scores"
+              },
+              {
+                "name": "shipper_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter shipment scores by shipper"
+              }
+            ]
+          },
+          "docs": "Retrieve shipment scores"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

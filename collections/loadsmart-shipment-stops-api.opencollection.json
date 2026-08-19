@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Shipment Stops API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipment Stops",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Confirm stop appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://neutron.opendock.com/api/v2/shipments/:shipment_id/stops/:stop_id/confirm_appointment",
+            "params": [
+              {
+                "name": "shipment_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "stop_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirm the time and date of the appointment for the stop"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,463 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Metrics API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metrics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Appointment volume by load type and week day",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/load-type",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment volume by load type and week day"
+        },
+        {
+          "info": {
+            "name": "Appointment volume by time of day",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/time-of-day",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment volume by time of day"
+        },
+        {
+          "info": {
+            "name": "Appointment volume by date",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/date",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment volume by date"
+        },
+        {
+          "info": {
+            "name": "Appointment volume by carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/carrier",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment volume by carrier"
+        },
+        {
+          "info": {
+            "name": "Appointment duration average by load type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/average-duration-by-load-type",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment duration average by load type"
+        },
+        {
+          "info": {
+            "name": "Appointment duration average by dock and day of week",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/day-of-week",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment duration average by dock and day of week"
+        },
+        {
+          "info": {
+            "name": "Appointment duration average by status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/status",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment duration average by status"
+        },
+        {
+          "info": {
+            "name": "Appointment duration average by dock and status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/appointment-volume/status-by-dock",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment duration average by dock and status"
+        },
+        {
+          "info": {
+            "name": "The average time spent in each appointment status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/appointments/status-times",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The average time spent in each appointment status"
+        },
+        {
+          "info": {
+            "name": "Retrieve file link with the appointment list that matches the criteria described in the request body, ",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/appointments/excel",
+            "params": [
+              {
+                "name": "emailCCs",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The link will point to an XLSX file external to Nova"
+        },
+        {
+          "info": {
+            "name": "Retrieve file link with the yard data list that matches the criteria described in the request body",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/yard/excel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The link will point to an XLSX file external to Nova"
+        },
+        {
+          "info": {
+            "name": "Retrieve file link with the asset visits (check-ins) list that matches the criteria described in the request body",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/asset-visits/excel",
+            "params": [
+              {
+                "name": "emailCCs",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The link will point to an XLSX file external to Nova"
+        },
+        {
+          "info": {
+            "name": "Retrieve warehouse dock capacity usage information per warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/warehouse/capacity-usage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve warehouse dock capacity usage information per warehouse"
+        },
+        {
+          "info": {
+            "name": "Retrieve warehouse insights",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/warehouse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve warehouse insights"
+        },
+        {
+          "info": {
+            "name": "Retrieve carrier insights data with each status percentage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/carrier/status-percentages",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve carrier insights data with each status percentage"
+        },
+        {
+          "info": {
+            "name": "Retrieve dock metrics of dwell time by day of week",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/dock/dwell-time",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "From date to filter"
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "To date to filter"
+              },
+              {
+                "name": "warehouseId",
+                "value": "",
+                "type": "query",
+                "description": "Warehouse ID to filter"
+              },
+              {
+                "name": "dockId",
+                "value": "",
+                "type": "query",
+                "description": "Dock ID to filter"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve dock metrics of dwell time by day of week"
+        },
+        {
+          "info": {
+            "name": "Appointment count per dock",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/counts/appointment-count-for-docks",
+            "params": [
+              {
+                "name": "dockIds",
+                "value": "",
+                "type": "query",
+                "description": "Dock IDs array"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment count per dock"
+        },
+        {
+          "info": {
+            "name": "Appointment count per carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/counts/appointment-count-for-carrier",
+            "params": [
+              {
+                "name": "carrierId",
+                "value": "",
+                "type": "query",
+                "description": "Carrier ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment count per carrier"
+        },
+        {
+          "info": {
+            "name": "Appointment count by status for current carrier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/counts/appointment-count-for-carrier/status",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appointment count by status for current carrier"
+        },
+        {
+          "info": {
+            "name": "Reserve count for user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/metrics/counts/reserve-count-for-user",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "User ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Reserve count for user"
+        },
+        {
+          "info": {
+            "name": "Finds the next available appointment time for each dock and loadtype, starting from the current date and time onward",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics/loadtype/first-avail-appt",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Finds the next available appointment time for each dock and loadtype, starting from the current date and time onward"
+        },
+        {
+          "info": {
+            "name": "Retrieve an appointment list that matches the criteria described in the request body",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics-v2/appointments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve an appointment list that matches the criteria described in the request body"
+        },
+        {
+          "info": {
+            "name": "Retrieve an asset visit list that matches the criteria described in the request body",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/metrics-v2/asset-visits",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve an asset visit list that matches the criteria described in the request body"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

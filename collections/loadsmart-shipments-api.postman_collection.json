@@ -1,0 +1,1677 @@
+{
+  "item": [
+    {
+      "id": "aeaf5aff-940c-4127-abf7-22228f96e5b4",
+      "name": "Shipments",
+      "description": {
+        "content": "Manage shipments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b3843930-b8c0-4724-b89a-b17d8259c9c3",
+          "name": "Set empty location",
+          "request": {
+            "name": "Set empty location",
+            "description": {
+              "content": "Allows a three party partner to set an empty location for a taken load.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "empty_location"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zipcode\": \"<string>\",\n  \"available_date\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "495c1c17-f8aa-4a5a-a7f0-54314c75a31e",
+              "name": "All provided data is valid and the empty location was set.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "empty_location"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"availability_date\": \"2016-07-22 12:00:00-03:00\",\n    \"zipcode\": \"10007\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e6eafff-1d68-47eb-9673-19401d4a7ecc",
+              "name": "Logged carrier is not related to the shipment and empty location can't be set.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "empty_location"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"availability_date\": \"2016-07-22 12:00:00-03:00\",\n    \"zipcode\": \"10007\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "276e0dfd-a5a2-4a53-a118-727857da9e3f",
+              "name": "Payload is invalid or shipment doesn't exist and the empty location can't be set.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "empty_location"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"availability_date\": \"2016-07-22 12:00:00-03:00\",\n    \"zipcode\": \"10007\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d63eb0a-674d-40b5-98af-97b49e673688",
+          "name": "Assign Driver",
+          "request": {
+            "name": "Assign Driver",
+            "description": {
+              "content": "Allows a three party partner to set a driver for a taken load.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "assign_driver"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driver_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "29612971-49d4-4ca3-99ab-5ebe80e2da15",
+              "name": "All provided data is valid and the driver was set.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "assign_driver"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"driver_id\": \"63bb49f7-b98c-4a24-8f58-be8b96b5953d\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "25c8a0f5-650a-45e3-9415-ef8b45e9a9e4",
+              "name": "Logged carrier is not related to the driver or is not related to the shipment and driver can't be assign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "assign_driver"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"driver_id\": \"63bb49f7-b98c-4a24-8f58-be8b96b5953d\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e05d5e62-9c3a-4b3b-8bd9-5ac187675c48",
+              "name": "Shipment doesn't exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "assign_driver"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"driver_id\": \"63bb49f7-b98c-4a24-8f58-be8b96b5953d\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7dc36e2d-d4a4-48f7-a6c3-3c6b12e91309",
+          "name": "Cancel a shipment",
+          "request": {
+            "name": "Cancel a shipment",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "954ffbb6-52dd-4fc3-9051-e8ce05b5ddfa",
+              "name": "Shipment was canceled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d445f980-35b3-4407-9110-f85ae30da457",
+              "name": "Shipment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fab5573e-6a49-4dbf-b333-4f13ce939412",
+          "name": "Retrieve details from a shipment",
+          "request": {
+            "name": "Retrieve details from a shipment",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "8b0fb6d7-d3e1-4bb8-a3d1-92b6f3ed7a4d",
+              "name": "Shipment was found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"bol_number\": \"31871465\",\n    \"ref_number\": \"24577100\",\n    \"purchase_order_numbers\": [\n      \"abc123\",\n      \"321cba\"\n    ],\n    \"stops\": [\n      {\n        \"address\": \"2814 S SECOND ST\",\n        \"city\": \"St. Louis\",\n        \"stop_index\": 0,\n        \"state\": \"MO\",\n        \"zipcode\": \"63118\"\n      },\n      {\n        \"address\": \"825 STONE AVE\",\n        \"city\": \"Monroe\",\n        \"stop_index\": 1,\n        \"state\": \"LA\",\n        \"zipcode\": \"71201\"\n      }\n    ],\n    \"requirements\": {\n      \"hazmat\": false,\n      \"beer\": false,\n      \"dunnage\": true,\n      \"tarp\": {\n        \"size\": 10,\n        \"type\": \"lumber\"\n      }\n    },\n    \"id\": \"2d490b57-6c77-4ee7-8d14-cb9d8d89923d\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7f07db7-d4c6-4994-8cad-a66d1700d1dc",
+              "name": "Shipment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37dde60b-203c-4987-9088-4f3a78019d2f",
+          "name": "Show interest in a shipment.",
+          "request": {
+            "name": "Show interest in a shipment.",
+            "description": {
+              "content": "Inform us about interest in a shipment and request a call.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "interested"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "1eccfd04-6a44-4e5f-abe4-04d84b0bab73",
+              "name": "Shipment was found and the message was sent.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "interested"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6be19c20-7678-402f-8288-286e366fa0ea",
+              "name": "Shipment not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "interested"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a45c8120-6cb3-4429-8e41-df00e5497eff",
+          "name": "Create shipment action log entry",
+          "request": {
+            "name": "Create shipment action log entry",
+            "description": {
+              "content": "Appends an action to the shipment's action log.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipments",
+                ":shipment_id",
+                "action-logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f4a51238-1b39-44a0-9c24-2ae5caa11a37",
+              "name": "Action log entry was created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "action-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"Manual gate check completed at pickup\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c95f82ad-5fea-4d9c-966e-3e82993be973",
+              "name": "Permission denied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "action-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"Manual gate check completed at pickup\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a305734c-3dc1-4b02-912e-f13fdbbe09ec",
+              "name": "Shipment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "action-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"Manual gate check completed at pickup\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"object_not_found\",\n  \"error_description\": \"Object not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "100d5b08-085d-4c40-b765-c7332e8412e4",
+              "name": "Shipment is not eligible for action logs.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipments",
+                    ":shipment_id",
+                    "action-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"Manual gate check completed at pickup\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9fbba3c8-f9d2-448e-8492-12d8f41d9992",
+          "name": "Create shipment document",
+          "request": {
+            "name": "Create shipment document",
+            "description": {
+              "content": "Send a shipment document for audit it can be a proof of delivery, carrier invoice or any other document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipment-documents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "shipment",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The shipment UUID or Loadsmart ref number."
+                },
+                {
+                  "key": "file_obj",
+                  "value": "<binary>",
+                  "type": "text",
+                  "description": "(Required) The shipment pdf file."
+                },
+                {
+                  "key": "file_name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The file name."
+                },
+                {
+                  "key": "type",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The file type. (This can only be one of carrier-invoice,proof-of-delivery,other)"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5b154e3b-e289-4ab4-b447-52e79f954fc7",
+              "name": "Shipment document successfully created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipment-documents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The shipment UUID or Loadsmart ref number.",
+                        "type": "text/plain"
+                      },
+                      "key": "shipment",
+                      "value": "ac483d72-83c5-41cd-97bf-ce94517e7bc5",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The shipment pdf file.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_obj",
+                      "value": "(binary)",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file name.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_name",
+                      "value": "9444666.pdf",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file type. (This can only be one of carrier-invoice,proof-of-delivery,other)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "carrier-invoice",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3ab698c7-19e9-4aef-be04-4b64546aa6f4",
+              "name": "Logged carrier is incorrect.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipment-documents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The shipment UUID or Loadsmart ref number.",
+                        "type": "text/plain"
+                      },
+                      "key": "shipment",
+                      "value": "ac483d72-83c5-41cd-97bf-ce94517e7bc5",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The shipment pdf file.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_obj",
+                      "value": "(binary)",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file name.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_name",
+                      "value": "9444666.pdf",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file type. (This can only be one of carrier-invoice,proof-of-delivery,other)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "carrier-invoice",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2a9ca2b-426c-4cdd-9812-9d247d7283de",
+              "name": "Payload is invalid and the document wasn't created for the shipment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipment-documents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The shipment UUID or Loadsmart ref number.",
+                        "type": "text/plain"
+                      },
+                      "key": "shipment",
+                      "value": "ac483d72-83c5-41cd-97bf-ce94517e7bc5",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The shipment pdf file.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_obj",
+                      "value": "(binary)",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file name.",
+                        "type": "text/plain"
+                      },
+                      "key": "file_name",
+                      "value": "9444666.pdf",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The file type. (This can only be one of carrier-invoice,proof-of-delivery,other)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "carrier-invoice",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_data\",\n  \"error_description\": \"Can't create the object\",\n  \"errors\": {\n    \"field_name\": [\n      \"This field is required.\"\n    ],\n    \"other_field\": [\n      \"Expected string but received integer.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8bb8fee-ba2f-4136-adea-cca81efaf605",
+          "name": "List shipment documents",
+          "request": {
+            "name": "List shipment documents",
+            "description": {
+              "content": "List of shipment documents sent via shipment-documents.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipment-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "shipment",
+                  "value": "${{shipment}}"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "shipment_uuid_or_loadsmart_ref_number",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2a556c2f-5c64-46a7-9159-bcc61167aa56",
+              "name": "Success list of shipment documents sent via shipment-documents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipment-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shipment_uuid_or_loadsmart_ref_number",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"444\",\n      \"created_at\": \"2024-01-01 00:00:00+00:00\",\n      \"shipment\": \"ac483d72-83c5-41cd-97bf-ce94517e7bc5\",\n      \"shipment_loadsmart_ref_number\": \"9444666\",\n      \"type\": \"carrier-invoice\",\n      \"file_name\": \"9444666.pdf\",\n      \"url\": \"https://my.com/submitted-shipment-documents/9444666/carrier-invoice/9444666.pdf\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b52fdffc-33dd-459a-87fc-fd50c2f37b07",
+              "name": "Logged carrier is incorrect.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipment-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shipment_uuid_or_loadsmart_ref_number",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"forbiden_access\",\n  \"error_description\": \"An user is trying to access a not authorized resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b7bd81f1-b264-494b-b968-c335654fd264",
+          "name": "Retrieve shipment scores",
+          "request": {
+            "name": "Retrieve shipment scores",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "shipmentscores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Start date for shipment scores"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "End date for shipment scores"
+                },
+                {
+                  "disabled": false,
+                  "key": "shipper_uuid",
+                  "value": "<uuid>",
+                  "description": "Filter shipment scores by shipper"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "bd7b32dc-5181-417c-86a5-4093c60b7f7f",
+              "name": "Shipment scores",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipmentscores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "shipper_uuid",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"audited\": false,\n      \"carrier_name\": \"JONES EXPRESS, INC.\",\n      \"carrier_uuid\": \"ab51fded-cc5b-4338-ad41-69c98ecdeaa4\",\n      \"delivered_at\": \"2019-10-18 13:20:36+00:00\",\n      \"delivery_city\": \"Buford\",\n      \"delivery_state\": \"GA\",\n      \"otd\": true,\n      \"otp\": false,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9290080\",\n      \"shipment_uuid\": \"b5cfc16c-37d2-4e1a-a481-3e0ec5e05cdf\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"CELADON TRUCKING SERVICES INC\",\n      \"carrier_uuid\": \"d11a1f7c-fad9-4ff9-b0ba-34fc93f63c3f\",\n      \"delivered_at\": \"2019-10-18 13:04:00+00:00\",\n      \"delivery_city\": \"Grimes\",\n      \"delivery_state\": \"IA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Salisbury\",\n      \"pickup_state\": \"NC\",\n      \"shipment_ref\": \"9290018\",\n      \"shipment_uuid\": \"0d6527b4-c091-4f4e-99af-4634b7de1a74\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"JD LOGISTIC\",\n      \"carrier_uuid\": \"4591734a-9ce8-47f3-a0bf-9872e4734d70\",\n      \"delivered_at\": \"2019-10-18 12:30:00+00:00\",\n      \"delivery_city\": \"Swedesboro\",\n      \"delivery_state\": \"NJ\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Walton\",\n      \"pickup_state\": \"KY\",\n      \"shipment_ref\": \"9289985\",\n      \"shipment_uuid\": \"a5675679-6b06-4206-8eb9-f930b64ca255\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"TRANSPORT AMERICA\",\n      \"carrier_uuid\": \"fcc9aacd-1acd-4fa1-9c9a-4288d6f62fc4\",\n      \"delivered_at\": \"2019-10-16 14:00:00+00:00\",\n      \"delivery_city\": \"Buford\",\n      \"delivery_state\": \"GA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Florence\",\n      \"pickup_state\": \"KY\",\n      \"shipment_ref\": \"9289982\",\n      \"shipment_uuid\": \"34aff94e-1744-494b-9194-17c0c804c899\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"SCHNEIDER NATIONAL CARRIERS, INC.\",\n      \"carrier_uuid\": \"1848f1b2-a16a-4be8-9304-8e5a049f619a\",\n      \"delivered_at\": \"2019-10-17 13:30:00+00:00\",\n      \"delivery_city\": \"Grimes\",\n      \"delivery_state\": \"IA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Broadview\",\n      \"pickup_state\": \"IL\",\n      \"shipment_ref\": \"9289979\",\n      \"shipment_uuid\": \"2b221d63-d91e-4c48-9614-cb2e8438cfc0\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"P W D TRANSPORTATION INC\",\n      \"carrier_uuid\": \"34eb6030-f4b2-45e2-aec5-70ad7cd08aa2\",\n      \"delivered_at\": \"2019-10-17 19:20:00+00:00\",\n      \"delivery_city\": \"Whitestown\",\n      \"delivery_state\": \"IN\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Huntington\",\n      \"pickup_state\": \"IN\",\n      \"shipment_ref\": \"9289963\",\n      \"shipment_uuid\": \"1ab41074-6dce-4b42-a049-3c2d969e6cf5\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"P W D TRANSPORTATION INC\",\n      \"carrier_uuid\": \"34eb6030-f4b2-45e2-aec5-70ad7cd08aa2\",\n      \"delivered_at\": \"2019-10-17 12:30:00+00:00\",\n      \"delivery_city\": \"Whitestown\",\n      \"delivery_state\": \"IN\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Goshen\",\n      \"pickup_state\": \"IN\",\n      \"shipment_ref\": \"9289962\",\n      \"shipment_uuid\": \"dec8a270-5ff5-4693-b7ce-c09561adc3e3\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"ARKA EXPRESS INC\",\n      \"carrier_uuid\": \"9c6276bc-c4e4-4a8d-8ffa-ce511ef05996\",\n      \"delivered_at\": \"2019-10-17 01:55:00+00:00\",\n      \"delivery_city\": \"Portage\",\n      \"delivery_state\": \"IN\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Des Plaines\",\n      \"pickup_state\": \"IL\",\n      \"shipment_ref\": \"9289950\",\n      \"shipment_uuid\": \"5866d5f8-7806-4251-b03c-b3d70ee4a049\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"CELADON TRUCKING SERVICES INC\",\n      \"carrier_uuid\": \"d11a1f7c-fad9-4ff9-b0ba-34fc93f63c3f\",\n      \"delivered_at\": \"2019-10-18 12:42:00+00:00\",\n      \"delivery_city\": \"Grand Prairie\",\n      \"delivery_state\": \"TX\",\n      \"otd\": true,\n      \"otp\": false,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9289898\",\n      \"shipment_uuid\": \"858e8be9-3776-4fd1-a5d3-c07113bde05e\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"A. D. TRANSPORT EXPRESS, INC.\",\n      \"carrier_uuid\": \"f80fcf21-8e29-4f6e-989b-0347b03207ba\",\n      \"delivered_at\": \"2019-10-16 17:01:00+00:00\",\n      \"delivery_city\": \"Grimes\",\n      \"delivery_state\": \"IA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9289876\",\n      \"shipment_uuid\": \"edb3f8e5-903c-4a46-8a34-258d7207473a\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"CELADON TRUCKING SERVICES INC\",\n      \"carrier_uuid\": \"d11a1f7c-fad9-4ff9-b0ba-34fc93f63c3f\",\n      \"delivered_at\": \"2019-10-16 21:52:00+00:00\",\n      \"delivery_city\": \"Memphis\",\n      \"delivery_state\": \"TN\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Kendallville\",\n      \"pickup_state\": \"IN\",\n      \"shipment_ref\": \"9289842\",\n      \"shipment_uuid\": \"e75e44ed-ee2d-4aba-a8eb-75588fdc187f\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"R. T. 80 EXPRESS, INC.\",\n      \"carrier_uuid\": \"ddf2af3b-9615-4154-b187-4a63316550c9\",\n      \"delivered_at\": \"2019-10-16 13:00:00+00:00\",\n      \"delivery_city\": \"Canton\",\n      \"delivery_state\": \"OH\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Wapakoneta\",\n      \"pickup_state\": \"OH\",\n      \"shipment_ref\": \"9289783\",\n      \"shipment_uuid\": \"9d0be210-e4f1-46f3-a906-8d20ebda3287\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"CELADON TRUCKING SERVICES INC\",\n      \"carrier_uuid\": \"d11a1f7c-fad9-4ff9-b0ba-34fc93f63c3f\",\n      \"delivered_at\": \"2019-10-17 16:28:00+00:00\",\n      \"delivery_city\": \"Grand Prairie\",\n      \"delivery_state\": \"TX\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Huntington\",\n      \"pickup_state\": \"IN\",\n      \"shipment_ref\": \"9289782\",\n      \"shipment_uuid\": \"59e97293-d47b-4be4-af66-3ce6b5e6d062\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"BIG M TRANSPORTATION, INC.\",\n      \"carrier_uuid\": \"232319b6-bf79-4f53-baf3-4a7eea74f8f1\",\n      \"delivered_at\": \"2019-10-17 02:47:00+00:00\",\n      \"delivery_city\": \"Memphis\",\n      \"delivery_state\": \"TN\",\n      \"otd\": false,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Huntington\",\n      \"pickup_state\": \"IN\",\n      \"shipment_ref\": \"9289778\",\n      \"shipment_uuid\": \"2eaa2056-3de5-4b5e-bd38-8577f6c938bd\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"SCHNEIDER NATIONAL CARRIERS, INC.\",\n      \"carrier_uuid\": \"1848f1b2-a16a-4be8-9304-8e5a049f619a\",\n      \"delivered_at\": \"2019-10-17 16:45:00+00:00\",\n      \"delivery_city\": \"Memphis\",\n      \"delivery_state\": \"TN\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Montpelier\",\n      \"pickup_state\": \"OH\",\n      \"shipment_ref\": \"9289769\",\n      \"shipment_uuid\": \"9ff161a5-0823-4ede-8dc6-b40d67d3fb72\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"RSR TRANSPORT LLC\",\n      \"carrier_uuid\": \"ba7b00fb-7a3d-4b5b-b45d-dd75a51561ad\",\n      \"delivered_at\": \"2019-10-16 14:15:00+00:00\",\n      \"delivery_city\": \"Canton\",\n      \"delivery_state\": \"OH\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Trenton\",\n      \"pickup_state\": \"MO\",\n      \"shipment_ref\": \"9289756\",\n      \"shipment_uuid\": \"473fb3fe-7c09-4ac4-bee1-8e0898eb2272\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"CELADON TRUCKING SERVICES INC\",\n      \"carrier_uuid\": \"d11a1f7c-fad9-4ff9-b0ba-34fc93f63c3f\",\n      \"delivered_at\": \"2019-10-16 10:02:00+00:00\",\n      \"delivery_city\": \"Whitestown\",\n      \"delivery_state\": \"IN\",\n      \"otd\": true,\n      \"otp\": false,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Spartanburg\",\n      \"pickup_state\": \"SC\",\n      \"shipment_ref\": \"9289691\",\n      \"shipment_uuid\": \"761927f2-6ffb-4ec1-93a9-63a2e9d40823\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"SCHNEIDER NATIONAL CARRIERS, INC.\",\n      \"carrier_uuid\": \"1848f1b2-a16a-4be8-9304-8e5a049f619a\",\n      \"delivered_at\": \"2019-10-17 13:29:00+00:00\",\n      \"delivery_city\": \"Buford\",\n      \"delivery_state\": \"GA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9289670\",\n      \"shipment_uuid\": \"c580dc2f-8a81-4c1f-935a-ab0053009dde\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"A. D. TRANSPORT EXPRESS, INC.\",\n      \"carrier_uuid\": \"f80fcf21-8e29-4f6e-989b-0347b03207ba\",\n      \"delivered_at\": \"2019-10-17 01:00:00+00:00\",\n      \"delivery_city\": \"Buford\",\n      \"delivery_state\": \"GA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9289669\",\n      \"shipment_uuid\": \"23629db9-268f-4853-8949-9d212251f204\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    },\n    {\n      \"audited\": false,\n      \"carrier_name\": \"SCHNEIDER NATIONAL CARRIERS, INC.\",\n      \"carrier_uuid\": \"1848f1b2-a16a-4be8-9304-8e5a049f619a\",\n      \"delivered_at\": \"2019-10-16 15:00:00+00:00\",\n      \"delivery_city\": \"Buford\",\n      \"delivery_state\": \"GA\",\n      \"otd\": true,\n      \"otp\": true,\n      \"overridden\": \"\",\n      \"pickup_city\": \"Grand Rapids\",\n      \"pickup_state\": \"MI\",\n      \"shipment_ref\": \"9289668\",\n      \"shipment_uuid\": \"5c72f663-0213-4ce0-b0f2-7e39edb5a6f3\",\n      \"shipper_uuid\": \"320bea98-c46a-493a-860d-f9bdd49c39a9\",\n      \"source\": \"alice\"\n    }\n  ],\n  \"next\": \"https://api.loadsmart.io/api/v2/shipmentscores/?limit=20&offset=20\",\n  \"previous\": null,\n  \"count\": 325923\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26b572bd-246d-45bc-9016-24c8d79d7e37",
+              "name": "User Does Not Have Permission",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "shipmentscores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "shipper_uuid",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"does_not_have_permission\",\n  \"error_description\": \"Permission is Denied for this Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://neutron.opendock.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "76b3e692-08fc-4ec7-9c86-6f0e6b060110",
+    "name": "Opendock Nova API Documentation Appointments Shipments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n",
+      "type": "text/plain"
+    }
+  }
+}

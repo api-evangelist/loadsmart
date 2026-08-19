@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Routes API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Routes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Estimate distance and duration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/routes/estimate-trip-duration",
+            "params": [
+              {
+                "name": "origin",
+                "value": "",
+                "type": "query",
+                "description": "Address (complete or partial) for the origin"
+              },
+              {
+                "name": "destination",
+                "value": "",
+                "type": "query",
+                "description": "Address (complete or partial) for the destination"
+              }
+            ]
+          },
+          "docs": "Estimate the distance and trip duration between an origin and\ndestination.\n\nOrigin and destination can be any valid address.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

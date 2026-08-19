@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments General API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "General",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Shows a greeting message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/"
+          },
+          "docs": "Shows a greeting message."
+        },
+        {
+          "info": {
+            "name": "Shows the current Nova version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/version"
+          },
+          "docs": "Shows the current Nova version."
+        },
+        {
+          "info": {
+            "name": "Gets public environment data for the app.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/app-environment"
+          },
+          "docs": "Gets public environment data for the app."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

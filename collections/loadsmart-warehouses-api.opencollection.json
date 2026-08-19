@@ -1,0 +1,280 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Warehouses API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Warehouses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a single Warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/warehouse/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a single Warehouse"
+        },
+        {
+          "info": {
+            "name": "Update a single Warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/warehouse/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a single Warehouse"
+        },
+        {
+          "info": {
+            "name": "Delete a single Warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/warehouse/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a single Warehouse"
+        },
+        {
+          "info": {
+            "name": "Retrieve multiple Warehouses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/warehouse",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Selects resource fields. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#select\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "s",
+                "value": "",
+                "type": "query",
+                "description": "Adds search condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#search\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Adds filter condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#filter\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "or",
+                "value": "",
+                "type": "query",
+                "description": "Adds OR condition. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#or\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Adds sort by field. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#sort\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "join",
+                "value": "",
+                "type": "query",
+                "description": "Adds relational resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#join\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#limit\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset amount of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#offset\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page portion of resources. <a href=\"https://github.com/nestjsx/crud/wiki/Requests#page\" target=\"_blank\">Docs</a>"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query",
+                "description": "Reset cache (if was enabled). <a href=\"https://github.com/nestjsx/crud/wiki/Requests#cache\" target=\"_blank\">Docs</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve multiple Warehouses"
+        },
+        {
+          "info": {
+            "name": "Create a single Warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/warehouse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "**This is a billable event.** Creating a new warehouse implies additional subscription costs. Please reach out to your CSA for more information."
+        },
+        {
+          "info": {
+            "name": "Create custom forms for load types",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/warehouse/:id/custom-forms",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint creates custom forms that are triggered when appointments are booked with specific load types.\n\n    The system will generate three forms:\n    - One for the Warehouse App\n    - One for the Carrier App\n    - One for all platforms, including API integrations\n\n    Initially, forms are created without fields. After creation, you must configure the form fields using the '/custom-forms/form-field' endpoint.\n\n    For complete form management, refer to the Custom Forms section, starting wit"
+        },
+        {
+          "info": {
+            "name": "Update custom forms for load types",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/warehouse/:id/custom-forms",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates existing custom forms' names and their associations with load types.\n\n    This endpoint allows you to:\n    - Modify the display name of custom forms\n    - Change which load types trigger these forms\n    - Update form visibility settings\n\n    For Delete a loadtype custom form, please refer to custom-forms/flow endpoint sending the flowId to delete all related flows/forms.\n    Note: To modify the fields within forms, use the '/custom-forms/form-field' endpoint."
+        },
+        {
+          "info": {
+            "name": "Get open hours for set of docks in the warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/warehouse/:id/get-hours-of-operation",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint will return an array of docks and their computed open hours taking into consideration\n    closed days and the warehouse hours. <br /><br />\n    If dockIds are supplied, then it will filter the returned array down to those docks. <br /><br />\n    This will always return a full weeks worth of hours around the start/end dates provided."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

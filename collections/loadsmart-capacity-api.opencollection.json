@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Capacity API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Capacity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create capacity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/capacity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Inform us about a list of available trucks.\n\nThe available trucks must have at least a point of pickup, the\ndelivery is not mandatory but will increase the chances of best\nmatching for our loads.\n\nThe capacity represents an empty truck position. For different\nempty positions for the same truck, the available trucks and\ntheir ids must be different. We suggest that you use an uuid to\nrepresent the `ref_number` attribute on your side, because this\nidentifier will be reused across other endpoints.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Capacity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/api/v2/capacity/:capacity_ref_number",
+            "params": [
+              {
+                "name": "ref_number",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Capacity"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

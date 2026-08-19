@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments SAML API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SAML",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "SamlController_getConfig",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/saml/config",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_updateConfig",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://neutron.opendock.com/saml/config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_resetConfig",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://neutron.opendock.com/saml/config",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_getSpMetadataUrl",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/saml/metadata-url",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_samlAssertionConsumer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/saml/ac/:orgId"
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_samlLogin",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/saml/login/:orgId"
+          }
+        },
+        {
+          "info": {
+            "name": "SamlController_getSpMetadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/saml/metadata/:orgId"
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Shipper Accounting Info API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipper Accounting Info",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Shipper Accounting Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/shippers/:shipper_id/info"
+          },
+          "docs": "Retrieve Shipper Accounting Info"
+        },
+        {
+          "info": {
+            "name": "Create shipper billing info",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/shippers/:shipper_id/info",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create shipper billing info"
+        },
+        {
+          "info": {
+            "name": "Update shipper billing info",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://neutron.opendock.com/api/v2/shippers/:shipper_id/info",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update shipper billing info"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

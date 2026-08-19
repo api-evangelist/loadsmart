@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opendock Nova API Documentation Appointments Quotes API",
+    "version": "v4.144.0 - 39b4253"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Quotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create quote request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://neutron.opendock.com/api/v2/quotes-request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request quotes for a future shipment.\n\nReturns a unique identifier (`id`) for the quote request. After creating the quote request, the\n[Retrieve details from a quote request](#tag/Quotes/paths/~1api~1v2~1quotes-request~1{uuid}/get) endpoint must\nbe polled in order to retrieve the result of this quote request.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve details from a quote request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://neutron.opendock.com/api/v2/quotes-request/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "A quote can either be `available`, `rejected`, `expired` or `booked`.  If\nit's available, a price and expiration date will be returned.  In the case\nthe quote is rejected, the reason will be detailed in the response.\n\nRejections could be a temporary condition. Retrying the request may\nor may not provide the caller with an available quote.\n\n#### List of possible reject reasons\n\n**Note**: we constantly add and remove reject reasons from this list.\nTo make sure the client will continue to work prop"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
