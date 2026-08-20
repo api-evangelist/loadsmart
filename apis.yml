@@ -49,6 +49,24 @@ tags:
   - LTL
   - Drayage
   - Flatbed
+  - Multi-Modal
+  - TMS
+  - Dock Scheduling
+  - Yard Management
+  - Warehouse
+  - 4PL
+  - FreightTech
+tags_raw:
+  - Freight
+  - Logistics
+  - Transportation
+  - Supply Chain
+  - Digital Freight
+  - Freight Brokerage
+  - Truckload
+  - LTL
+  - Drayage
+  - Flatbed
   - Multimodal
   - TMS
   - Dock Scheduling
@@ -942,7 +960,8 @@ apis:
   description: The General API from Loadsmart — 3 operation(s) for general.
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
-  tags:
+  tags: []
+  tags_raw:
   - General
   properties:
   - type: OpenAPI
@@ -1427,6 +1446,8 @@ apis:
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
   tags:
+  - Organization
+  tags_raw:
   - Orgs
   properties:
   - type: OpenAPI
@@ -2040,6 +2061,8 @@ apis:
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -2221,6 +2244,8 @@ apis:
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
