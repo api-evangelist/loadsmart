@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Opendock Nova API Documentation Appointments YMS - Yard View API
+  title: Opendock Nova API Documentation YMS - Yard View API
   description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
   version: v4.144.0 - 39b4253
   contact: {}
@@ -108,110 +108,26 @@ paths:
       - bearer: []
 components:
   schemas:
-    YardViewSpotAreaRefDto:
+    ListViewAppointmentRefDto:
       type: object
       properties:
         id:
-          type: string
+          type:
+          - object
+          - 'null'
           format: uuid
-        name:
-          type: string
+        refNumber:
+          type:
+          - object
+          - 'null'
+        confirmationNumber:
+          type:
+          - object
+          - 'null'
       required:
       - id
-      - name
-    YardViewSpotRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        code:
-          type: string
-          description: Spot code (display / yard label)
-        spotAreaId:
-          type: string
-          format: uuid
-          description: Owning spot area id for presenter hydration
-      required:
-      - id
-      - code
-    ListViewAssetVisitDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        company:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        phone:
-          type: object
-          nullable: true
-        visitType:
-          type: string
-          enum:
-          - LiveUnload
-          - LiveLoad
-          - Live
-          - Drop
-          - PickUp
-          - DropHook
-          - Unknown
-          nullable: true
-        arrivedAt:
-          type: string
-          format: date-time
-          nullable: true
-        createDateTime:
-          type: string
-          format: date-time
-          nullable: true
-        isPlanned:
-          type: boolean
-      required:
-      - id
-      - company
-      - phone
-      - visitType
-      - arrivedAt
-      - createDateTime
-      - isPlanned
-    SpotGridAreaDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        warehouseId:
-          type: string
-          format: uuid
-          description: Warehouse this spot area belongs to (same for all areas in this response).
-        orgId:
-          type: string
-          format: uuid
-          description: Organization scope for this spot area.
-        spots:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotGridItemDto'
-      required:
-      - id
-      - name
-      - warehouseId
-      - orgId
-      - spots
-    SpotGridResponseDto:
-      type: object
-      properties:
-        areas:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotGridAreaDto'
-      required:
-      - areas
+      - refNumber
+      - confirmationNumber
     SpotGridAssetVisitEventDto:
       type: object
       properties:
@@ -236,16 +152,18 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
         assetVisitId:
           type: string
           format: uuid
         assetContainerId:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
       required:
       - id
       - eventType
@@ -253,208 +171,204 @@ components:
       - createdBy
       - assetVisitId
       - assetContainerId
-    ListViewRowDto:
+    SpotGridAssetVisitDto:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          description: Container ID, or visit ID when visit has no containers
-        isWaiting:
-          type: boolean
-          description: Whether this asset is waiting for assignment vs parked on a spot
-        spot:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewSpotRefDto'
-        spotArea:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewSpotAreaRefDto'
-        spotReserves:
-          description: Active spot reserves when row is parked on a spot (empty when waiting). Same shape as spot-grid; derive reserved as length > 0.
-          type: array
-          items:
-            $ref: '#/components/schemas/YardViewSpotReserveRefDto'
-        assetArrivedAt:
+        orgId:
           type: string
-          format: date-time
-          nullable: true
-        assetContainer:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAssetContainerDto'
-        assetVisit:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAssetVisitDto'
-        appointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAppointmentDto'
-        dropAppointmentCompany:
-          description: Company that dropped this container
-          nullable: true
+          format: uuid
+        warehouseId:
+          type: string
+          format: uuid
+        visitType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - LiveUnload
+          - LiveLoad
+          - Live
+          - Drop
+          - PickUp
+          - DropHook
+          - Unknown
+        company:
           allOf:
           - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        pickupAppointmentCompany:
-          description: Company scheduled to pick up this container
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        dropoffAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAppointmentRefDto'
-        pickupAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAppointmentRefDto'
-        openMoveTask:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewOpenMoveTaskRefDto'
-        customFormData:
-          description: Custom form data entries for this container
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomFormDataItemDto'
-      required:
-      - id
-      - isWaiting
-      - spot
-      - spotArea
-      - spotReserves
-      - assetArrivedAt
-      - assetContainer
-      - assetVisit
-      - appointment
-      - dropAppointmentCompany
-      - pickupAppointmentCompany
-      - dropoffAppointment
-      - pickupAppointment
-      - openMoveTask
-      - customFormData
-    SpotGridContainerAppointmentRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        user:
-          $ref: '#/components/schemas/SpotGridContainerAppointmentUserDto'
-      required:
-      - id
-    YardViewOpenMoveTaskChildEntityRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-      required:
-      - id
-    ListViewAppointmentDto:
-      type: object
-      properties:
-        id:
-          type: object
-          format: uuid
-          nullable: true
-        identifier:
-          type: object
-          nullable: true
-        refNumber:
-          type: object
-          nullable: true
-        confirmationNumber:
-          type: object
-          nullable: true
+        companyHint:
+          type:
+          - object
+          - 'null'
+        phone:
+          type:
+          - object
+          - 'null'
         isPlanned:
           type: boolean
-      required:
-      - id
-      - identifier
-      - refNumber
-      - confirmationNumber
-      - isPlanned
-    YardViewOpenMoveTaskChildRefsDto:
-      type: object
-      properties:
-        originSpot:
-          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
-        destinationSpot:
-          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
-        assetContainer:
-          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
-    ListViewAppointmentPresenterDto:
-      type: object
-      properties:
-        id:
-          type: object
+        licensePlate:
+          type:
+          - object
+          - 'null'
+        dotNumber:
+          type:
+          - object
+          - 'null'
+        companyId:
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
-        userId:
-          type: object
-          format: uuid
-          nullable: true
-        user:
-          nullable: true
+        checkInAcknowledged:
+          type:
+          - object
+          - 'null'
+        createDateTime:
+          type: string
+          format: date-time
+        lastChangedDateTime:
+          type: string
+          format: date-time
+        appointment:
           allOf:
-          - $ref: '#/components/schemas/ListViewUserRefDto'
-        refNumber:
-          type: object
-          nullable: true
-        confirmationNumber:
-          type: object
-          nullable: true
-      required:
-      - id
-      - userId
-      - user
-      - refNumber
-      - confirmationNumber
-    YardViewAppointmentRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        status:
-          type: object
-          description: Appointment status
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        refNumber:
-          type: object
-        refNumbers:
-          description: All reference numbers on the appointment
+          - $ref: '#/components/schemas/YardViewAppointmentRefDto'
+        assetContainers:
           type: array
           items:
-            type: string
-        confirmationNumber:
-          type: object
-        dock:
-          $ref: '#/components/schemas/YardViewDockRefDto'
-        loadType:
-          $ref: '#/components/schemas/YardViewLoadTypeRefDto'
+            $ref: '#/components/schemas/SpotGridAssetContainerDto'
+        assetVisitEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotGridAssetVisitEventDto'
       required:
       - id
-      - refNumbers
-    YardViewCompanyRefDto:
+      - orgId
+      - warehouseId
+      - visitType
+      - company
+      - companyHint
+      - phone
+      - isPlanned
+      - licensePlate
+      - dotNumber
+      - companyId
+      - checkInAcknowledged
+      - createDateTime
+      - lastChangedDateTime
+      - appointment
+      - assetContainers
+      - assetVisitEvents
+    SpotGridAssignmentDto:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        name:
+        spotId:
           type: string
+          format: uuid
+        createDateTime:
+          type: string
+          format: date-time
+        lastChangedDateTime:
+          type: string
+          format: date-time
+        observation:
+          type:
+          - object
+          - 'null'
+        assetVisitId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        assetContainerId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        assetVisit:
+          description: Populated when the assignment targets an asset visit (truck / attached).
+          allOf:
+          - $ref: '#/components/schemas/SpotGridAssetVisitDto'
+        assetContainer:
+          description: Populated when the assignment targets a standalone container only.
+          allOf:
+          - $ref: '#/components/schemas/SpotGridAssetContainerDto'
       required:
       - id
-      - name
+      - spotId
+      - createDateTime
+      - lastChangedDateTime
+      - observation
+      - assetVisitId
+      - assetContainerId
+      - assetVisit
+      - assetContainer
+    YardViewOpenMoveTaskRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        refNum:
+          type: string
+          description: 'Display ref number (e.g. Tasks #123)'
+        role:
+          type: string
+          enum:
+          - origin
+          - destination
+          description: 'origin: move task tied to assigned container on this spot; destination: task tied via spot reserve on this spot'
+        child:
+          description: Child move-task refs used by clients that resolve spot/container links through nested child ids.
+          allOf:
+          - $ref: '#/components/schemas/YardViewOpenMoveTaskChildRefsDto'
+      required:
+      - id
+      - refNum
+      - role
+    CustomFormDataItemDto:
+      type: object
+      properties:
+        objectId:
+          type: string
+          format: uuid
+        formFieldId:
+          type: object
+          format: uuid
+        label:
+          type: string
+        value:
+          type: object
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+      required:
+      - objectId
+      - label
+      - type
+    SpotGridContainerAppointmentUserDto:
+      type: object
+      properties:
+        company:
+          $ref: '#/components/schemas/YardViewCompanyRefDto'
     SpotGridItemDto:
       type: object
       properties:
@@ -491,7 +405,6 @@ components:
             $ref: '#/components/schemas/SpotGridAssignmentDto'
         openMoveTask:
           description: Active move task when tied to this spot (reserve or assigned container).
-          nullable: true
           allOf:
           - $ref: '#/components/schemas/YardViewOpenMoveTaskRefDto'
       required:
@@ -505,335 +418,87 @@ components:
       - spotReserves
       - spotAssignments
       - openMoveTask
-    CustomFormDataItemDto:
+    YardViewOpenMoveTaskChildRefsDto:
       type: object
       properties:
-        objectId:
-          type: string
-          format: uuid
-        formFieldId:
-          type: object
-          format: uuid
-        label:
-          type: string
-        value:
-          type: object
-        type:
-          type: string
-          enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
-      required:
-      - objectId
-      - label
-      - type
-    ListViewAppointmentRefDto:
-      type: object
-      properties:
-        id:
-          type: object
-          format: uuid
-          nullable: true
-        refNumber:
-          type: object
-          nullable: true
-        confirmationNumber:
-          type: object
-          nullable: true
-      required:
-      - id
-      - refNumber
-      - confirmationNumber
-    ListViewResponseDto:
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListViewRowDto'
-      required:
-      - rows
-    YardViewSpotDetailAssetContainerItemDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        code:
-          type: object
-        type:
-          type: string
-          enum:
-          - Trailer
-          - Container
-          - Oversized
-          - Chassis
-          - Reefer
-          - Other
-        pickupAppointmentId:
-          type: object
-          format: uuid
-        dropAppointmentId:
-          type: object
-          format: uuid
-      required:
-      - id
-    ListViewAssetVisitCarrierRefDto:
-      type: object
-      properties:
-        id:
-          type: object
-          format: uuid
-          nullable: true
-        companyId:
-          type: object
-          format: uuid
-          nullable: true
-        company:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewCompanyRefDto'
-      required:
-      - id
-      - companyId
-      - company
-    SpotGridAssignmentDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        spotId:
-          type: string
-          format: uuid
-        createDateTime:
-          type: string
-          format: date-time
-        lastChangedDateTime:
-          type: string
-          format: date-time
-        observation:
-          type: object
-          nullable: true
-        assetVisitId:
-          type: object
-          format: uuid
-          nullable: true
-        assetContainerId:
-          type: object
-          format: uuid
-          nullable: true
-        assetVisit:
-          description: Populated when the assignment targets an asset visit (truck / attached).
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SpotGridAssetVisitDto'
+        originSpot:
+          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
+        destinationSpot:
+          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
         assetContainer:
-          description: Populated when the assignment targets a standalone container only.
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SpotGridAssetContainerDto'
-      required:
-      - id
-      - spotId
-      - createDateTime
-      - lastChangedDateTime
-      - observation
-      - assetVisitId
-      - assetContainerId
-      - assetVisit
-      - assetContainer
-    SpotGridAssetContainerDto:
+          $ref: '#/components/schemas/YardViewOpenMoveTaskChildEntityRefDto'
+    YardViewDockRefDto:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        type:
+        name:
           type: string
-          enum:
-          - Trailer
-          - Container
-          - Oversized
-          - Chassis
-          - Reefer
-          - Other
-          nullable: true
-        state:
-          type: string
-          enum:
-          - Full
-          - Empty
-          - Partially Loaded
-          nullable: true
-        code:
-          type: string
-        orgId:
+      required:
+      - id
+      - name
+    ListViewAssetVisitDto:
+      type: object
+      properties:
+        id:
           type: string
           format: uuid
-        warehouseId:
-          type: string
-          format: uuid
-        assetVisitId:
-          type: object
-          format: uuid
-          nullable: true
-        pickupAppointmentId:
-          type: object
-          format: uuid
-          nullable: true
-        dropAppointmentId:
-          type: object
-          format: uuid
-          nullable: true
         company:
-          nullable: true
           allOf:
           - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        pickupAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SpotGridContainerAppointmentRefDto'
-        dropAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SpotGridContainerAppointmentRefDto'
-        assetContainerEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotGridAssetContainerEventDto'
-        createDateTime:
-          type: string
-          format: date-time
-          nullable: true
-        lastChangedDateTime:
-          type: string
-          format: date-time
-          nullable: true
-        tags:
-          nullable: true
-          type: array
-          items:
-            type: string
-      required:
-      - id
-      - type
-      - state
-      - code
-      - orgId
-      - warehouseId
-      - assetVisitId
-      - pickupAppointmentId
-      - dropAppointmentId
-      - company
-      - pickupAppointment
-      - dropAppointment
-      - assetContainerEvents
-      - createDateTime
-      - lastChangedDateTime
-      - tags
-    ListViewAssetContainerEventDto:
-      type: object
-      properties:
-        createDateTime:
-          type: string
-          format: date-time
-          nullable: true
-        eventType:
-          type: string
+        phone:
+          type:
+          - object
+          - 'null'
+        visitType:
+          type:
+          - string
+          - 'null'
           enum:
-          - Arrived
-          - Loading
-          - Loading Complete
-          - Unloading
-          - Unloading Complete
-          - Ready for Pickup
-          - Departed
-          - Inoperable
-          - Missing
-          nullable: true
-        assetVisitId:
-          type: object
-          format: uuid
-          nullable: true
-        assetVisit:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAssetVisitCarrierRefDto'
-      required:
-      - createDateTime
-      - eventType
-      - assetVisitId
-      - assetVisit
-    YardViewOpenMoveTaskRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        refNum:
-          type: string
-          description: 'Display ref number (e.g. Tasks #123)'
-        role:
-          type: string
-          enum:
-          - origin
-          - destination
-          description: 'origin: move task tied to assigned container on this spot; destination: task tied via spot reserve on this spot'
-        child:
-          description: Child move-task refs used by clients that resolve spot/container links through nested child ids.
-          allOf:
-          - $ref: '#/components/schemas/YardViewOpenMoveTaskChildRefsDto'
-      required:
-      - id
-      - refNum
-      - role
-    YardViewSpotReserveRefDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        isActive:
+          - LiveUnload
+          - LiveLoad
+          - Live
+          - Drop
+          - PickUp
+          - DropHook
+          - Unknown
+        arrivedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        isPlanned:
           type: boolean
-        entityName:
-          type: object
-          description: SpotReserveEntityEnum
-          nullable: true
-        objectId:
-          type: object
-          format: uuid
-          nullable: true
-        validUntil:
-          type: string
-          format: date-time
-          nullable: true
-        createDateTime:
-          type: string
-          format: date-time
-        lastChangedDateTime:
-          type: string
-          format: date-time
       required:
       - id
-      - isActive
-      - entityName
-      - objectId
-      - validUntil
+      - company
+      - phone
+      - visitType
+      - arrivedAt
       - createDateTime
-      - lastChangedDateTime
+      - isPlanned
+    YardViewSpotRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type: string
+          description: Spot code (display / yard label)
+        spotAreaId:
+          type: string
+          format: uuid
+          description: Owning spot area id for presenter hydration
+      required:
+      - id
+      - code
     SpotDetailResponseDto:
       type: object
       properties:
@@ -861,41 +526,307 @@ components:
             $ref: '#/components/schemas/YardViewSpotDetailAssetContainerItemDto'
       required:
       - spot
-    ListViewUserRefDto:
+    ListViewAppointmentPresenterDto:
       type: object
       properties:
         id:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
-        companyId:
-          type: object
+        userId:
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/ListViewUserRefDto'
+        refNumber:
+          type:
+          - object
+          - 'null'
+        confirmationNumber:
+          type:
+          - object
+          - 'null'
+      required:
+      - id
+      - userId
+      - user
+      - refNumber
+      - confirmationNumber
+    ListViewAssetContainerEventDto:
+      type: object
+      properties:
+        createDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        eventType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Arrived
+          - Loading
+          - Loading Complete
+          - Unloading
+          - Unloading Complete
+          - Ready for Pickup
+          - Departed
+          - Inoperable
+          - Missing
+        assetVisitId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        assetVisit:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAssetVisitCarrierRefDto'
+      required:
+      - createDateTime
+      - eventType
+      - assetVisitId
+      - assetVisit
+    ListViewAppointmentDto:
+      type: object
+      properties:
+        id:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        identifier:
+          type:
+          - object
+          - 'null'
+        refNumber:
+          type:
+          - object
+          - 'null'
+        confirmationNumber:
+          type:
+          - object
+          - 'null'
+        isPlanned:
+          type: boolean
+      required:
+      - id
+      - identifier
+      - refNumber
+      - confirmationNumber
+      - isPlanned
+    YardViewAppointmentRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: object
+          description: Appointment status
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        refNumber:
+          type: object
+        refNumbers:
+          description: All reference numbers on the appointment
+          type: array
+          items:
+            type: string
+        confirmationNumber:
+          type: object
+        dock:
+          $ref: '#/components/schemas/YardViewDockRefDto'
+        loadType:
+          $ref: '#/components/schemas/YardViewLoadTypeRefDto'
+      required:
+      - id
+      - refNumbers
+    SpotGridAssetContainerDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Trailer
+          - Container
+          - Oversized
+          - Chassis
+          - Reefer
+          - Other
+        state:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Full
+          - Empty
+          - Partially Loaded
+        code:
+          type: string
+        orgId:
+          type: string
+          format: uuid
+        warehouseId:
+          type: string
+          format: uuid
+        assetVisitId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        pickupAppointmentId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        dropAppointmentId:
+          type:
+          - object
+          - 'null'
+          format: uuid
         company:
-          nullable: true
           allOf:
           - $ref: '#/components/schemas/YardViewCompanyRefDto'
+        pickupAppointment:
+          allOf:
+          - $ref: '#/components/schemas/SpotGridContainerAppointmentRefDto'
+        dropAppointment:
+          allOf:
+          - $ref: '#/components/schemas/SpotGridContainerAppointmentRefDto'
+        assetContainerEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotGridAssetContainerEventDto'
+        createDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastChangedDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
       required:
       - id
-      - companyId
+      - type
+      - state
+      - code
+      - orgId
+      - warehouseId
+      - assetVisitId
+      - pickupAppointmentId
+      - dropAppointmentId
       - company
-    YardViewDockRefDto:
+      - pickupAppointment
+      - dropAppointment
+      - assetContainerEvents
+      - createDateTime
+      - lastChangedDateTime
+      - tags
+    ListViewRowDto:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        name:
-          type: string
+          description: Container ID, or visit ID when visit has no containers
+        isWaiting:
+          type: boolean
+          description: Whether this asset is waiting for assignment vs parked on a spot
+        spot:
+          allOf:
+          - $ref: '#/components/schemas/YardViewSpotRefDto'
+        spotArea:
+          allOf:
+          - $ref: '#/components/schemas/YardViewSpotAreaRefDto'
+        spotReserves:
+          description: Active spot reserves when row is parked on a spot (empty when waiting). Same shape as spot-grid; derive reserved as length > 0.
+          type: array
+          items:
+            $ref: '#/components/schemas/YardViewSpotReserveRefDto'
+        assetArrivedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        assetContainer:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAssetContainerDto'
+        assetVisit:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAssetVisitDto'
+        appointment:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAppointmentDto'
+        dropAppointmentCompany:
+          description: Company that dropped this container
+          allOf:
+          - $ref: '#/components/schemas/YardViewCompanyRefDto'
+        pickupAppointmentCompany:
+          description: Company scheduled to pick up this container
+          allOf:
+          - $ref: '#/components/schemas/YardViewCompanyRefDto'
+        dropoffAppointment:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAppointmentRefDto'
+        pickupAppointment:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAppointmentRefDto'
+        openMoveTask:
+          allOf:
+          - $ref: '#/components/schemas/YardViewOpenMoveTaskRefDto'
+        customFormData:
+          description: Custom form data entries for this container
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormDataItemDto'
       required:
       - id
-      - name
-    SpotGridContainerAppointmentUserDto:
+      - isWaiting
+      - spot
+      - spotArea
+      - spotReserves
+      - assetArrivedAt
+      - assetContainer
+      - assetVisit
+      - appointment
+      - dropAppointmentCompany
+      - pickupAppointmentCompany
+      - dropoffAppointment
+      - pickupAppointment
+      - openMoveTask
+      - customFormData
+    SpotGridContainerAppointmentRefDto:
       type: object
       properties:
-        company:
-          $ref: '#/components/schemas/YardViewCompanyRefDto'
+        id:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/SpotGridContainerAppointmentUserDto'
+      required:
+      - id
     YardViewWaitingQueueResponseDto:
       type: object
       properties:
@@ -909,6 +840,233 @@ components:
               propertyName: kind
       required:
       - assets
+    YardViewSpotReserveRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        isActive:
+          type: boolean
+        entityName:
+          type:
+          - object
+          - 'null'
+          description: SpotReserveEntityEnum
+        objectId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        validUntil:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createDateTime:
+          type: string
+          format: date-time
+        lastChangedDateTime:
+          type: string
+          format: date-time
+      required:
+      - id
+      - isActive
+      - entityName
+      - objectId
+      - validUntil
+      - createDateTime
+      - lastChangedDateTime
+    YardViewCompanyRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - id
+      - name
+    YardViewOpenMoveTaskChildEntityRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+      - id
+    YardViewSpotAreaRefDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - id
+      - name
+    YardViewSpotDetailAssetContainerItemDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type: object
+        type:
+          type: string
+          enum:
+          - Trailer
+          - Container
+          - Oversized
+          - Chassis
+          - Reefer
+          - Other
+        pickupAppointmentId:
+          type: object
+          format: uuid
+        dropAppointmentId:
+          type: object
+          format: uuid
+      required:
+      - id
+    ListViewResponseDto:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListViewRowDto'
+      required:
+      - rows
+    ListViewAssetContainerDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type:
+          - object
+          - 'null'
+          description: Container code / trailer number
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Trailer
+          - Container
+          - Oversized
+          - Chassis
+          - Reefer
+          - Other
+        state:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Full
+          - Empty
+          - Partially Loaded
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Arrived
+          - Loading
+          - Loading Complete
+          - Unloading
+          - Unloading Complete
+          - Ready for Pickup
+          - Departed
+          - Inoperable
+          - Missing
+        company:
+          description: Container owner
+          allOf:
+          - $ref: '#/components/schemas/YardViewCompanyRefDto'
+        createDateTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        assetContainerEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListViewAssetContainerEventDto'
+        dropAppointment:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAppointmentPresenterDto'
+        pickupAppointment:
+          allOf:
+          - $ref: '#/components/schemas/ListViewAppointmentPresenterDto'
+        notes:
+          type:
+          - object
+          - 'null'
+          description: Free-form notes on the asset container
+      required:
+      - id
+      - code
+      - type
+      - state
+      - status
+      - company
+      - createDateTime
+      - assetContainerEvents
+      - dropAppointment
+      - pickupAppointment
+      - notes
+    SpotGridAreaDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        warehouseId:
+          type: string
+          format: uuid
+          description: Warehouse this spot area belongs to (same for all areas in this response).
+        orgId:
+          type: string
+          format: uuid
+          description: Organization scope for this spot area.
+        spots:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotGridItemDto'
+      required:
+      - id
+      - name
+      - warehouseId
+      - orgId
+      - spots
+    ListViewUserRefDto:
+      type: object
+      properties:
+        id:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        companyId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+        company:
+          allOf:
+          - $ref: '#/components/schemas/YardViewCompanyRefDto'
+      required:
+      - id
+      - companyId
+      - company
     YardViewLoadTypeRefDto:
       type: object
       properties:
@@ -927,167 +1085,26 @@ components:
       - id
       - name
       - direction
-    ListViewAssetContainerDto:
+    ListViewAssetVisitCarrierRefDto:
       type: object
       properties:
         id:
-          type: string
+          type:
+          - object
+          - 'null'
           format: uuid
-        code:
-          type: object
-          description: Container code / trailer number
-          nullable: true
-        type:
-          type: string
-          enum:
-          - Trailer
-          - Container
-          - Oversized
-          - Chassis
-          - Reefer
-          - Other
-          nullable: true
-        state:
-          type: string
-          enum:
-          - Full
-          - Empty
-          - Partially Loaded
-          nullable: true
-        status:
-          type: string
-          enum:
-          - Arrived
-          - Loading
-          - Loading Complete
-          - Unloading
-          - Unloading Complete
-          - Ready for Pickup
-          - Departed
-          - Inoperable
-          - Missing
-          nullable: true
-        company:
-          description: Container owner
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        createDateTime:
-          type: string
-          format: date-time
-          nullable: true
-        assetContainerEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListViewAssetContainerEventDto'
-        dropAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAppointmentPresenterDto'
-        pickupAppointment:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ListViewAppointmentPresenterDto'
-        notes:
-          type: object
-          description: Free-form notes on the asset container
-          nullable: true
-      required:
-      - id
-      - code
-      - type
-      - state
-      - status
-      - company
-      - createDateTime
-      - assetContainerEvents
-      - dropAppointment
-      - pickupAppointment
-      - notes
-    SpotGridAssetVisitDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        orgId:
-          type: string
-          format: uuid
-        warehouseId:
-          type: string
-          format: uuid
-        visitType:
-          type: string
-          enum:
-          - LiveUnload
-          - LiveLoad
-          - Live
-          - Drop
-          - PickUp
-          - DropHook
-          - Unknown
-          nullable: true
-        company:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/YardViewCompanyRefDto'
-        companyHint:
-          type: object
-          nullable: true
-        phone:
-          type: object
-          nullable: true
-        isPlanned:
-          type: boolean
-        licensePlate:
-          type: object
-          nullable: true
-        dotNumber:
-          type: object
-          nullable: true
         companyId:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
-        checkInAcknowledged:
-          type: object
-          nullable: true
-        createDateTime:
-          type: string
-          format: date-time
-        lastChangedDateTime:
-          type: string
-          format: date-time
-        appointment:
-          nullable: true
+        company:
           allOf:
-          - $ref: '#/components/schemas/YardViewAppointmentRefDto'
-        assetContainers:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotGridAssetContainerDto'
-        assetVisitEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotGridAssetVisitEventDto'
+          - $ref: '#/components/schemas/YardViewCompanyRefDto'
       required:
       - id
-      - orgId
-      - warehouseId
-      - visitType
-      - company
-      - companyHint
-      - phone
-      - isPlanned
-      - licensePlate
-      - dotNumber
       - companyId
-      - checkInAcknowledged
-      - createDateTime
-      - lastChangedDateTime
-      - appointment
-      - assetContainers
-      - assetVisitEvents
+      - company
     SpotGridAssetContainerEventDto:
       type: object
       properties:
@@ -1110,13 +1127,15 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
         assetVisitId:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uuid
-          nullable: true
         assetContainerId:
           type: string
           format: uuid
@@ -1127,6 +1146,15 @@ components:
       - createdBy
       - assetVisitId
       - assetContainerId
+    SpotGridResponseDto:
+      type: object
+      properties:
+        areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotGridAreaDto'
+      required:
+      - areas
   securitySchemes:
     bearer:
       scheme: bearer

@@ -1,14 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Opendock Nova API Documentation Appointments Webhooks API
-  description: "## Welcome to Opendock Nova!\n\n#### What is Opendock Nova?\n\nOpendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution centers, and\nmanufacturing plants use it to organize their docks and schedule appointments for outbound pickups and inbound\ndeliveries.\nYou can read all our knowledge base\narticles [here.](https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API)\n\nWe now provide an SSO option for User Authentication. Read\nthe [docs here.](https://community.loadsmart.com/hc/en-us/articles/14944624317075-Single-Sign-On-SSO-SAML-2-0)\n\n---\n\n## Our APIs\n\nWe have 3 main APIs:\n\n- REST API called _Neutron_ for performing standard HTTP operations.\n- Real-time API called _Subspace_ for receiving streaming events whenever objects are Created/Updated/Deleted.\n- A **\"Reference Number Validation\"** aka \"PO Validation\" _protocol_ for validating PO numbers (or similar) before an\n  appointment is scheduled. Detailed documentation for it can be found\n  here: [PO/Ref Number Validation Implementation](https://community.loadsmart.com/hc/en-us/articles/14946368437907-PO-Ref-Number-Validation-Implementation)\n\n---\n\n## Neutron - REST API\n\nAll endpoints are listed below. Depending on your User Role, some may be forbidden. Almost all endpoints expect a simple\nJWT token to be set in the `Authorization: Bearer` HTTP header. Read more about Bearer\ntokens [here](https://swagger.io/docs/specification/authentication/bearer-authentication/).\n\n### Base URL\n\nThe base URL is the same as it is for this document (look at the current URL in your browser's address bar). For\nexample, our production Neutron Base URL is [https://neutron.opendock.com](https://neutron.opendock.com).\n\n### Authentication\n\nTo start, call the `POST /auth/login` endpoint to exchange your user credentials (email + password) for a simple JWT\ntoken. If you don't have an account yet, reach out to your account admin or contact us for further help.\n\nIf login is successful, the response will be a JWT token to use as your `Bearer` header as described above.\n\nThe JWT expiration time depends on your User Role as well as other factors. You may base64-decode your JWT token to view\nmore technical details about it.\n\n#### Test it:\n\nTo test that your auth headers are set correctly, call the `GET /auth/me` endpoint. It will return a JSON payload with\nyour User information.\n\n---\n\n## Subspace - Real-time Streaming API\n\nSubspace is a _read-only_ API that allows your system to recieve streaming real-time information about changes to your\nAppointments, Warehouses, Docks, etc.\n\nUsing Subspace you can implement a \"push\"-based approach to your integration instead of relying only on \"poll\"-ing\nmethods (which can be inefficient).\n\nSubpsace is based on the famous [`socket.io`](https://socket.io/) library.\n\n### Choosing a socket.io Client\n\nThe socket.io project provides a JavaScript client library that works in the browser as well as NodeJS. However there\nare also client implementations in many other languages including C#, Java, Python, and Go, so you should select the\nappropriate client for your project. A good overview of socket.io and a list of client implementations can be found\nhere: [Socket.IO Introduction](https://socket.io/docs/v4/)\n\n**NOTE:** Currently Opendock uses socket.io server **v4.x** so please make sure to select an appropriate socket.io\nclient version that is protocol compatible.\n\n### Connecting and Authentication\n\nThe base connection URL is the same as the base URL for Neutron above, except with the word \"subspace\" instead of \"\nneutron\". For example, our production Subspace connection URL\nis [wss://subspace.opendock.com](wss://subspace.opendock.com).\n\nFor convenience, the same JWT token obtained from the Neutron `/auth/login` endpoint above is used for Subspace\nauthentication.\n\nConnecting and Authenticating are done in a single operation: simply connect to the following `wss` URL:\n\n```\n<Connection URL>?token=<JWT Token>\n```\n\nThat can be a little confusing to parse. Here's a real-life example connection string:\n\n```\nwss://subspace.opendock.com?token=eyJhbGciOiJIUzI1Ni...(full token continues)\n```\n\n**NOTE:** Currently Opendock only supports the `websocket` transport, so you must specify this in your connection\nsettings.\n\nHere's an example of connecting to Subspace using the JavaScript client:\n\n```JavaScript\n// NOTE: we assume \"accessToken\" was already obtained earlier via a call to '/auth/login'.\nconst baseSubspaceUrl = 'wss://subspace.opendock.com';\nconst url = `${baseSubspaceUrl}?token=${accessToken}`;\nconst socket = io(url, { transports: ['websocket'] }); // Enforce 'websocket' transport only.\n```\n\n### Listening to events\n\nSubspace emits Create/Update/Delete events for each entity in your Org (Appointment, Warehouse, Dock, etc). Your event\nhandler for these events will receive a JSON object containing the details about the given entity.\n\nOnce your socket.io client instance is connected, you can listen for any of these events by constructing the appropriate\nevent string:\n\nEvent strings follow this pattern:\n\n```\n\"{EventType}-{EntityName}\"\n```\n\n`EventType` can be one of: `create`, `update`, or `delete`.\n\n`EntityName` can be any entity in our REST API, such as: `Appointment`, `Warehouse`, `Dock`, etc.\n\nSo for example, to listen to `create` events for `Appointment` entities you would use:\n\n```\n\"create-Appointment\"\n```\n\nOr to listen to `update` events for `Warehouse` entities you would use:\n\n```\n\"update-Warehouse\"\n```\n\n**NOTE:** The event types are lowercase, but the entity names are capitalized (event strings are case-sensitive).\n\nThere is also a `\"heartbeat\"` event that you can listen to, which will emit every 5 seconds with a timestamp and the\nNeutron API version. This can be helpful for ensuring that your connection to Subspace is working correctly.\n\n### Caveats and Limitations\n\nSubspace does not do any sort of \"catch-up\" or \"replay\" of events, you will only get the events that occur after you\nconnect to the socket.io server.\n\nIf your client loses connection for some time, the event messages will not be queued and delivered when you next\nconnect, you will simply start receiving new messages after the point in time that you connected.\n\nFor this reason, even when using Subspace, you may need to occasionally supplement with calls to our REST API (ie.\ngetAll) to fetch entities and keep in sync with the data in Opendock, depending on your needs.\n\n### Example: Listening for Heartbeat\n\nThis event handler will get called periodically with the \"heartbeat\" information:\n\n```JavaScript\nsocket.on('heartbeat', (data) => {\n  console.log(data);\n});\n```\n\nThis will output something like:\n\n```JSON\n{\n  now: '2022-09-15T20:02:20.015Z',\n  version: {\n    major: '2',\n    minor: '5',\n    patch: '16',\n    commit: '4a443fb\\n'\n  }\n}\n```\n\n### Example: Listening for Appointment Creation and Update\n\nIn this example, your event handler will get called whenever an Appointment\nis created in your Org:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n```\n\nThe `data` your event handler recieves will be a JSON object containing\nthe Appointment details, like this:\n\n```JSON\n{\n  \"id\": \"9cd63603-a7ff-43c7-8183-befc19a7a81b\",\n  \"createDateTime\": \"2022-07-29T06:49:20Z\",\n  \"lastChangedDateTime\": \"2022-07-29T06:49:20Z\",\n  \"isActive\": true,\n  \"tags\": [],\n  \"type\": \"Standard\",\n  \"status\": \"Scheduled\",\n  \"start\": \"2022-07-29T00:00:00+00:00\",\n  \"end\": \"2022-07-29T01:30:00+00:00\",\n  ...\n  ...\n  ...\n}\n```\n\nIf you also wanted to listen for any changes to existing Appointments\nyou could add another listener:\n\n```JavaScript\nsocket.on('create-Appointment', (data) => {\n  console.log('appt create:', data);\n});\n\nsocket.on('update-Appointment', (data) => {\n  console.log('appt update:', data);\n});\n```\n\nThe `update-Appointment` event handler will receive a similar JSON object\ncontaining the most up-to-date details of the Appointment that was\njust updated.\n\n---\n\n## Nestjsx/Crud\n\n[NestJSX/Crud](https://github.com/nestjsx/crud/wiki/Requests#search) is a robust library designed for creating\nhigh-performance and scalable APIs. With NestJSX/Crud, API\nconsumers can take advantage of a flexible and intuitive approach to querying data.\n\nThis library streamlines the process of searching, sorting, and paginating data to cater to the exact requirements of\nthe API consumer. This feature saves valuable time by allowing the API consumer to bypass irrelevant data, ensuring only\nthe necessary data is obtained.\n\nNote: We encourage use of the `search` parameter (`s=...`), and do not allow use of the deprecated `filter` parameter.\n\n#### Search Examples\n\nFind all active Appointments created or updated since March 15th, 2023 at 8am MST (since created appts also have updated lastChangeDateTime)\n\n```\ns={\"lastChangedDateTime\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}\n```\n\nFind all soft-deleted (inActive) appointments updated since a date/time (isActive:false indicates soft-deleted)\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"isActive\":false}]}\n```\n\nFind all appointments changed since a date time (both active and inactive).\nThis is useful for integration partners with recurring series who need to know future appointments in the series have been removed\n\n```\ns={\"$and\":[{\"lastChangedDateTime\": {\"$gt\":\"2023-07-7T00:00:00.000Z\"}},{\"$or\":[{\"isActive\":true},{\"isActive\":false}]}]}\n```\n\nFind all Appointment where the `tags` are empty\n\n```\ns={\"tags\": {\"$or\": {\"$isnull\": true, \"$eq\": \"{}\"}}}\n```\n\nFind all Appointments where it includes a tag of `Late`\n\n```\ns={\"tags\":{\"$contL\":\"Late\"}}\n```\n\nFind all appointments in `Scheduled` status set to start after March 15th, 2023 at 8am MST\n\n```\ns={\"$and\":[{\"status\":\"Scheduled\"},{\"start\":{\"$gt\":\"2023-03-15T08:00:00.000-07:00\"}}]}\n```\n\n#### Join examples (with Fields)\n\nTo return data from other tables without the need to make a secondary query, the API consumer can join specific tables\ntogether and request only the fields necessary.\n\nGet the appointment with the carrier and company. This will return a nested `User` with a nested `Company` in the result for\neach appointment.\nOrder matters here. You must first include `user` to get to `user.company`.\n\n```\njoin=user&join=user.company\n```\n\nTo get just the user's email and company's name, you can use the `||` operator.\nBecause `user.companyId = company.id` you must at least include `companyId` on `user`\n\n```\njoin=user||email,companyId&join=user.company||name\n```\n\n#### Other Examples\n\nTo get an appointment's refNumber (PO), start, lastChangedDateTime, and carrier company name\n\n```\ns={\"start\": {\"$gt\":\"2023-03-15T00:00:00.000Z\"}}&join=user||companyId&join=user.company||name&fields=refNumber,lastChangedDateTime,start\n```\n\n---\n"
-  version: v4.144.0 - 39b4253
-  contact: {}
+  title: Loadsmart Webhooks API
+  x-logo:
+    altText: Loadsmart API
+    url: https://developer.loadsmart.com/logo.svg
+  description: "Loadsmart API provides endpoints to quote, book and track shipments autonomously.\n\n# Authentication\n\nLoadsmart API supports JWT tokens for authentication, signed using\npublic/private key pairs (RSA 4096).\n\n## What is JWT?\n\nJSON Web Token (JWT) is an [open standard](https://tools.ietf.org/html/rfc7519) used to\ncreate access tokens that contain some number of claims and is cryptographically signed by\nthe issuer, so its integrity can be verified without an auth server.\n\n## Token algorithm\n\nWe support JWT tokens signed using RS256 algorithm:\n\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\n## Required Claims\n\nFor the token payload, we require at least the following claims:\n\n- `sub`: Identifies the subject of the API call. This could be\n  either `sys` (without any user or client context) or `usr:UUID`,\n  where `UUID` is the uuid of the user that will provide the\n  context for the API call.\n- `iss`: Identifies who issued the token. This will be provided by\n  Loadsmart when setting up the integration.\n- `iat`: Standard \"issued at\" claim; should be an unix timestamp.\n- `exp`: Standard \"expires at\" claim; should be an unix timestamp.\n  We recomend to keep the token as short-lived as possible - ideally\n  it should not be valid for more than 1 minute. In the future,\n  Loadsmart could reject tokens with high expiration times.\n\n## Using the token\n\nThe token must be present in the `Authorization` header on all\nrequests, following the format:\n\n```\nAuthorization: JWT <token>\n```\n\nEach part of the token is encoded in base64 and joined with a dot separating each encoded part -\nif you use a library to generate it (which is recommended), you don't need to worry about it.\n\n**Important: Authorization header value must have the prefix `JWT`**.\n\nSee an example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n\n## Available contexts\n\nEach token has an implicit context associated with it (usually depending on the value of `sub`\nclaim). This context identifies to the API if the entity doing an action is an user or a system.\n\nLoadsmart API has different token contexts depending on the endpoint being called. Each endpoint\nwill specify the supported contexts (and required scopes) in `AUTHORIZATIONS` section.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\n## API Access\n\nTo start using Loadsmart API, please get in touch through your\npoint of contact. They will direct you through the proper flow.\n\n### Creating a public/private key pair\n\nFor JWT tokens, you should provide your *public key*. To generate a\npublic and private key pair, you can use OpenSSL:\n\n```bash\n$ openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:4096\n$ openssl rsa -in private_key.pem -pubout -out public_key.pem\n```\n\n*Never* reuse keys between multiple systems.\n\nFor more information, checkout the [official JWT website](https://jwt.io/).\n"
+  version: 1.0.0
 servers:
-- url: https://neutron.opendock.com
-  description: Production Server
-- url: https://neutron.staging.opendock.com
-  description: Staging Server
+- url: https://api.loadsmart.com
+  description: Production server
+- url: https://api.sandbox.loadsmart.com
+  description: Sandbox environment
 tags:
 - name: Webhooks
   description: "Webhooks allow you to receive certain events from Loadsmart. When one of those events is\ntriggered, we'll send an HTTP POST request to the webhook's configured URL(s). This URL(s)\nshould be sent to Loadsmart as part of the onboarding process. Webhooks can be used to update your\nown system with information from Loadsmart.\n\n## Authentication\nLoadsmart Webhooks use the same authentication scheme used in the API, except in this case,\nLoadsmart generates the JWT tokens and the TMS authenticates our requests with these tokens.\nDuring the setup process Loadsmart will send to TMS the public key and the TMS will be responsible for validating the token.\n\n### Token structure\n\nThe JWT token header will be:\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\nThe token payload will have:\n```\n{\n  \"iss\": \"loadsmart\", // the token issuer\n  \"iat\": 1517239022, // unix timestamp when the token was issued\n  \"exp\": 1626239022  //unix timestamp when the token will expire\n}\n```\n\nThe JWT token will be present in the Authorization header on all requests, as in the following example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n"
@@ -619,13 +621,15 @@ paths:
                         type: object
                         properties:
                           sender_id:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             description: The identification of the party that is sending this message
-                            nullable: true
                           receiver_id:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             description: The identification of the party that is receiving this message
-                            nullable: true
                       shipment:
                         type: object
                         properties:
@@ -643,9 +647,10 @@ paths:
                             type: integer
                             description: The size of the truck used to move the load, in feet
                           purchase_order_number:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             description: The Purchase Order (PO) number
-                            nullable: true
                           ref_number:
                             type: string
                             description: The load number from its shipper
@@ -846,8 +851,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -894,8 +900,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -925,8 +932,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -980,8 +988,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -1158,8 +1167,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -1206,8 +1216,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -1237,8 +1248,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -1292,8 +1304,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -1475,8 +1488,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -1523,8 +1537,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -1554,8 +1569,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -1609,8 +1625,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -1741,8 +1758,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -1789,8 +1807,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -1820,8 +1839,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -1875,8 +1895,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -1957,7 +1978,6 @@ paths:
                             description: Indicate if the check in/out event is late.
                           late_reason:
                             description: Indicate the reason which caused the delay.
-                            nullable: true
                             enum:
                             - accident
                             - address_corrected_delivery_attempted
@@ -2051,8 +2071,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -2099,8 +2120,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -2130,8 +2152,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -2185,8 +2208,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -2267,7 +2291,6 @@ paths:
                             description: Indicate if the check in/out event is late.
                           late_reason:
                             description: Indicate the reason which caused the delay.
-                            nullable: true
                             enum:
                             - accident
                             - carrier_dispatch_error
@@ -2364,8 +2387,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -2412,8 +2436,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -2443,8 +2468,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -2498,8 +2524,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -2580,7 +2607,6 @@ paths:
                             description: Indicate if the check in/out event is late.
                           late_reason:
                             description: Indicate the reason which caused the delay.
-                            nullable: true
                             enum:
                             - accident
                             - address_corrected_delivery_attempted
@@ -2674,8 +2700,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -2722,8 +2749,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -2753,8 +2781,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -2808,8 +2837,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -2890,7 +2920,6 @@ paths:
                             description: Indicate if the check in/out event is late.
                           late_reason:
                             description: Indicate the reason which caused the delay.
-                            nullable: true
                             enum:
                             - accident
                             - carrier_dispatch_error
@@ -2987,8 +3016,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -3035,8 +3065,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -3066,8 +3097,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -3121,8 +3153,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -3297,8 +3330,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -3345,8 +3379,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -3376,8 +3411,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -3431,8 +3467,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -3579,21 +3616,25 @@ paths:
                             type: string
                             maxLength: 255
                           mc_number:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             maxLength: 255
-                            nullable: true
                           dot_number:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             maxLength: 255
-                            nullable: true
                           tractor_number:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             maxLength: 70
-                            nullable: true
                           trailer_number:
-                            type: string
+                            type:
+                            - string
+                            - 'null'
                             maxLength: 70
-                            nullable: true
                       shipment:
                         type: object
                         properties:
@@ -3628,8 +3669,9 @@ paths:
                 title: shipment:carrier-dropped
                 properties:
                   details:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                   shipment_id:
                     type: string
                     format: uuid
@@ -3678,15 +3720,17 @@ paths:
                       event:
                         properties:
                           latitude:
-                            type: number
+                            type:
+                            - number
+                            - 'null'
                             format: float
                             description: The location latitude
-                            nullable: true
                           longitude:
-                            type: number
+                            type:
+                            - number
+                            - 'null'
                             format: float
                             description: The location longitude
-                            nullable: true
                           city:
                             type: string
                             description: City name of the last tracked location
@@ -3719,7 +3763,6 @@ paths:
                             description: The estimated time of arrival.
                           late_reason:
                             description: Indicate the reason which caused the delay.
-                            nullable: true
                             enum:
                             - accident
                             - carrier_dispatch_error
@@ -3809,8 +3852,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -3857,8 +3901,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -3888,8 +3933,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -3943,8 +3989,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -4015,11 +4062,13 @@ paths:
                         type: object
                         properties:
                           sender_id:
-                            type: string
-                            nullable: true
+                            type:
+                            - string
+                            - 'null'
                           receiver_id:
-                            type: string
-                            nullable: true
+                            type:
+                            - string
+                            - 'null'
                           driver:
                             type: object
                             properties:
@@ -4089,8 +4138,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -4137,8 +4187,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -4168,8 +4219,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -4223,8 +4275,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -4295,11 +4348,13 @@ paths:
                         type: object
                         properties:
                           sender_id:
-                            type: string
-                            nullable: true
+                            type:
+                            - string
+                            - 'null'
                           receiver_id:
-                            type: string
-                            nullable: true
+                            type:
+                            - string
+                            - 'null'
                   shipment_id:
                     type: string
                     format: uuid
@@ -4381,8 +4436,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -4429,8 +4485,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -4460,8 +4517,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -4515,8 +4573,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -4773,8 +4832,9 @@ paths:
                                   type: number
                                   description: The price of the item
                                 stop_index:
-                                  type: integer
-                                  nullable: true
+                                  type:
+                                  - integer
+                                  - 'null'
                                   description: Indicate the stop number, being 0-based for pickup
                       shipment:
                         type: object
@@ -4870,8 +4930,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -4992,8 +5053,9 @@ paths:
                             type: string
                             description: Deadline to ship load
                           container:
-                            type: object
-                            nullable: true
+                            type:
+                            - object
+                            - 'null'
                             description: Container related info
                             properties:
                               is_live:
@@ -5040,8 +5102,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -5071,8 +5134,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -5126,8 +5190,9 @@ paths:
                                 description: General localization attributes
                                 properties:
                                   gln:
-                                    type: string
-                                    nullable: true
+                                    type:
+                                    - string
+                                    - 'null'
                                     description: GS1 Global Location Number if registered.
                                   latitude:
                                     type: number
@@ -5266,8 +5331,9 @@ paths:
                                   description: General location attributes
                                   properties:
                                     gln:
-                                      type: string
-                                      nullable: true
+                                      type:
+                                      - string
+                                      - 'null'
                                       description: GS1 Global Location Number if registered.
                                     latitude:
                                       type: number
@@ -5297,8 +5363,9 @@ paths:
                                       description: General location attributes
                                       properties:
                                         gln:
-                                          type: string
-                                          nullable: true
+                                          type:
+                                          - string
+                                          - 'null'
                                           description: GS1 Global Location Number if registered.
                                         latitude:
                                           type: number
@@ -6060,7 +6127,13 @@ paths:
       - Webhooks
 components:
   securitySchemes:
-    bearer:
+    Application-JWT:
+      type: http
       scheme: bearer
       bearerFormat: JWT
+      description: "Authorize the request with the application context (preferred\nfor the endpoints that support it):\n\n```\n{\n  \"sub\": \"sys\",\n  \"iss\": \"token-issuer\",\n  \"exp\": 1626239022,\n  \"iat\": 1517239022\n}\n```\n"
+    User-JWT:
       type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Authorize the request with an user context. A payload example\nwould be:\n\n```\n{\n  \"sub\": \"usr:87127882-d1db-4e50-8f7c-c792a80d7c49\",\n  \"iss\": \"token-issuer\",\n  \"iat\": 1517239022,\n  \"exp\": 1626239022\n}\n```\n"
