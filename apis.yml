@@ -22,6 +22,18 @@ description: >-
   collection plus partner integrations with Oracle Transportation Management,
   MercuryGate, Blue Yonder, SAP, NetSuite, and other TMS/ERP platforms.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -2451,6 +2463,9 @@ apis:
     url: >-
       https://community.loadsmart.com/hc/en-us/sections/24987828169619-Opendock-Nova-Warehouse-API
 common:
+  - type: CapabilityMap
+    url: capabilities/loadsmart-capability-edges.yml
+    name: Loadsmart Business Capability Map
   - type: AgenticAccess
     url: agentic-access/loadsmart-agentic-access.yml
   - type: DomainSecurity
