@@ -224,6 +224,8 @@ apis:
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
   tags:
+  - Audit Logs
+  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI
@@ -2160,6 +2162,8 @@ apis:
   humanURL: https://developer.loadsmart.com/docs/shipperguide/overview/getting-started
   baseURL: https://api.loadsmart.com
   tags:
+  - Warehouse
+  tags_raw:
   - Warehouses
   properties:
   - type: OpenAPI
