@@ -1,0 +1,138 @@
+slug: loadsmart
+provider: Loadsmart
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 12
+edges:
+- tag: Shipment Events
+  spec_file: loadsmart-shipment-events-api-openapi.yml
+  capability_id: BC-2510.10
+  capability_id_l1: BC-2510
+  capability_name: Event Capture and Status Management
+  confidence: 0.85
+  evidence: POST /api/v2/shipments/{shipment_id}/events  Create shipment event; GET ... List shipment
+    events.
+  reason: Creating and listing shipment events is event capture/status management underpinning shipment
+    visibility and tracking.
+- tag: YMS - Spot Assignment
+  spec_file: loadsmart-yms-spot-assignment-api-openapi.yml
+  capability_id: BC-2470.20
+  capability_id_l1: BC-2470
+  capability_name: Yard and Stack Management
+  confidence: 0.85
+  evidence: '"PATCH /yard/spot-assignment/{id}/depart  SpotAssignmentController_depart", "PATCH /yard/spot-assignment/{id}/reassign  SpotAssignmentController_reassignSpot"'
+  reason: Assignment, reassignment and departure of assets from yard spots is the operational movement
+    of trailers/containers within the yard — Yard and Stack Management.
+- tag: YMS - Spot
+  spec_file: loadsmart-yms-spot-api-openapi.yml
+  capability_id: BC-2470.20
+  capability_id_l1: BC-2470
+  capability_name: Yard and Stack Management
+  confidence: 0.82
+  evidence: '"GET /yard/spot  ... Retrieve multiple Spots", "PATCH /yard/spot/{id}/close  SpotController_closeSpot  Close
+    a spot", schema "SpotReserveEntityEnum"'
+  reason: Operations manage yard parking spots (create, generate, open/close, reserve) within a yard management
+    system, which is the allocation/management of positions for trailers and containers in a yard — Yard
+    and Stack Management.
+- tag: YMS - Yard View
+  spec_file: loadsmart-yms-yard-view-api-openapi.yml
+  capability_id: BC-2470.20
+  capability_id_l1: BC-2470
+  capability_name: Yard and Stack Management
+  confidence: 0.8
+  evidence: '"Get asset visits and containers waiting for spot assignment", "Get lean spot grid data optimized
+    for grid view rendering"'
+  reason: 'Read views over yard occupancy: spot grid, containers awaiting spot assignment, spot detail
+    with task and assignment. This is operational visibility over yard and stack positions rather than
+    a separate capability.'
+- tag: BOL
+  spec_file: loadsmart-bol-api-openapi.yml
+  capability_id: BC-2500
+  capability_id_l1: BC-2500
+  capability_name: Cargo Documentation Management
+  confidence: 0.78
+  evidence: 'POST /bol  BolController_create ... schemas: CreateBolRequestDto, GetBolResponseDto'
+  reason: Operations create and retrieve bills of lading tied to dock appointments, which is cargo transport
+    document issuance. Withholding the L2 because the BOL here is a road/warehouse document while BC-2500.10
+    is scoped to ocean and inland-water bills.
+- tag: YMS - Spot Area
+  spec_file: loadsmart-yms-spot-area-api-openapi.yml
+  capability_id: BC-2470.20
+  capability_id_l1: BC-2470
+  capability_name: Yard and Stack Management
+  confidence: 0.78
+  evidence: '"POST /yard/spot-area  createOneBaseSpotAreaControllerSpotArea  Create a single SpotArea"'
+  reason: Defines and maintains areas of yard spots (zones of the yard), a structural element of yard/stack
+    management in the vendor's YMS. Thin surface (pure CRUD) so slightly lower confidence.
+- tag: Appointments
+  spec_file: loadsmart-appointments-api-openapi.yml
+  capability_id: BC-2460.60
+  capability_id_l1: BC-2460
+  capability_name: Warehouse Resource Management
+  confidence: 0.75
+  evidence: Opendock is an online dock appointment scheduling tool. Facilities such as warehouses, distribution
+    centers, and manufacturing plants use it to organize their docks and schedule appointments for outbound
+    pickups and inbound deliveries
+  reason: CRUD plus reserve/recurring operations on dock appointments at warehouses and DCs — management
+    of dock and slot capacity within the warehouse. Some overlap with gate/pre-gate appointment handling
+    at terminals, hence not maximal confidence.
+- tag: Docks
+  spec_file: loadsmart-docks-api-openapi.yml
+  capability_id: BC-2460.60
+  capability_id_l1: BC-2460
+  capability_name: Warehouse Resource Management
+  confidence: 0.75
+  evidence: 'POST /dock "Create a single Dock"; POST /dock/{id}/compute-availability; POST /dock/{id}/capacity
+    "Creates a child \"Capacity Dock\" linked to this Dock"; description: "Facilities such as warehouses,
+    distribution centers ... use it to organize their docks and schedule appointments"'
+  reason: Operations define docks, compute their availability/open dates and manage dock capacity within
+    warehouses — i.e. management of dock and slot capacity, which BC-2460.60 Warehouse Resource Management
+    names explicitly. Some overlap with gate/appointment operations keeps this below 0.8.
+- tag: Quotes
+  spec_file: loadsmart-quotes-api-openapi.yml
+  capability_id: BC-2450.10
+  capability_id_l1: BC-2450
+  capability_name: Shipper Quotation Management
+  confidence: 0.7
+  evidence: POST /api/v2/quotes-request    Create quote request; 'Loadsmart API provides endpoints to
+    quote, book and track shipments'
+  reason: Loadsmart acts as broker/4PL receiving shipper quote requests and returning freight rates, which
+    is shipper quotation management. Only two operations and no schema detail, so not top confidence.
+- tag: Shipments
+  spec_file: loadsmart-shipments-api-openapi.yml
+  capability_id: BC-2420.10
+  capability_id_l1: BC-2420
+  capability_name: Dispatch Management
+  confidence: 0.7
+  evidence: POST /api/v2/shipments/{shipment_id}/assign_driver  Assign Driver; DELETE ... Cancel a shipment;
+    POST /api/v2/shipment-documents  Create shipment document
+  reason: Operations manage shipment execution including driver assignment and cancellation, matching
+    dispatch/transport operations management; some spread into documentation.
+- tag: Unit Limiter
+  spec_file: loadsmart-unit-limiter-api-openapi.yml
+  capability_id: BC-2460.60
+  capability_id_l1: BC-2460
+  capability_name: Warehouse Resource Management
+  confidence: 0.7
+  evidence: POST /unit-limit/validate  Validate if scheduling at a given time would breach unit limits;
+    POST /loadtype-group  Create a new load type group
+  reason: Configures and enforces dock/load-type volume limits when scheduling appointments at warehouses
+    — warehouse dock/slot capacity resource management.
+- tag: Users
+  spec_file: loadsmart-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /user/invite; POST /user/change-password  UserController_changePassword; GET /user/email-available/{email}
+  reason: Application user account lifecycle, invitations and password management is identity and access
+    management plumbing.
