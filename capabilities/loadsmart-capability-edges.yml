@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 12
+edge_count: 17
 edges:
 - tag: Shipment Events
   spec_file: loadsmart-shipment-events-api-openapi.yml
@@ -23,6 +23,16 @@ edges:
     events.
   reason: Creating and listing shipment events is event capture/status management underpinning shipment
     visibility and tracking.
+- tag: Webhooks
+  spec_file: loadsmart-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.85
+  evidence: POST /api/v2/webhooks/url  Register webhooks; 'Shipment Events'; 'Load Events'
+  reason: Registration and lifecycle of outbound webhook subscriptions plus the event payload catalogue
+    exposed to integrators — squarely webhook & event subscription management on the developer platform.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: YMS - Spot Assignment
   spec_file: loadsmart-yms-spot-assignment-api-openapi.yml
   capability_id: BC-2470.20
@@ -97,6 +107,30 @@ edges:
   reason: Operations define docks, compute their availability/open dates and manage dock capacity within
     warehouses — i.e. management of dock and slot capacity, which BC-2460.60 Warehouse Resource Management
     names explicitly. Some overlap with gate/appointment operations keeps this below 0.8.
+- tag: Load Offers
+  spec_file: loadsmart-load-offers-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.72
+  evidence: POST /api/v2/load-offers/offers/{offer_id}/accept  Accept an offer ... GET /api/v2/load-offers/loads/{load_id}/rate_confirmation  Download
+    ratecon
+  reason: Freight load offers are searched and accepted, loads listed and dropped, and rate confirmations
+    downloaded — carrier-side transport booking/execution, i.e. logistics operations in the supply chain.
+    Alternative reading as transport sourcing keeps confidence moderate.
+  recovered_from: sweep-20260829T005356Z-edges.json
+- tag: Asset Visit
+  spec_file: loadsmart-asset-visit-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.7
+  evidence: '"GET /asset-visit/{id}/yard-events", "PATCH /asset-visit/{id}/check-in-acknowledgment", "POST
+    /asset-visit/{id}/attach/{assetContainerId}" in a "dock appointment scheduling tool"'
+  reason: Operations track trailer/container visits, yard events and gate check-in at warehouses and distribution
+    centres — warehouse/yard logistics execution, i.e. Logistics Operations Management. Not a financial
+    or IT asset register.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: Quotes
   spec_file: loadsmart-quotes-api-openapi.yml
   capability_id: BC-2450.10
@@ -107,6 +141,16 @@ edges:
     quote, book and track shipments'
   reason: Loadsmart acts as broker/4PL receiving shipper quote requests and returning freight rates, which
     is shipper quotation management. Only two operations and no schema detail, so not top confidence.
+- tag: Shipment Stops
+  spec_file: loadsmart-shipment-stops-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.7
+  evidence: PUT /api/v2/shipments/{shipment_id}/stops/{stop_id}/confirm_appointment 'Confirm stop appointment'
+  reason: Confirming a dock appointment for a shipment stop is transport/dock scheduling execution, i.e.
+    logistics operations management.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: Shipments
   spec_file: loadsmart-shipments-api-openapi.yml
   capability_id: BC-2420.10
@@ -136,3 +180,13 @@ edges:
   evidence: POST /user/invite; POST /user/change-password  UserController_changePassword; GET /user/email-available/{email}
   reason: Application user account lifecycle, invitations and password management is identity and access
     management plumbing.
+- tag: Warehouses
+  spec_file: loadsmart-warehouses-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.7
+  evidence: POST /warehouse/{id}/get-hours-of-operation — 'Get open hours for set of docks in the warehouse'
+  reason: Manages warehouse facilities, their dock hours of operation and load-type custom forms — warehousing/dock
+    operations within logistics operations management.
+  recovered_from: sweep-20260829T005356Z-edges.json
