@@ -4,7 +4,7 @@ info:
   x-logo:
     altText: Loadsmart API
     url: https://developer.loadsmart.com/logo.svg
-  description: "Loadsmart API provides endpoints to quote, book and track shipments autonomously.\n\n# Authentication\n\nLoadsmart API supports JWT tokens for authentication, signed using\npublic/private key pairs (RSA 4096).\n\n## What is JWT?\n\nJSON Web Token (JWT) is an [open standard](https://tools.ietf.org/html/rfc7519) used to\ncreate access tokens that contain some number of claims and is cryptographically signed by\nthe issuer, so its integrity can be verified without an auth server.\n\n## Token algorithm\n\nWe support JWT tokens signed using RS256 algorithm:\n\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\n## Required Claims\n\nFor the token payload, we require at least the following claims:\n\n- `sub`: Identifies the subject of the API call. This could be\n  either `sys` (without any user or client context) or `usr:UUID`,\n  where `UUID` is the uuid of the user that will provide the\n  context for the API call.\n- `iss`: Identifies who issued the token. This will be provided by\n  Loadsmart when setting up the integration.\n- `iat`: Standard \"issued at\" claim; should be an unix timestamp.\n- `exp`: Standard \"expires at\" claim; should be an unix timestamp.\n  We recomend to keep the token as short-lived as possible - ideally\n  it should not be valid for more than 1 minute. In the future,\n  Loadsmart could reject tokens with high expiration times.\n\n## Using the token\n\nThe token must be present in the `Authorization` header on all\nrequests, following the format:\n\n```\nAuthorization: JWT <token>\n```\n\nEach part of the token is encoded in base64 and joined with a dot separating each encoded part -\nif you use a library to generate it (which is recommended), you don't need to worry about it.\n\n**Important: Authorization header value must have the prefix `JWT`**.\n\nSee an example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n\n## Available contexts\n\nEach token has an implicit context associated with it (usually depending on the value of `sub`\nclaim). This context identifies to the API if the entity doing an action is an user or a system.\n\nLoadsmart API has different token contexts depending on the endpoint being called. Each endpoint\nwill specify the supported contexts (and required scopes) in `AUTHORIZATIONS` section.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\n## API Access\n\nTo start using Loadsmart API, please get in touch through your\npoint of contact. They will direct you through the proper flow.\n\n### Creating a public/private key pair\n\nFor JWT tokens, you should provide your *public key*. To generate a\npublic and private key pair, you can use OpenSSL:\n\n```bash\n$ openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:4096\n$ openssl rsa -in private_key.pem -pubout -out public_key.pem\n```\n\n*Never* reuse keys between multiple systems.\n\nFor more information, checkout the [official JWT website](https://jwt.io/).\n"
+  description: Loadsmart API provides endpoints to quote, book and track shipments autonomously.
   version: 1.0.0
 servers:
 - url: https://api.loadsmart.com
@@ -13,7 +13,7 @@ servers:
   description: Sandbox environment
 tags:
 - name: Webhooks
-  description: "Webhooks allow you to receive certain events from Loadsmart. When one of those events is\ntriggered, we'll send an HTTP POST request to the webhook's configured URL(s). This URL(s)\nshould be sent to Loadsmart as part of the onboarding process. Webhooks can be used to update your\nown system with information from Loadsmart.\n\n## Authentication\nLoadsmart Webhooks use the same authentication scheme used in the API, except in this case,\nLoadsmart generates the JWT tokens and the TMS authenticates our requests with these tokens.\nDuring the setup process Loadsmart will send to TMS the public key and the TMS will be responsible for validating the token.\n\n### Token structure\n\nThe JWT token header will be:\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\nThe token payload will have:\n```\n{\n  \"iss\": \"loadsmart\", // the token issuer\n  \"iat\": 1517239022, // unix timestamp when the token was issued\n  \"exp\": 1626239022  //unix timestamp when the token will expire\n}\n```\n\nThe JWT token will be present in the Authorization header on all requests, as in the following example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n"
+  description: Webhooks allow you to receive certain events from Loadsmart.
 paths:
   /api/v2/webhooks/url:
     get:
@@ -21,9 +21,7 @@ paths:
       security:
       - Application-JWT:
         - webhook_read
-      description: 'Lists all webhooks registered for the authenticated client
-
-        '
+      description: Lists all webhooks registered for the authenticated client
       responses:
         '200':
           description: Event received
@@ -118,14 +116,14 @@ paths:
                   - integration-request:accepted
       tags:
       - Webhooks
+      operationId: getApiV2WebhooksUrl
+      x-operation-id-source: derived
     post:
       summary: Register webhooks
       security:
       - Application-JWT:
         - webhook_write
-      description: 'Create webhooks configuration
-
-        '
+      description: Create webhooks configuration
       requestBody:
         required: true
         content:
@@ -268,6 +266,8 @@ paths:
                 - error_description
       tags:
       - Webhooks
+      operationId: postApiV2WebhooksUrl
+      x-operation-id-source: derived
   /api/v2/webhooks/url/{uuid}:
     get:
       summary: Retrieve webhook
@@ -276,9 +276,7 @@ paths:
       security:
       - Application-JWT:
         - webhook_read
-      description: 'Retrieve webhook configuration
-
-        '
+      description: Retrieve webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -377,6 +375,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2WebhooksUrlByUuid
+      x-operation-id-source: derived
     put:
       summary: Update webhook
       tags:
@@ -384,9 +384,7 @@ paths:
       security:
       - Application-JWT:
         - webhook_write
-      description: 'Update webhook configuration
-
-        '
+      description: Update webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -558,6 +556,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: putApiV2WebhooksUrlByUuid
+      x-operation-id-source: derived
     delete:
       summary: Delete webhook
       tags:
@@ -565,9 +565,7 @@ paths:
       security:
       - Application-JWT:
         - webhook_write
-      description: 'Delete webhook configuration
-
-        '
+      description: Delete webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -602,10 +600,26 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: deleteApiV2WebhooksUrlByUuid
+      x-operation-id-source: derived
   /quote-webhooks:
     post:
       summary: Quote Events
-      description: "Posts a message when an event about a quote is triggered.\n\nThe quote event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - quote:booked\n  - quote:rejected\n"
+      description: 'Posts a message when an event about a quote is triggered.
+
+
+        The quote event payload has a base schema but the details change depending on the event type.
+
+        During the onboarding you can let Loadsmart know which events you want to receive. You can also
+
+        receive events in more than one URL.
+
+
+        List of event types:
+
+        - quote:booked
+
+        - quote:rejected'
       requestBody:
         content:
           application/json:
@@ -798,10 +812,56 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postQuoteWebhooks
+      x-operation-id-source: derived
   /shipment-webhooks:
     post:
       summary: Shipment Events
-      description: "Posts a message when an event about a shipment is triggered.\n\nThe shipment event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nList of event types:\n  - shipment:appointment-pickup\n  - shipment:appointment-delivery\n  - shipment:en-route-to-pickup\n  - shipment:check-in-pickup\n  - shipment:check-out-pickup\n  - shipment:check-in-delivery\n  - shipment:check-out-delivery\n  - shipment:carrier-updated\n  - shipment:carrier-dropped\n  - shipment:location-updated\n  - shipment:driver-assigned\n  - shipment:driver-unassigned\n  - shipment:canceled\n  - shipment:incident\n  - shipment:invoice\n  - shipment:updated\n  - shipment:created\n"
+      description: 'Posts a message when an event about a shipment is triggered.
+
+
+        The shipment event payload has a base schema but the details change depending on the event type.
+
+        During the onboarding you can let Loadsmart know which events you want to receive. You can also
+
+        receive events in more than one URL.
+
+
+        List of event types:
+
+        - shipment:appointment-pickup
+
+        - shipment:appointment-delivery
+
+        - shipment:en-route-to-pickup
+
+        - shipment:check-in-pickup
+
+        - shipment:check-out-pickup
+
+        - shipment:check-in-delivery
+
+        - shipment:check-out-delivery
+
+        - shipment:carrier-updated
+
+        - shipment:carrier-dropped
+
+        - shipment:location-updated
+
+        - shipment:driver-assigned
+
+        - shipment:driver-unassigned
+
+        - shipment:canceled
+
+        - shipment:incident
+
+        - shipment:invoice
+
+        - shipment:updated
+
+        - shipment:created'
       requestBody:
         content:
           application/json:
@@ -5471,10 +5531,38 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postShipmentWebhooks
+      x-operation-id-source: derived
   /load-webhooks:
     post:
       summary: Load Events
-      description: "Posts a message when an event about a load is triggered.\n\nThe load event payload has a base schema but the details change depending on the event type.\nDuring the onboarding you can let Loadsmart know which events you want to receive. You can also\nreceive events in more than one URL.\n\nDifference between load and shipment:\n\nAlthough loads and shipments usually refer to the same thing, Loadsmart handles them\nas two slightly different entities. Up to the point when a load is tendered and booked,\nthe entity in play is a \"load\". After this load is booked, it becomes a shipment.\nFrom this point on, communication is done with the shipment.\n\nList of event types:\n  - load:rejected\n  - load:accepted\n"
+      description: 'Posts a message when an event about a load is triggered.
+
+
+        The load event payload has a base schema but the details change depending on the event type.
+
+        During the onboarding you can let Loadsmart know which events you want to receive. You can also
+
+        receive events in more than one URL.
+
+
+        Difference between load and shipment:
+
+
+        Although loads and shipments usually refer to the same thing, Loadsmart handles them
+
+        as two slightly different entities. Up to the point when a load is tendered and booked,
+
+        the entity in play is a "load". After this load is booked, it becomes a shipment.
+
+        From this point on, communication is done with the shipment.
+
+
+        List of event types:
+
+        - load:rejected
+
+        - load:accepted'
       requestBody:
         content:
           application/json:
@@ -5595,14 +5683,14 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postLoadWebhooks
+      x-operation-id-source: derived
   /bid-webhooks:
     post:
       summary: Bid Events
       description: 'Posts a message when an event about a Bid is triggered.
 
-        The bid event payload has the same schema for all bid event types.
-
-        '
+        The bid event payload has the same schema for all bid event types.'
       requestBody:
         content:
           application/json:
@@ -5980,12 +6068,12 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postBidWebhooks
+      x-operation-id-source: derived
   /carrier-webhooks:
     post:
       summary: Carrier Events
-      description: 'Posts a message when an event about a Carrier is triggered.
-
-        '
+      description: Posts a message when an event about a Carrier is triggered.
       requestBody:
         content:
           application/json:
@@ -6058,10 +6146,22 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postCarrierWebhooks
+      x-operation-id-source: derived
   /integration-request:
     post:
       summary: Integration Request Events
-      description: "Posts a message when an event about an integration request is triggered.\n\nThe event payload has the same schema for both integration-request events.\n\nList of event types:\n  - integration-request:accepted\n  - integration-request:rejected\n"
+      description: 'Posts a message when an event about an integration request is triggered.
+
+
+        The event payload has the same schema for both integration-request events.
+
+
+        List of event types:
+
+        - integration-request:accepted
+
+        - integration-request:rejected'
       requestBody:
         content:
           application/json:
@@ -6125,6 +6225,8 @@ paths:
           description: Event received
       tags:
       - Webhooks
+      operationId: postIntegrationRequest
+      x-operation-id-source: derived
 components:
   securitySchemes:
     Application-JWT:

@@ -4,7 +4,7 @@ info:
   x-logo:
     altText: Loadsmart API
     url: https://developer.loadsmart.com/logo.svg
-  description: "Loadsmart API provides endpoints to quote, book and track shipments autonomously.\n\n# Authentication\n\nLoadsmart API supports JWT tokens for authentication, signed using\npublic/private key pairs (RSA 4096).\n\n## What is JWT?\n\nJSON Web Token (JWT) is an [open standard](https://tools.ietf.org/html/rfc7519) used to\ncreate access tokens that contain some number of claims and is cryptographically signed by\nthe issuer, so its integrity can be verified without an auth server.\n\n## Token algorithm\n\nWe support JWT tokens signed using RS256 algorithm:\n\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\n## Required Claims\n\nFor the token payload, we require at least the following claims:\n\n- `sub`: Identifies the subject of the API call. This could be\n  either `sys` (without any user or client context) or `usr:UUID`,\n  where `UUID` is the uuid of the user that will provide the\n  context for the API call.\n- `iss`: Identifies who issued the token. This will be provided by\n  Loadsmart when setting up the integration.\n- `iat`: Standard \"issued at\" claim; should be an unix timestamp.\n- `exp`: Standard \"expires at\" claim; should be an unix timestamp.\n  We recomend to keep the token as short-lived as possible - ideally\n  it should not be valid for more than 1 minute. In the future,\n  Loadsmart could reject tokens with high expiration times.\n\n## Using the token\n\nThe token must be present in the `Authorization` header on all\nrequests, following the format:\n\n```\nAuthorization: JWT <token>\n```\n\nEach part of the token is encoded in base64 and joined with a dot separating each encoded part -\nif you use a library to generate it (which is recommended), you don't need to worry about it.\n\n**Important: Authorization header value must have the prefix `JWT`**.\n\nSee an example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n\n## Available contexts\n\nEach token has an implicit context associated with it (usually depending on the value of `sub`\nclaim). This context identifies to the API if the entity doing an action is an user or a system.\n\nLoadsmart API has different token contexts depending on the endpoint being called. Each endpoint\nwill specify the supported contexts (and required scopes) in `AUTHORIZATIONS` section.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\n## API Access\n\nTo start using Loadsmart API, please get in touch through your\npoint of contact. They will direct you through the proper flow.\n\n### Creating a public/private key pair\n\nFor JWT tokens, you should provide your *public key*. To generate a\npublic and private key pair, you can use OpenSSL:\n\n```bash\n$ openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:4096\n$ openssl rsa -in private_key.pem -pubout -out public_key.pem\n```\n\n*Never* reuse keys between multiple systems.\n\nFor more information, checkout the [official JWT website](https://jwt.io/).\n"
+  description: Loadsmart API provides endpoints to quote, book and track shipments autonomously.
   version: 1.0.0
 servers:
 - url: https://api.loadsmart.com
@@ -13,7 +13,9 @@ servers:
   description: Sandbox environment
 tags:
 - name: Load Offers
-  description: "This API allows third parties to search and accept\navailable Offers.\n\n## Webhook events\n\nThere are few webhook events that can be triggered related to Load Offers API.\nThe following example refers to the webhook events `load_carrier_bounced` and `load_cancelled`:\n```\n{\n  \"event\": \"load_carrier_bounced\",\n  \"data\": {\n    \"load_id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\",\n    \"load\": {\n      \"id\": \"2ed37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"active_offer\": {\n        \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n        \"price\": 1234.56\n      },\n      \"carrier\": {\n        \"id\": \"89ef54c7-52d5-44a0-b94d-df41eb1aab15\",\n        \"mc\": 123456,\n        \"dot\": 987654\n      },\n      \"commodity\": \"BOTTLED WATER\",\n      \"distance\": 353.6,\n      \"equipment_type\": \"DRV\",\n      \"requirements\": {\n        \"beer\": false,\n        \"chemicals\": null,\n        \"ctpat\": null,\n        \"food_grade\": null,\n        \"frozen\": null,\n        \"hazmat\": null,\n        \"hvhr\": null,\n        \"pharmaceuticals\": null,\n        \"produce\": null,\n        \"teams\": null,\n        \"tsa\": null,\n        \"twic\": null,\n        \"vented_vans\": null,\n      },\n      \"stops\": [\n        {\n          \"address\": \"109 Poland Spring Dr\",\n          \"city\": \"Poland\",\n          \"country\": \"USA\",\n          \"latitude\": 44.031602,\n          \"longitude\": -70.355065,\n          \"state\": \"ME\",\n          \"type\": \"PU\",\n          \"window_end\": \"2019-11-28T08:00:00+00:00\",\n          \"window_start\": \"2019-11-28T06:00:00+00:00\",\n          \"window_timezone\": \"America/New_York\",\n          \"requirements\": null,\n          \"facility_info\": {\n            \"avg_time_spent\":{\n              \"pickup\":40,\n              \"delivery\": null\n            },\n            \"detention_rate\": 4\n          }\n        },\n        {\n          \"address\": \"6 Westbelt\",\n          \"city\": \"Wayne\",\n          \"country\": \"USA\",\n          \"latitude\": 40.900033,\n          \"longitude\": -74.264872,\n          \"state\": \"NJ\",\n          \"type\": \"DEL\",\n          \"window_end\": \"2019-11-29T19:00:00+00:00\",\n          \"window_start\": \"2019-11-29T17:00:00+00:00\",\n          \"window_timezone\": \"America/New_York\",\n          \"requirements\": null,\n          \"facility_info\": {\n            \"avg_time_spent\":{\n              \"pickup\":null,\n              \"delivery\": 20\n            },\n            \"detention_rate\": 9\n          }\n         },\n      ],\n      \"numberweight\": 45000.0,\n      \"dimensions\": {\"width\": 8.00, \"height\": 9.00, \"length\": 54.00}\n      \"ref_number\": \"41324\"\n    }\n  }\n}\n```\n\nThe following example refers to the webhook events `offer_created` and `offer_removed`:\n```\n{\n  \"event\": \"offer_created\",\n  \"data\": {\n    \"offer\": {\n      \"id\": \"ccd37107-ebe7-4a60-a20f-01d4e74355c8\",\n      \"price\": 1234.56,\n      \"load\": {\n        \"equipment_type\": \"DRV\",\n        \"commodity\": \"apples\",\n        \"weight\": 20000,\n        \"dimensions\": {\"width\": 8.00, \"height\": 9.00, \"length\": 54.00}\n        \"distance\": 50000,\n        \"stops\": [\n          {\n            \"type\": \"PU\",\n            \"address\": \"101 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\":{\n                \"pickup\":40,\n                \"delivery\": null\n              },\n              \"detention_rate\": 4\n            }\n            \"zipcode\": \"33139\",\n            \"window_start\": \"2020-02-13T09:00:00\",\n            \"window_end\": \"2018-02-13T11:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          },\n          {\n            \"type\": \"DEL\",\n            \"address\": \"2022 Collins Avenue\",\n            \"city\": \"Miami Beach\",\n            \"state\": \"FL\",\n            \"country\": \"USA\",\n            \"requirements\": {\n              \"blind_bol\": false,\n              \"drop_trailer\": false,\n              \"heavy_scale_ticket\": false,\n              \"light_scale_ticket\": false\n            },\n            \"facility_info\": {\n              \"avg_time_spent\":{\n                \"pickup\":null,\n                \"delivery\": 20\n              },\n              \"detention_rate\": 9\n            }\n            \"window_start\": \"2018-02-14T16:00:00\",\n            \"window_end\": \"2018-02-14T18:00:00\",\n            \"window_timezone\": \"America/New_York\"\n          }\n        ],\n        \"requirements\": {\n          \"beer\": false,\n          \"chemicals\": false,\n          \"ctpat\": false,\n          \"food_grade\": false,\n          \"frozen\": false,\n          \"hazmat\": false,\n          \"hvhr\": false,\n          \"pharmaceuticals\": false,\n          \"produce\": false,\n          \"teams\": false,\n          \"tsa\": false,\n          \"twic\": false,\n          \"vented_vans\": false\n        },\n        \"ref_number\": \"425631\"\n      },\n      \"actions\": {\n        \"redirect_url\": \"https://loadsmart.com/loads/#/eec5677f-883c-4696-b13b-7539fa98e098\",\n        \"accept_url\": \"https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept\"\n      }\n    }\n  }\n}\n```\n"
+  description: 'This API allows third parties to search and accept
+
+    available Offers.'
 paths:
   /api/v2/load-offers/offers:
     get:
@@ -23,9 +25,6 @@ paths:
       security:
       - Application-JWT:
         - load_offers_read
-      description: 'Search offers
-
-        '
       parameters:
       - in: query
         name: alcohol
@@ -476,6 +475,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: getApiV2LoadOffersOffers
+      x-operation-id-source: derived
   /api/v2/load-offers/offers/{offer_id}:
     get:
       summary: Retrieve offer
@@ -748,6 +749,8 @@ paths:
                 actions:
                   redirect_url: https://loadsmart.com/loads/#/a440a0df-c3c2-4d70-9acd-7f03f4bc00f4
                   accept_url: https://api.loadsmart.com/api/v2/load-offers/offers/ccd37107-ebe7-4a60-a20f-01d4e74355c8/accept
+      operationId: getApiV2LoadOffersOffersByOfferId
+      x-operation-id-source: derived
   /api/v2/load-offers/offers/{offer_id}/accept:
     post:
       summary: Accept an offer
@@ -756,9 +759,7 @@ paths:
       security:
       - User-JWT:
         - load_offers_write
-      description: 'Accept an Offer for a Carrier
-
-        '
+      description: Accept an Offer for a Carrier
       parameters:
       - in: path
         name: offer_id
@@ -862,6 +863,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: postApiV2LoadOffersOffersByOfferIdAccept
+      x-operation-id-source: derived
   /api/v2/load-offers/offers/{offer_id}/related:
     get:
       summary: Search related offers
@@ -870,9 +873,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_read
-      description: 'Search related offers of another offer
-
-        '
+      description: Search related offers of another offer
       parameters:
       - in: path
         name: offer_id
@@ -1258,6 +1259,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: getApiV2LoadOffersOffersByOfferIdRelated
+      x-operation-id-source: derived
   /api/v2/load-offers/loads/:
     get:
       summary: List loads
@@ -1526,6 +1529,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2LoadOffersLoads
+      x-operation-id-source: derived
   /api/v2/load-offers/loads/{load_id}:
     get:
       summary: Retrieve a load
@@ -1839,6 +1844,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2LoadOffersLoadsByLoadId
+      x-operation-id-source: derived
     delete:
       summary: Drop a load
       tags:
@@ -1846,7 +1853,6 @@ paths:
       security:
       - User-JWT:
         - load_offers_write
-      description: Drop a load
       parameters:
       - in: path
         name: load_id
@@ -1933,6 +1939,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: deleteApiV2LoadOffersLoadsByLoadId
+      x-operation-id-source: derived
   /api/v2/load-offers/loads/{load_id}/rate_confirmation:
     get:
       summary: Download ratecon
@@ -2004,6 +2012,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2LoadOffersLoadsByLoadIdRateConfirmation
+      x-operation-id-source: derived
   /api/v2/load-offers/loads/{load_id}/related-offers:
     get:
       summary: Search related offers
@@ -2012,9 +2022,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_read
-      description: 'Search related offers of a Load
-
-        '
+      description: Search related offers of a Load
       parameters:
       - in: path
         name: load_id
@@ -2400,6 +2408,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: getApiV2LoadOffersLoadsByLoadIdRelatedOffers
+      x-operation-id-source: derived
   /api/v2/load-offers/webhooks:
     get:
       summary: List webhooks
@@ -2408,9 +2418,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_read
-      description: 'List configured webhooks
-
-        '
+      description: List configured webhooks
       responses:
         '200':
           description: Success
@@ -2473,6 +2481,8 @@ paths:
                 - uuid: f2d51c14-4750-42cf-8c7a-a68c0d7b8d11
                   url: https://www.example.com/my/awsome/webhook_3
                   event: offer_removed
+      operationId: getApiV2LoadOffersWebhooks
+      x-operation-id-source: derived
     post:
       summary: Register webhooks
       tags:
@@ -2480,9 +2490,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_write
-      description: 'Create webhooks configuration
-
-        '
+      description: Create webhooks configuration
       requestBody:
         required: true
         content:
@@ -2556,6 +2564,8 @@ paths:
                 required:
                 - error
                 - error_description
+      operationId: postApiV2LoadOffersWebhooks
+      x-operation-id-source: derived
   /api/v2/load-offers/webhooks/{uuid}:
     get:
       summary: Retrieve webhook
@@ -2564,9 +2574,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_read
-      description: 'Retrieve webhook configuration
-
-        '
+      description: Retrieve webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -2630,6 +2638,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2LoadOffersWebhooksByUuid
+      x-operation-id-source: derived
     put:
       summary: Update webhook
       tags:
@@ -2637,9 +2647,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_write
-      description: 'Update webhook configuration
-
-        '
+      description: Update webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -2744,6 +2752,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: putApiV2LoadOffersWebhooksByUuid
+      x-operation-id-source: derived
     delete:
       summary: Delete webhook
       tags:
@@ -2751,9 +2761,7 @@ paths:
       security:
       - Application-JWT:
         - load_offers_write
-      description: 'Delete webhook configuration
-
-        '
+      description: Delete webhook configuration
       parameters:
       - in: path
         name: uuid
@@ -2788,6 +2796,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: deleteApiV2LoadOffersWebhooksByUuid
+      x-operation-id-source: derived
 components:
   securitySchemes:
     Application-JWT:

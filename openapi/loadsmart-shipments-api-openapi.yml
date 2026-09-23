@@ -4,7 +4,7 @@ info:
   x-logo:
     altText: Loadsmart API
     url: https://developer.loadsmart.com/logo.svg
-  description: "Loadsmart API provides endpoints to quote, book and track shipments autonomously.\n\n# Authentication\n\nLoadsmart API supports JWT tokens for authentication, signed using\npublic/private key pairs (RSA 4096).\n\n## What is JWT?\n\nJSON Web Token (JWT) is an [open standard](https://tools.ietf.org/html/rfc7519) used to\ncreate access tokens that contain some number of claims and is cryptographically signed by\nthe issuer, so its integrity can be verified without an auth server.\n\n## Token algorithm\n\nWe support JWT tokens signed using RS256 algorithm:\n\n```\n{\n  \"alg\": \"RS256\",\n  \"typ\": \"JWT\"\n}\n```\n\n## Required Claims\n\nFor the token payload, we require at least the following claims:\n\n- `sub`: Identifies the subject of the API call. This could be\n  either `sys` (without any user or client context) or `usr:UUID`,\n  where `UUID` is the uuid of the user that will provide the\n  context for the API call.\n- `iss`: Identifies who issued the token. This will be provided by\n  Loadsmart when setting up the integration.\n- `iat`: Standard \"issued at\" claim; should be an unix timestamp.\n- `exp`: Standard \"expires at\" claim; should be an unix timestamp.\n  We recomend to keep the token as short-lived as possible - ideally\n  it should not be valid for more than 1 minute. In the future,\n  Loadsmart could reject tokens with high expiration times.\n\n## Using the token\n\nThe token must be present in the `Authorization` header on all\nrequests, following the format:\n\n```\nAuthorization: JWT <token>\n```\n\nEach part of the token is encoded in base64 and joined with a dot separating each encoded part -\nif you use a library to generate it (which is recommended), you don't need to worry about it.\n\n**Important: Authorization header value must have the prefix `JWT`**.\n\nSee an example:\n\n```\nAuthorization: JWT eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM\n```\n\n## Available contexts\n\nEach token has an implicit context associated with it (usually depending on the value of `sub`\nclaim). This context identifies to the API if the entity doing an action is an user or a system.\n\nLoadsmart API has different token contexts depending on the endpoint being called. Each endpoint\nwill specify the supported contexts (and required scopes) in `AUTHORIZATIONS` section.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\n## API Access\n\nTo start using Loadsmart API, please get in touch through your\npoint of contact. They will direct you through the proper flow.\n\n### Creating a public/private key pair\n\nFor JWT tokens, you should provide your *public key*. To generate a\npublic and private key pair, you can use OpenSSL:\n\n```bash\n$ openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:4096\n$ openssl rsa -in private_key.pem -pubout -out public_key.pem\n```\n\n*Never* reuse keys between multiple systems.\n\nFor more information, checkout the [official JWT website](https://jwt.io/).\n"
+  description: Loadsmart API provides endpoints to quote, book and track shipments autonomously.
   version: 1.0.0
 servers:
 - url: https://api.loadsmart.com
@@ -18,9 +18,7 @@ paths:
   /api/v2/shipments/{shipment_id}/empty_location:
     post:
       summary: Set empty location
-      description: 'Allows a three party partner to set an empty location for a taken load.
-
-        '
+      description: Allows a three party partner to set an empty location for a taken load.
       tags:
       - Shipments
       security:
@@ -119,12 +117,12 @@ paths:
                   - This field is required.
                   other_field:
                   - Expected string but received integer.
+      operationId: postApiV2ShipmentsByShipmentIdEmptyLocation
+      x-operation-id-source: derived
   /api/v2/shipments/{shipment_id}/assign_driver:
     post:
       summary: Assign Driver
-      description: 'Allows a three party partner to set a driver for a taken load.
-
-        '
+      description: Allows a three party partner to set a driver for a taken load.
       tags:
       - Shipments
       security:
@@ -201,6 +199,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: postApiV2ShipmentsByShipmentIdAssignDriver
+      x-operation-id-source: derived
   /api/v2/shipments/{shipment_id}:
     delete:
       summary: Cancel a shipment
@@ -235,6 +235,8 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: deleteApiV2ShipmentsByShipmentId
+      x-operation-id-source: derived
     get:
       summary: Retrieve details from a shipment
       tags:
@@ -374,9 +376,11 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: getApiV2ShipmentsByShipmentId
+      x-operation-id-source: derived
   /api/v2/shipments/{shipment_id}/interested:
     post:
-      summary: Show interest in a shipment.
+      summary: Show interest in a shipment
       description: Inform us about interest in a shipment and request a call.
       tags:
       - Shipments
@@ -417,12 +421,12 @@ paths:
               example:
                 error: object_not_found
                 error_description: Object not found
+      operationId: postApiV2ShipmentsByShipmentIdInterested
+      x-operation-id-source: derived
   /api/v2/shipments/{shipment_id}/action-logs:
     post:
       summary: Create shipment action log entry
-      description: 'Appends an action to the shipment''s action log.
-
-        '
+      description: Appends an action to the shipment's action log.
       security:
       - Application-JWT:
         - shipment_action_log
@@ -535,6 +539,8 @@ paths:
                   - Expected string but received integer.
       tags:
       - Shipments
+      operationId: postApiV2ShipmentsByShipmentIdActionLogs
+      x-operation-id-source: derived
   /api/v2/shipment-documents:
     post:
       summary: Create shipment document
@@ -631,6 +637,8 @@ paths:
                   - This field is required.
                   other_field:
                   - Expected string but received integer.
+      operationId: postApiV2ShipmentDocuments
+      x-operation-id-source: derived
   /api/v2/shipment-documents/?shipment=${shipment}:
     get:
       summary: List shipment documents
@@ -714,6 +722,8 @@ paths:
               example:
                 error: forbiden_access
                 error_description: An user is trying to access a not authorized resource.
+      operationId: getApiV2ShipmentDocuments?shipment=${shipment}
+      x-operation-id-source: derived
   /api/v2/shipmentscores:
     get:
       summary: Retrieve shipment scores
@@ -1123,6 +1133,8 @@ paths:
               example:
                 error: does_not_have_permission
                 error_description: Permission is Denied for this Request
+      operationId: getApiV2Shipmentscores
+      x-operation-id-source: derived
 components:
   securitySchemes:
     Application-JWT:

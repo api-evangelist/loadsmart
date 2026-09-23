@@ -93,7 +93,8 @@
     "loadsmart-opendock-openapi.yml: declared missing tag: YMS - Spot Assignment",
     "loadsmart-opendock-openapi.yml: declared missing tag: YMS - Yard View",
     "loadsmart-shipperguide-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "loadsmart-shipperguide-openapi.yml: declared missing tag: Shipper Accounting Info"
+    "loadsmart-shipperguide-openapi.yml: declared missing tag: Shipper Accounting Info",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "loadsmart-appointments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
