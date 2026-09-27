@@ -315,18 +315,9 @@ paths:
       - bearer: []
 components:
   schemas:
-    ClockSpan:
+    AvailabilityResponseDto:
       type: object
-      properties:
-        end:
-          type: string
-          example: '18:00'
-        start:
-          type: string
-          example: 06:00
-      required:
-      - end
-      - start
+      properties: {}
     ScheduleDto:
       type: object
       properties:
@@ -375,100 +366,6 @@ components:
       - saturday
       - version
       - closedIntervals
-    UpdateLoadTypeDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        orgId:
-          type: string
-        warehouseId:
-          type: string
-        direction:
-          type: string
-          enum:
-          - Inbound
-          - Outbound
-          - Inbound/Outbound
-        operation:
-          type: string
-          enum:
-          - Live
-          - Drop
-          - Other
-        equipmentType:
-          type: string
-          enum:
-          - Dry Van
-          - Flatbed
-          - Reefer
-          - Other
-        transportationMode:
-          type: string
-          enum:
-          - FTL
-          - PTL
-          - Other
-        allowCarrierScheduling:
-          type: boolean
-        description:
-          type: object
-        settings:
-          type: object
-        schedule:
-          $ref: '#/components/schemas/ScheduleDto'
-        name:
-          type: string
-        duration_min:
-          type: number
-    AppointmentCountResponseDto:
-      type: object
-      properties: {}
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
     LoadType:
       type: object
       properties:
@@ -536,7 +433,100 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    AvailabilityResponseDto:
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    AvailabilityFromLoadTypeDto:
+      type: object
+      properties:
+        start:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+        end:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+      required:
+      - start
+      - end
+    UpdateLoadTypeDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        orgId:
+          type: string
+        warehouseId:
+          type: string
+        direction:
+          type: string
+          enum:
+          - Inbound
+          - Outbound
+          - Inbound/Outbound
+        operation:
+          type: string
+          enum:
+          - Live
+          - Drop
+          - Other
+        equipmentType:
+          type: string
+          enum:
+          - Dry Van
+          - Flatbed
+          - Reefer
+          - Other
+        transportationMode:
+          type: string
+          enum:
+          - FTL
+          - PTL
+          - Other
+        allowCarrierScheduling:
+          type: boolean
+        description:
+          type: object
+        settings:
+          type: object
+        schedule:
+          $ref: '#/components/schemas/ScheduleDto'
+        name:
+          type: string
+        duration_min:
+          type: number
+    AppointmentCountResponseDto:
       type: object
       properties: {}
     CreateLoadTypeDto:
@@ -583,20 +573,30 @@ components:
           $ref: '#/components/schemas/ScheduleDto'
       required:
       - direction
-    AvailabilityFromLoadTypeDto:
+    TimeInterval:
       type: object
       properties:
-        start:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
         end:
           format: date-time
           type: string
-          example: '2026-05-24T19:16:46.221Z'
+        start:
+          format: date-time
+          type: string
       required:
-      - start
       - end
+      - start
+    ClockSpan:
+      type: object
+      properties:
+        end:
+          type: string
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
+      required:
+      - end
+      - start
   securitySchemes:
     bearer:
       scheme: bearer

@@ -284,32 +284,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    DepartSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        departType:
-          $ref: '#/components/schemas/DepartTypeEnum'
-      required:
-      - departType
-    ReassignSpotDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        spotId:
-          type: string
-          format: uuid
-        reason:
-          type: string
-        observation:
-          type: string
-        moveContainer:
-          type: boolean
-          description: When set to true, it moves only the asset container
-      required:
-      - spotId
     CreateSpotAssignmentDto:
       type: object
       properties:
@@ -328,27 +302,23 @@ components:
           type: string
       required:
       - spotId
-    GetManySpotAssignmentResponseDto:
+    ReassignSpotDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotAssignment'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
+        tags:
+          type: object
+        spotId:
+          type: string
+          format: uuid
+        reason:
+          type: string
+        observation:
+          type: string
+        moveContainer:
+          type: boolean
+          description: When set to true, it moves only the asset container
       required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
+      - spotId
     SpotAssignment:
       type: object
       properties:
@@ -407,6 +377,36 @@ components:
       - All
       - AssetVisit
       - AssetContainer
+    GetManySpotAssignmentResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotAssignment'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
+    DepartSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        departType:
+          $ref: '#/components/schemas/DepartTypeEnum'
+      required:
+      - departType
     UpdateSpotAssignmentDto:
       type: object
       properties:

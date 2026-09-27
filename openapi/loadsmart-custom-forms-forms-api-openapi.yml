@@ -257,56 +257,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SortFormFieldDto:
-      type: object
-      properties:
-        tags:
-          type: object
-    CreateFormDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        description:
-          type: string
-        warehouseId:
-          type: string
-      required:
-      - name
-      - description
-      - warehouseId
-    UpdateFormDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        description:
-          type: string
-    GetManyFormResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Form'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
     Form:
       type: object
       properties:
@@ -346,6 +296,56 @@ components:
       - createdBy
       - lastChangedDateTime
       - name
+    UpdateFormDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+    GetManyFormResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Form'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
+    CreateFormDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        warehouseId:
+          type: string
+      required:
+      - name
+      - description
+      - warehouseId
+    SortFormFieldDto:
+      type: object
+      properties:
+        tags:
+          type: object
   securitySchemes:
     bearer:
       scheme: bearer

@@ -251,35 +251,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    CreateSingleCustomFormDataDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        objectId:
-          type: string
-          description: The ID of the object that this data belongs to, the type is dependent on the entityName
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-        entityName:
-          $ref: '#/components/schemas/CustomFormDataEntitiesEnum'
-        value:
-          type: object
-          description: The value of the field, stored as string, but it gets validated as the field type by the API
-          example: John Doe
-        formFieldId:
-          type: string
-          description: The ID of the form field that this data refers to
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-        triggerId:
-          type: string
-          description: The ID of the trigger that this data refers to
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-      required:
-      - objectId
-      - entityName
-      - value
-      - formFieldId
-      - triggerId
     CustomFormDataEntitiesEnum:
       type: string
       description: The entity name of the object that this data belongs to
@@ -287,42 +258,6 @@ components:
       - appointment
       - assetvisit
       - assetcontainer
-    CreateManyCustomFormDataDto:
-      type: object
-      properties:
-        bulk:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomFormData'
-      required:
-      - bulk
-    CustomFieldType:
-      type: string
-      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
-      enum:
-      - str
-      - bigstr
-      - date
-      - bool
-      - doc
-      - multidoc
-      - int
-      - email
-      - phone
-      - dropdown
-      - dropdownmultiselect
-      - combobox
-      - timestamp
-      - action
-    UpdateCustomFormDataDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        value:
-          type: string
-      required:
-      - value
     CustomFormData:
       type: object
       properties:
@@ -389,6 +324,71 @@ components:
       - formFieldId
       - triggerId
       - warehouseId
+    CustomFieldType:
+      type: string
+      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
+      enum:
+      - str
+      - bigstr
+      - date
+      - bool
+      - doc
+      - multidoc
+      - int
+      - email
+      - phone
+      - dropdown
+      - dropdownmultiselect
+      - combobox
+      - timestamp
+      - action
+    CreateSingleCustomFormDataDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        objectId:
+          type: string
+          description: The ID of the object that this data belongs to, the type is dependent on the entityName
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+        entityName:
+          $ref: '#/components/schemas/CustomFormDataEntitiesEnum'
+        value:
+          type: object
+          description: The value of the field, stored as string, but it gets validated as the field type by the API
+          example: John Doe
+        formFieldId:
+          type: string
+          description: The ID of the form field that this data refers to
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+        triggerId:
+          type: string
+          description: The ID of the trigger that this data refers to
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+      required:
+      - objectId
+      - entityName
+      - value
+      - formFieldId
+      - triggerId
+    UpdateCustomFormDataDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        value:
+          type: string
+      required:
+      - value
+    CreateManyCustomFormDataDto:
+      type: object
+      properties:
+        bulk:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormData'
+      required:
+      - bulk
   securitySchemes:
     bearer:
       scheme: bearer

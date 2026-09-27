@@ -228,28 +228,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateSpotAreaDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-    CreateSpotAreaDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        observation:
-          type: string
-        warehouseId:
-          type: string
-          format: uuid
-      required:
-      - name
-      - warehouseId
     GetManySpotAreaResponseDto:
       type: object
       properties:
@@ -306,6 +284,28 @@ components:
       - createdBy
       - lastChangedDateTime
       - name
+    CreateSpotAreaDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        observation:
+          type: string
+        warehouseId:
+          type: string
+          format: uuid
+      required:
+      - name
+      - warehouseId
+    UpdateSpotAreaDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
   securitySchemes:
     bearer:
       scheme: bearer

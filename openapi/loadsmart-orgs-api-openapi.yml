@@ -215,24 +215,57 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UpdateReportSearchDto:
-      type: object
-      properties: {}
-    CreateReportSearchDto:
-      type: object
-      properties: {}
-    ClockSpan:
+    Org:
       type: object
       properties:
-        end:
+        id:
           type: string
-          example: '18:00'
-        start:
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
           type: string
-          example: 06:00
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        warehouses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warehouse'
+        reportSearches:
+          type: object
+        customTags:
+          type: array
+          items:
+            type: string
+        samlConfig:
+          type: object
+        orgType:
+          type: string
+          enum:
+          - Trial
+          - Test
+          - Client
+        expiresAt:
+          format: date-time
+          type: string
       required:
-      - end
-      - start
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
     UpdateOrgDto:
       type: object
       properties:
@@ -246,6 +279,12 @@ components:
           type: array
           items:
             type: string
+    UpdateReportSearchDto:
+      type: object
+      properties: {}
+    CreateReportSearchDto:
+      type: object
+      properties: {}
     ScheduleDto:
       type: object
       properties:
@@ -294,6 +333,38 @@ components:
       - saturday
       - version
       - closedIntervals
+    UpdateCustomTagsDto:
+      type: object
+      properties: {}
+    CustomFieldTemplateDto:
+      type: object
+      properties:
+        semanticLabelId:
+          type: object
+          format: uuid
+          description: Semantic label id (FK to semanticlabel)
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+      required:
+      - type
+    ReportSearchResponseDto:
+      type: object
+      properties: {}
     Warehouse:
       type: object
       properties:
@@ -418,86 +489,6 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    Org:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        warehouses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Warehouse'
-        reportSearches:
-          type: object
-        customTags:
-          type: array
-          items:
-            type: string
-        samlConfig:
-          type: object
-        orgType:
-          type: string
-          enum:
-          - Trial
-          - Test
-          - Client
-        expiresAt:
-          format: date-time
-          type: string
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
-    CustomFieldTemplateDto:
-      type: object
-      properties:
-        semanticLabelId:
-          type: object
-          format: uuid
-          description: Semantic label id (FK to semanticlabel)
-        type:
-          type: string
-          enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
-      required:
-      - type
-    ReportSearchResponseDto:
-      type: object
-      properties: {}
     TimeInterval:
       type: object
       properties:
@@ -510,9 +501,18 @@ components:
       required:
       - end
       - start
-    UpdateCustomTagsDto:
+    ClockSpan:
       type: object
-      properties: {}
+      properties:
+        end:
+          type: string
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
+      required:
+      - end
+      - start
   securitySchemes:
     bearer:
       scheme: bearer

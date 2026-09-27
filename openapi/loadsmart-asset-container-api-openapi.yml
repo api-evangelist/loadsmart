@@ -328,26 +328,97 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AssetContainerEventType:
-      type: string
-      description: The type of the event
-      enum:
-      - Arrived
-      - Loading
-      - Loading Complete
-      - Unloading
-      - Unloading Complete
-      - Ready for Pickup
-      - Departed
-      - Inoperable
-      - Missing
-    AssetContainerState:
-      type: string
-      description: The state of the asset container
-      enum:
-      - Full
-      - Empty
-      - Partially Loaded
+    CreateAssetContainerDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        code:
+          type: string
+        notes:
+          type: string
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        warehouseId:
+          type: string
+          format: uuid
+        dropAppointmentId:
+          type: string
+          format: uuid
+        pickupAppointmentId:
+          type: string
+          format: uuid
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        companyId:
+          type: string
+          format: uuid
+      required:
+      - assetVisitId
+      - code
+      - type
+      - warehouseId
+    AssetContainerEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+        createDateTime:
+          type: string
+          description: The date and time when the event was created
+          format: date-time
+        createdBy:
+          type: object
+          format: uuid
+          description: The id of the user who created the event
+        assetContainerId:
+          type: string
+          format: uuid
+          description: The id of the asset container
+        assetVisitId:
+          type: object
+          format: uuid
+          description: The id of the asset visit attached (truck)
+        eventType:
+          $ref: '#/components/schemas/AssetContainerEventType'
+      required:
+      - id
+      - orgId
+      - createDateTime
+      - assetContainerId
+      - eventType
+    UpdateAssetContainerDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        code:
+          type: string
+        notes:
+          type: string
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        dropAppointmentId:
+          type: string
+          format: uuid
+        pickupAppointmentId:
+          type: string
+          format: uuid
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        companyId:
+          type: string
+          format: uuid
     AssetContainer:
       type: object
       properties:
@@ -427,31 +498,6 @@ components:
       - orgId
       - warehouseId
       - pickupAppointmentId
-    UpdateAssetContainerDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        assetVisitId:
-          type: string
-          format: uuid
-        code:
-          type: string
-        notes:
-          type: string
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        dropAppointmentId:
-          type: string
-          format: uuid
-        pickupAppointmentId:
-          type: string
-          format: uuid
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        companyId:
-          type: string
-          format: uuid
     PaginatedDto:
       type: object
       properties:
@@ -485,82 +531,6 @@ components:
       - action
       - entity
       - data
-    AssetContainerType:
-      type: string
-      description: The type of the asset container
-      enum:
-      - Trailer
-      - Container
-      - Oversized
-      - Chassis
-      - Reefer
-      - Other
-    CreateAssetContainerDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        assetVisitId:
-          type: string
-          format: uuid
-        code:
-          type: string
-        notes:
-          type: string
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        warehouseId:
-          type: string
-          format: uuid
-        dropAppointmentId:
-          type: string
-          format: uuid
-        pickupAppointmentId:
-          type: string
-          format: uuid
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        companyId:
-          type: string
-          format: uuid
-      required:
-      - assetVisitId
-      - code
-      - type
-      - warehouseId
-    AssetContainerEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        orgId:
-          type: string
-          format: uuid
-        createDateTime:
-          type: string
-          description: The date and time when the event was created
-          format: date-time
-        createdBy:
-          type: object
-          format: uuid
-          description: The id of the user who created the event
-        assetContainerId:
-          type: string
-          format: uuid
-          description: The id of the asset container
-        assetVisitId:
-          type: object
-          format: uuid
-          description: The id of the asset visit attached (truck)
-        eventType:
-          $ref: '#/components/schemas/AssetContainerEventType'
-      required:
-      - id
-      - orgId
-      - createDateTime
-      - assetContainerId
-      - eventType
     CreateAssetContainerEventDto:
       type: object
       properties:
@@ -589,6 +559,36 @@ components:
       required:
       - eventType
       - assetContainerId
+    AssetContainerState:
+      type: string
+      description: The state of the asset container
+      enum:
+      - Full
+      - Empty
+      - Partially Loaded
+    AssetContainerType:
+      type: string
+      description: The type of the asset container
+      enum:
+      - Trailer
+      - Container
+      - Oversized
+      - Chassis
+      - Reefer
+      - Other
+    AssetContainerEventType:
+      type: string
+      description: The type of the event
+      enum:
+      - Arrived
+      - Loading
+      - Loading Complete
+      - Unloading
+      - Unloading Complete
+      - Ready for Pickup
+      - Departed
+      - Inoperable
+      - Missing
   securitySchemes:
     bearer:
       scheme: bearer

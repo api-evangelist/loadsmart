@@ -465,6 +465,201 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AssetContainerDetailsDto:
+      type: object
+      properties: {}
+    UnlinkAssetFromAppointmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        appointmentId:
+          type: string
+        assetVisitId:
+          type: string
+      required:
+      - appointmentId
+      - assetVisitId
+    LinkUnplannedCheckinToAppointmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        appointmentId:
+          type: string
+        assetVisitId:
+          type: string
+        companyId:
+          type: string
+          deprecated: true
+          description: 'Deprecated: company is resolved from the appointment user on the server. Optional for legacy clients only.'
+      required:
+      - appointmentId
+      - assetVisitId
+    AssetVisitType:
+      type: string
+      description: The type of the asset visit
+      enum:
+      - LiveUnload
+      - LiveLoad
+      - Live
+      - Drop
+      - PickUp
+      - DropHook
+      - Unknown
+    AssetContainer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        code:
+          type: string
+          description: The code of the asset container
+          example: AC001
+        notes:
+          type: string
+          description: Extra data about the asset container
+          example: Asset container for storing goods
+        lastLocationCheckConfirmedAt:
+          type: object
+          description: When a yard location check last confirmed the container present (server-set only; not generic “seen”).
+          format: date-time
+        assetVisitId:
+          type: string
+          format: uuid
+          description: The id of the asset visit
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        orgId:
+          type: string
+          format: uuid
+        warehouseId:
+          type: string
+          format: uuid
+          description: The id of the warehouse
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        pickupAppointmentId:
+          type: string
+          format: uuid
+          description: The id of the pickup appointment
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        dropAppointmentId:
+          type: string
+          format: uuid
+          description: The id of the drop appointment
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        companyId:
+          type: string
+          format: uuid
+          description: The id of the company that owns the asset container
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+      - type
+      - code
+      - orgId
+      - warehouseId
+      - pickupAppointmentId
+    UpdateAssetVisitDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        appointmentId:
+          type: string
+          format: uuid
+        companyId:
+          type: object
+          format: uuid
+        licensePlate:
+          type: string
+        dotNumber:
+          type: string
+        companyHint:
+          type: string
+          maxLength: 128
+          description: Free-text carrier name when no companyId is selected
+        visitType:
+          $ref: '#/components/schemas/AssetVisitType'
+    AssetContainerType:
+      type: string
+      description: The type of the asset container
+      enum:
+      - Trailer
+      - Container
+      - Oversized
+      - Chassis
+      - Reefer
+      - Other
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    CreateAssetVisitEventDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    UpdateAssetVisitAcknowledgmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
     CreateAssetVisitDto:
       type: object
       properties:
@@ -512,29 +707,13 @@ components:
       - warehouseId
       - phone
       - useWhatsApp
-    AssetVisitType:
+    AssetContainerState:
       type: string
-      description: The type of the asset visit
+      description: The state of the asset container
       enum:
-      - LiveUnload
-      - LiveLoad
-      - Live
-      - Drop
-      - PickUp
-      - DropHook
-      - Unknown
-    UnlinkAssetFromAppointmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        appointmentId:
-          type: string
-        assetVisitId:
-          type: string
-      required:
-      - appointmentId
-      - assetVisitId
+      - Full
+      - Empty
+      - Partially Loaded
     AssetVisit:
       type: object
       properties:
@@ -623,185 +802,6 @@ components:
       - warehouseId
       - phone
       - isPlanned
-    UpdateAssetVisitDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        appointmentId:
-          type: string
-          format: uuid
-        companyId:
-          type: object
-          format: uuid
-        licensePlate:
-          type: string
-        dotNumber:
-          type: string
-        companyHint:
-          type: string
-          maxLength: 128
-          description: Free-text carrier name when no companyId is selected
-        visitType:
-          $ref: '#/components/schemas/AssetVisitType'
-    AssetContainer:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        code:
-          type: string
-          description: The code of the asset container
-          example: AC001
-        notes:
-          type: string
-          description: Extra data about the asset container
-          example: Asset container for storing goods
-        lastLocationCheckConfirmedAt:
-          type: object
-          description: When a yard location check last confirmed the container present (server-set only; not generic “seen”).
-          format: date-time
-        assetVisitId:
-          type: string
-          format: uuid
-          description: The id of the asset visit
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        orgId:
-          type: string
-          format: uuid
-        warehouseId:
-          type: string
-          format: uuid
-          description: The id of the warehouse
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        pickupAppointmentId:
-          type: string
-          format: uuid
-          description: The id of the pickup appointment
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        dropAppointmentId:
-          type: string
-          format: uuid
-          description: The id of the drop appointment
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        companyId:
-          type: string
-          format: uuid
-          description: The id of the company that owns the asset container
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
-      - type
-      - code
-      - orgId
-      - warehouseId
-      - pickupAppointmentId
-    AssetContainerState:
-      type: string
-      description: The state of the asset container
-      enum:
-      - Full
-      - Empty
-      - Partially Loaded
-    LinkUnplannedCheckinToAppointmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        appointmentId:
-          type: string
-        assetVisitId:
-          type: string
-        companyId:
-          type: string
-          deprecated: true
-          description: 'Deprecated: company is resolved from the appointment user on the server. Optional for legacy clients only.'
-      required:
-      - appointmentId
-      - assetVisitId
-    AssetContainerDetailsDto:
-      type: object
-      properties: {}
-    CreateAssetVisitEventDto:
-      type: object
-      properties:
-        tags:
-          type: object
-    UpdateAssetVisitAcknowledgmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    AssetContainerType:
-      type: string
-      description: The type of the asset container
-      enum:
-      - Trailer
-      - Container
-      - Oversized
-      - Chassis
-      - Reefer
-      - Other
   securitySchemes:
     bearer:
       scheme: bearer

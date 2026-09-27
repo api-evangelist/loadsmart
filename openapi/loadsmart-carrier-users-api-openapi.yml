@@ -397,6 +397,42 @@ components:
     OrgCarrierSettingsDto:
       type: object
       properties: {}
+    AddCarrierFavoriteWarehouseDto:
+      type: object
+      properties: {}
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
     User:
       type: object
       properties:
@@ -456,12 +492,6 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    AddCarrierFavoriteWarehouseDto:
-      type: object
-      properties: {}
-    RemoveCarrierFavoriteWarehouseDto:
-      type: object
-      properties: {}
     Appointment:
       type: object
       properties:
@@ -568,39 +598,9 @@ components:
           $ref: '#/components/schemas/OrgCarrierSettingsDto'
         tags:
           type: object
-    PaginatedDto:
+    RemoveCarrierFavoriteWarehouseDto:
       type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
+      properties: {}
     GetPreviewAsCarrierResponseDto:
       type: object
       properties: {}

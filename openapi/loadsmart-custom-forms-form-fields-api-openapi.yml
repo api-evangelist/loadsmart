@@ -229,29 +229,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    CreateFormFieldDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        order:
-          type: number
-          description: The order of the field in the form
-          example: 1
-        formId:
-          type: string
-        fieldId:
-          type: string
-        required:
-          type: boolean
-        overrideLabel:
-          type: string
-          description: The label of the field for this form instance, overrides the field label
-          example: Last Name
-      required:
-      - order
-      - formId
-      - fieldId
     UpdateFormFieldDto:
       type: object
       properties:
@@ -286,6 +263,29 @@ components:
       - total
       - page
       - pageCount
+    CreateFormFieldDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        order:
+          type: number
+          description: The order of the field in the form
+          example: 1
+        formId:
+          type: string
+        fieldId:
+          type: string
+        required:
+          type: boolean
+        overrideLabel:
+          type: string
+          description: The label of the field for this form instance, overrides the field label
+          example: Last Name
+      required:
+      - order
+      - formId
+      - fieldId
     FormField:
       type: object
       properties:

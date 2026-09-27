@@ -229,17 +229,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateFlowDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        description:
-          type: string
-        formFromId:
-          type: string
     TriggerOperatorsEnum:
       type: string
       description: The operator that will be used to compare the value of the field to determine whether to show the second form "FormTo" or not
@@ -250,6 +239,45 @@ components:
       - <=
       - '='
       - <>
+    GetManyFlowResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flow'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
+    CreateFlowDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        formFromId:
+          type: string
+        warehouseId:
+          type: string
+      required:
+      - name
+      - description
+      - formFromId
+      - warehouseId
     Flow:
       type: object
       properties:
@@ -315,7 +343,7 @@ components:
       - createdBy
       - lastChangedDateTime
       - formFromId
-    CreateFlowDto:
+    UpdateFlowDto:
       type: object
       properties:
         tags:
@@ -326,34 +354,6 @@ components:
           type: string
         formFromId:
           type: string
-        warehouseId:
-          type: string
-      required:
-      - name
-      - description
-      - formFromId
-      - warehouseId
-    GetManyFlowResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Flow'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
   securitySchemes:
     bearer:
       scheme: bearer

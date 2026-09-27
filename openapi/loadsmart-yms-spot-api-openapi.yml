@@ -380,180 +380,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateSpotDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        code:
-          type: string
-        type:
-          $ref: '#/components/schemas/SpotType'
-        spotAreaId:
-          type: string
-          format: uuid
-        observation:
-          type: string
-    SpotType:
-      type: string
-      description: The type of the spot
-      enum:
-      - parking
-      - docking
-    SpotEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        spotId:
-          type: string
-          format: uuid
-          description: The id of the spot
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        eventType:
-          $ref: '#/components/schemas/SpotEventTypeEnum'
-        reason:
-          type: string
-          description: The reason for the event
-          example: Spot is occupied
-        observation:
-          type: string
-          description: The observation of the event
-          example: Spot is occupied by a truck
-        assetContainerId:
-          type: string
-          description: The ID of the asset container associated with this event
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        assetVisitId:
-          type: string
-          description: The ID of the asset visit associated with this event
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
-      - spotId
-      - eventType
-    ListSpotDto:
-      type: object
-      properties:
-        entity:
-          type: string
-          readOnly: true
-          enum:
-          - Spot
-        action:
-          type: string
-          readOnly: true
-          enum:
-          - read
-        data:
-          readOnly: true
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotItemDto'
-      required:
-      - entity
-      - action
-      - data
-    ToggleSpotReserveDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        objectId:
-          type: string
-          format: uuid
-        entityName:
-          $ref: '#/components/schemas/SpotReserveEntityEnum'
-        validUntil:
-          type: string
-          format: date-time
-        observation:
-          type: string
-          maxLength: 1024
-          description: Optional observation for the spot reserve action
-    Spot:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        code:
-          type: string
-          description: The code of the spot
-          example: SP001
-        type:
-          $ref: '#/components/schemas/SpotType'
-        spotAreaId:
-          type: string
-          format: uuid
-          description: The id of the spot area
-          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
-        observation:
-          type: string
-          description: The observation of the spot
-          example: Large spot for trucks
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
-      - code
-      - type
-      - spotAreaId
-    DeleteSpotManyDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        spotIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - spotIds
     SpotItemDto:
       type: object
       properties:
@@ -633,6 +459,179 @@ components:
       - spotAreaId
       - observation
       - spotAssignments
+    SpotType:
+      type: string
+      description: The type of the spot
+      enum:
+      - parking
+      - docking
+    ListSpotDto:
+      type: object
+      properties:
+        entity:
+          type: string
+          readOnly: true
+          enum:
+          - Spot
+        action:
+          type: string
+          readOnly: true
+          enum:
+          - read
+        data:
+          readOnly: true
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotItemDto'
+      required:
+      - entity
+      - action
+      - data
+    UpdateSpotStatusDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        reason:
+          type: string
+        observation:
+          type: string
+      required:
+      - reason
+    SpotEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        spotId:
+          type: string
+          format: uuid
+          description: The id of the spot
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        eventType:
+          $ref: '#/components/schemas/SpotEventTypeEnum'
+        reason:
+          type: string
+          description: The reason for the event
+          example: Spot is occupied
+        observation:
+          type: string
+          description: The observation of the event
+          example: Spot is occupied by a truck
+        assetContainerId:
+          type: string
+          description: The ID of the asset container associated with this event
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        assetVisitId:
+          type: string
+          description: The ID of the asset visit associated with this event
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+      - spotId
+      - eventType
+    Spot:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        code:
+          type: string
+          description: The code of the spot
+          example: SP001
+        type:
+          $ref: '#/components/schemas/SpotType'
+        spotAreaId:
+          type: string
+          format: uuid
+          description: The id of the spot area
+          example: a0e4b1c2-3d4e-5f6g-7h8i-9j0k1l2m3n4o
+        observation:
+          type: string
+          description: The observation of the spot
+          example: Large spot for trucks
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+      - code
+      - type
+      - spotAreaId
+    UpdateSpotDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        code:
+          type: string
+        type:
+          $ref: '#/components/schemas/SpotType'
+        spotAreaId:
+          type: string
+          format: uuid
+        observation:
+          type: string
+    ToggleSpotReserveDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        objectId:
+          type: string
+          format: uuid
+        entityName:
+          $ref: '#/components/schemas/SpotReserveEntityEnum'
+        validUntil:
+          type: string
+          format: date-time
+        observation:
+          type: string
+          maxLength: 1024
+          description: Optional observation for the spot reserve action
     SpotAssignment:
       type: object
       properties:
@@ -685,51 +684,6 @@ components:
       - spotId
       - assetVisitId
       - assetContainerId
-    CreateSpotDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        code:
-          type: string
-        type:
-          $ref: '#/components/schemas/SpotType'
-        spotAreaId:
-          type: string
-          format: uuid
-        observation:
-          type: string
-      required:
-      - code
-      - type
-      - spotAreaId
-    UpdateSpotStatusDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        reason:
-          type: string
-        observation:
-          type: string
-      required:
-      - reason
-    SpotReserveEntityEnum:
-      type: string
-      description: The entity type for the reserve action
-      enum:
-      - YardTask
-    SpotEventTypeEnum:
-      type: string
-      description: The type of the event
-      enum:
-      - assignment
-      - release
-      - reserve
-      - release_reserve
-      - close
-      - open
-      - other
     CreateSpotManyDto:
       type: object
       properties:
@@ -751,9 +705,55 @@ components:
       - startFromNumber
       - type
       - spotAreaId
+    SpotReserveEntityEnum:
+      type: string
+      description: The entity type for the reserve action
+      enum:
+      - YardTask
     DeleteResult:
       type: object
       properties: {}
+    DeleteSpotManyDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        spotIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - spotIds
+    CreateSpotDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        code:
+          type: string
+        type:
+          $ref: '#/components/schemas/SpotType'
+        spotAreaId:
+          type: string
+          format: uuid
+        observation:
+          type: string
+      required:
+      - code
+      - type
+      - spotAreaId
+    SpotEventTypeEnum:
+      type: string
+      description: The type of the event
+      enum:
+      - assignment
+      - release
+      - reserve
+      - release_reserve
+      - close
+      - open
+      - other
   securitySchemes:
     bearer:
       scheme: bearer

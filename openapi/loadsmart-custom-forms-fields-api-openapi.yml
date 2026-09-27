@@ -229,24 +229,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    CustomFieldType:
-      type: string
-      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
-      enum:
-      - str
-      - bigstr
-      - date
-      - bool
-      - doc
-      - multidoc
-      - int
-      - email
-      - phone
-      - dropdown
-      - dropdownmultiselect
-      - combobox
-      - timestamp
-      - action
     Field:
       type: object
       properties:
@@ -307,30 +289,6 @@ components:
       - lastChangedDateTime
       - label
       - type
-    GetManyFieldResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Field'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
-    FieldExtraFields:
-      type: object
-      properties: {}
     UpdateFieldDto:
       type: object
       properties:
@@ -355,6 +313,27 @@ components:
           - $ref: '#/components/schemas/FieldExtraFields'
         formId:
           type: string
+    CustomFieldType:
+      type: string
+      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
+      enum:
+      - str
+      - bigstr
+      - date
+      - bool
+      - doc
+      - multidoc
+      - int
+      - email
+      - phone
+      - dropdown
+      - dropdownmultiselect
+      - combobox
+      - timestamp
+      - action
+    FieldExtraFields:
+      type: object
+      properties: {}
     CreateFieldDto:
       type: object
       properties:
@@ -383,6 +362,27 @@ components:
       - type
       - description
       - placeholder
+    GetManyFieldResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
   securitySchemes:
     bearer:
       scheme: bearer

@@ -234,7 +234,7 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateWarehouseGroupDto:
+    CreateWarehouseGroupDto:
       type: object
       properties:
         tags:
@@ -278,7 +278,7 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    CreateWarehouseGroupDto:
+    UpdateWarehouseGroupDto:
       type: object
       properties:
         tags:
