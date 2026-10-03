@@ -134,6 +134,30 @@ paths:
       - bearer: []
 components:
   schemas:
+    QueryResultMeta:
+      type: object
+      properties:
+        totalRecords:
+          type: number
+        totalPages:
+          type: number
+        limit:
+          type: number
+        offset:
+          type: number
+        sorts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sort'
+        page:
+          type: number
+      required:
+      - totalRecords
+      - totalPages
+      - limit
+      - offset
+      - sorts
+      - page
     DocumentListDto:
       type: object
       properties:
@@ -160,30 +184,6 @@ components:
       required:
       - field
       - order
-    QueryResultMeta:
-      type: object
-      properties:
-        totalRecords:
-          type: number
-        totalPages:
-          type: number
-        limit:
-          type: number
-        offset:
-          type: number
-        sorts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Sort'
-        page:
-          type: number
-      required:
-      - totalRecords
-      - totalPages
-      - limit
-      - offset
-      - sorts
-      - page
   securitySchemes:
     bearer:
       scheme: bearer

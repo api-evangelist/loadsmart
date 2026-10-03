@@ -296,7 +296,7 @@ components:
       - createdBy
       - lastChangedDateTime
       - name
-    UpdateFormDto:
+    CreateFormDto:
       type: object
       properties:
         tags:
@@ -305,6 +305,12 @@ components:
           type: string
         description:
           type: string
+        warehouseId:
+          type: string
+      required:
+      - name
+      - description
+      - warehouseId
     GetManyFormResponseDto:
       type: object
       properties:
@@ -326,7 +332,7 @@ components:
       - total
       - page
       - pageCount
-    CreateFormDto:
+    UpdateFormDto:
       type: object
       properties:
         tags:
@@ -335,12 +341,6 @@ components:
           type: string
         description:
           type: string
-        warehouseId:
-          type: string
-      required:
-      - name
-      - description
-      - warehouseId
     SortFormFieldDto:
       type: object
       properties:

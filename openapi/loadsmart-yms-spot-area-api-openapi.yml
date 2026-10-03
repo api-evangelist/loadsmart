@@ -284,6 +284,13 @@ components:
       - createdBy
       - lastChangedDateTime
       - name
+    UpdateSpotAreaDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
     CreateSpotAreaDto:
       type: object
       properties:
@@ -299,13 +306,6 @@ components:
       required:
       - name
       - warehouseId
-    UpdateSpotAreaDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
   securitySchemes:
     bearer:
       scheme: bearer

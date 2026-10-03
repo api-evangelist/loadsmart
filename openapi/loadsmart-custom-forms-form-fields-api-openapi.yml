@@ -242,27 +242,6 @@ components:
           type: string
         required:
           type: boolean
-    GetManyFormFieldResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/FormField'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
     CreateFormFieldDto:
       type: object
       properties:
@@ -339,6 +318,27 @@ components:
       - order
       - formId
       - fieldId
+    GetManyFormFieldResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormField'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
   securitySchemes:
     bearer:
       scheme: bearer

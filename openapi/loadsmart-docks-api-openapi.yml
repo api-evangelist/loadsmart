@@ -437,74 +437,75 @@ paths:
       - bearer: []
 components:
   schemas:
-    CrudOperationDto:
+    AvailabilityResponseDto:
+      type: object
+      properties: {}
+    CreateDockDto:
       type: object
       properties:
-        action:
+        tags:
+          type: object
+        doorNumber:
           type: string
-          example: read
-        entity:
+        instructions:
           type: string
-          example: Appointment
-        data:
+        minCarrierLeadTime_hr:
+          type: number
+        minCarrierLeadTimeForUpdates_hr:
+          type: number
+        maxCarrierLeadTime_hr:
+          type: number
+        ccEmails:
           type: array
           items:
             type: string
-      required:
-      - action
-      - entity
-      - data
-    Org:
+        allowCarrierScheduling:
+          type: boolean
+        allowOverBooking:
+          type: boolean
+        sortOrder:
+          type: number
+        settings:
+          type: object
+        schedule:
+          $ref: '#/components/schemas/ScheduleDto'
+    UpdateDockDto:
       type: object
       properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
+        tags:
           type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
+        doorNumber:
           type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        warehouses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Warehouse'
-        reportSearches:
-          type: object
-        customTags:
+        instructions:
+          type: string
+        minCarrierLeadTime_hr:
+          type: number
+        minCarrierLeadTimeForUpdates_hr:
+          type: number
+        maxCarrierLeadTime_hr:
+          type: number
+        ccEmails:
           type: array
           items:
             type: string
-        samlConfig:
+        allowCarrierScheduling:
+          type: boolean
+        allowOverBooking:
+          type: boolean
+        sortOrder:
+          type: number
+        settings:
           type: object
-        orgType:
+        schedule:
+          $ref: '#/components/schemas/ScheduleDto'
+        name:
           type: string
-          enum:
-          - Trial
-          - Test
-          - Client
-        expiresAt:
-          format: date-time
+        warehouseId:
           type: string
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
+        loadTypeIds:
+          type: array
+          items:
+            type: string
     Dock:
       type: object
       properties:
@@ -574,258 +575,57 @@ components:
       - lastChangedDateTime
       - schedule
       - loadTypeIds
-    DeleteDockDto:
+    Org:
       type: object
       properties:
-        hardDelete:
-          type: boolean
-    AvailabilityResponseDto:
-      type: object
-      properties: {}
-    CreateDockDto:
-      type: object
-      properties:
-        tags:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
           type: object
-        doorNumber:
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
           type: string
-        instructions:
-          type: string
-        minCarrierLeadTime_hr:
-          type: number
-        minCarrierLeadTimeForUpdates_hr:
-          type: number
-        maxCarrierLeadTime_hr:
-          type: number
-        ccEmails:
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        warehouses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warehouse'
+        reportSearches:
+          type: object
+        customTags:
           type: array
           items:
             type: string
-        allowCarrierScheduling:
-          type: boolean
-        allowOverBooking:
-          type: boolean
-        sortOrder:
-          type: number
-        settings:
+        samlConfig:
           type: object
-        schedule:
-          $ref: '#/components/schemas/ScheduleDto'
-    OpenDatesResponseDto:
-      type: object
-      properties:
-        openDates:
-          example:
-          - '2023-02-01'
-          - '2023-02-02'
-          - '2023-02-03'
-          type: array
-          items:
-            type: string
-      required:
-      - openDates
-    ScheduleDto:
-      type: object
-      properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
-          type: number
-          example: 1
-        closedIntervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeInterval'
-      required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
-    CustomFieldTemplateDto:
-      type: object
-      properties:
-        semanticLabelId:
-          type: object
-          format: uuid
-          description: Semantic label id (FK to semanticlabel)
-        type:
+        orgType:
           type: string
           enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
-      required:
-      - type
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    UpdateDockDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        doorNumber:
-          type: string
-        instructions:
-          type: string
-        minCarrierLeadTime_hr:
-          type: number
-        minCarrierLeadTimeForUpdates_hr:
-          type: number
-        maxCarrierLeadTime_hr:
-          type: number
-        ccEmails:
-          type: array
-          items:
-            type: string
-        allowCarrierScheduling:
-          type: boolean
-        allowOverBooking:
-          type: boolean
-        sortOrder:
-          type: number
-        settings:
-          type: object
-        schedule:
-          $ref: '#/components/schemas/ScheduleDto'
-        name:
-          type: string
-        warehouseId:
-          type: string
-        loadTypeIds:
-          type: array
-          items:
-            type: string
-    OpenDatesDto:
-      type: object
-      properties:
-        start:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-        end:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-      required:
-      - start
-      - end
-    AvailabilityDto:
-      type: object
-      properties:
-        start:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-        end:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-      required:
-      - start
-      - end
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
+          - Trial
+          - Test
+          - Client
+        expiresAt:
           format: date-time
           type: string
       required:
-      - end
-      - start
-    DockSortResponseDto:
-      type: object
-      properties:
-        generatedMaps:
-          type: array
-          items:
-            type: string
-        raw:
-          type: array
-          items:
-            type: string
-        affected:
-          type: number
-          example: 1
-      required:
-      - generatedMaps
-      - raw
-      - affected
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
     Warehouse:
       type: object
       properties:
@@ -950,16 +750,79 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    DockSortDto:
+    OpenDatesDto:
       type: object
       properties:
-        id:
+        start:
+          format: date-time
           type: string
-        sortOrder:
-          type: number
+          example: '2026-05-24T19:16:46.221Z'
+        end:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
       required:
-      - id
-      - sortOrder
+      - start
+      - end
+    CustomFieldTemplateDto:
+      type: object
+      properties:
+        semanticLabelId:
+          type: object
+          format: uuid
+          description: Semantic label id (FK to semanticlabel)
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+      required:
+      - type
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
     ClockSpan:
       type: object
       properties:
@@ -972,6 +835,143 @@ components:
       required:
       - end
       - start
+    OpenDatesResponseDto:
+      type: object
+      properties:
+        openDates:
+          example:
+          - '2023-02-01'
+          - '2023-02-02'
+          - '2023-02-03'
+          type: array
+          items:
+            type: string
+      required:
+      - openDates
+    DockSortDto:
+      type: object
+      properties:
+        id:
+          type: string
+        sortOrder:
+          type: number
+      required:
+      - id
+      - sortOrder
+    DeleteDockDto:
+      type: object
+      properties:
+        hardDelete:
+          type: boolean
+    AvailabilityDto:
+      type: object
+      properties:
+        start:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+        end:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+      required:
+      - start
+      - end
+    CrudOperationDto:
+      type: object
+      properties:
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - action
+      - entity
+      - data
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+    ScheduleDto:
+      type: object
+      properties:
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
+    DockSortResponseDto:
+      type: object
+      properties:
+        generatedMaps:
+          type: array
+          items:
+            type: string
+        raw:
+          type: array
+          items:
+            type: string
+        affected:
+          type: number
+          example: 1
+      required:
+      - generatedMaps
+      - raw
+      - affected
   securitySchemes:
     bearer:
       scheme: bearer

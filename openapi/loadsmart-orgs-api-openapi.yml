@@ -266,76 +266,6 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    UpdateOrgDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        settings:
-          type: object
-        favoriteCarrierIds:
-          type: array
-          items:
-            type: string
-    UpdateReportSearchDto:
-      type: object
-      properties: {}
-    CreateReportSearchDto:
-      type: object
-      properties: {}
-    ScheduleDto:
-      type: object
-      properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
-          type: number
-          example: 1
-        closedIntervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeInterval'
-      required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
-    UpdateCustomTagsDto:
-      type: object
-      properties: {}
     CustomFieldTemplateDto:
       type: object
       properties:
@@ -362,9 +292,6 @@ components:
           - action
       required:
       - type
-    ReportSearchResponseDto:
-      type: object
-      properties: {}
     Warehouse:
       type: object
       properties:
@@ -489,18 +416,15 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    TimeInterval:
+    CreateReportSearchDto:
       type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
+      properties: {}
+    UpdateCustomTagsDto:
+      type: object
+      properties: {}
+    UpdateReportSearchDto:
+      type: object
+      properties: {}
     ClockSpan:
       type: object
       properties:
@@ -513,6 +437,82 @@ components:
       required:
       - end
       - start
+    ReportSearchResponseDto:
+      type: object
+      properties: {}
+    ScheduleDto:
+      type: object
+      properties:
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+    UpdateOrgDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        settings:
+          type: object
+        favoriteCarrierIds:
+          type: array
+          items:
+            type: string
   securitySchemes:
     bearer:
       scheme: bearer

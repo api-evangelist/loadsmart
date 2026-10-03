@@ -225,20 +225,6 @@ components:
       - lastName
       - isEmailVerified
       - role
-    LoginDto:
-      type: object
-      properties:
-        email:
-          type: string
-          example: user@example.com
-          description: User email address
-        password:
-          type: string
-          example: P@ssw0rd!
-          description: User password
-      required:
-      - email
-      - password
     LoginResponseDto:
       type: object
       properties:
@@ -253,6 +239,20 @@ components:
       required:
       - access_token
       - expires_in
+    LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@example.com
+          description: User email address
+        password:
+          type: string
+          example: P@ssw0rd!
+          description: User password
+      required:
+      - email
+      - password
   securitySchemes:
     bearer:
       scheme: bearer

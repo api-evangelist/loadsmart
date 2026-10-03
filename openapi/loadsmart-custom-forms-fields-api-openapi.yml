@@ -229,6 +229,34 @@ paths:
       - bearer: []
 components:
   schemas:
+    CreateFieldDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        label:
+          type: string
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
+        description:
+          type: string
+        placeholder:
+          type: string
+        extraFields:
+          example:
+            dropDownValues:
+            - Option 1
+            - Option 2
+            - Option 3
+            minLengthOrValue: 1
+            maxLengthOrValue: 10
+          allOf:
+          - $ref: '#/components/schemas/FieldExtraFields'
+      required:
+      - label
+      - type
+      - description
+      - placeholder
     Field:
       type: object
       properties:
@@ -289,6 +317,24 @@ components:
       - lastChangedDateTime
       - label
       - type
+    CustomFieldType:
+      type: string
+      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
+      enum:
+      - str
+      - bigstr
+      - date
+      - bool
+      - doc
+      - multidoc
+      - int
+      - email
+      - phone
+      - dropdown
+      - dropdownmultiselect
+      - combobox
+      - timestamp
+      - action
     UpdateFieldDto:
       type: object
       properties:
@@ -313,55 +359,6 @@ components:
           - $ref: '#/components/schemas/FieldExtraFields'
         formId:
           type: string
-    CustomFieldType:
-      type: string
-      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
-      enum:
-      - str
-      - bigstr
-      - date
-      - bool
-      - doc
-      - multidoc
-      - int
-      - email
-      - phone
-      - dropdown
-      - dropdownmultiselect
-      - combobox
-      - timestamp
-      - action
-    FieldExtraFields:
-      type: object
-      properties: {}
-    CreateFieldDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        label:
-          type: string
-        type:
-          $ref: '#/components/schemas/CustomFieldType'
-        description:
-          type: string
-        placeholder:
-          type: string
-        extraFields:
-          example:
-            dropDownValues:
-            - Option 1
-            - Option 2
-            - Option 3
-            minLengthOrValue: 1
-            maxLengthOrValue: 10
-          allOf:
-          - $ref: '#/components/schemas/FieldExtraFields'
-      required:
-      - label
-      - type
-      - description
-      - placeholder
     GetManyFieldResponseDto:
       type: object
       properties:
@@ -383,6 +380,9 @@ components:
       - total
       - page
       - pageCount
+    FieldExtraFields:
+      type: object
+      properties: {}
   securitySchemes:
     bearer:
       scheme: bearer

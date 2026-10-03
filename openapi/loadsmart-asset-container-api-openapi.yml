@@ -328,97 +328,80 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CreateAssetContainerDto:
+    CreateAssetContainerEventDto:
       type: object
       properties:
         tags:
           type: object
-        assetVisitId:
+        eventType:
           type: string
-          format: uuid
-        code:
-          type: string
-        notes:
-          type: string
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        warehouseId:
-          type: string
-          format: uuid
-        dropAppointmentId:
-          type: string
-          format: uuid
-        pickupAppointmentId:
-          type: string
-          format: uuid
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        companyId:
-          type: string
-          format: uuid
-      required:
-      - assetVisitId
-      - code
-      - type
-      - warehouseId
-    AssetContainerEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        orgId:
-          type: string
-          format: uuid
-        createDateTime:
-          type: string
-          description: The date and time when the event was created
-          format: date-time
-        createdBy:
-          type: object
-          format: uuid
-          description: The id of the user who created the event
+          enum:
+          - Arrived
+          - Loading
+          - Loading Complete
+          - Unloading
+          - Unloading Complete
+          - Ready for Pickup
+          - Departed
+          - Inoperable
+          - Missing
         assetContainerId:
           type: string
           format: uuid
           description: The id of the asset container
         assetVisitId:
-          type: object
+          type: string
           format: uuid
-          description: The id of the asset visit attached (truck)
-        eventType:
-          $ref: '#/components/schemas/AssetContainerEventType'
+          description: The id of the asset visit which this entity is attached to
       required:
-      - id
-      - orgId
-      - createDateTime
-      - assetContainerId
       - eventType
-    UpdateAssetContainerDto:
+      - assetContainerId
+    AssetContainerEventType:
+      type: string
+      description: The type of the event
+      enum:
+      - Arrived
+      - Loading
+      - Loading Complete
+      - Unloading
+      - Unloading Complete
+      - Ready for Pickup
+      - Departed
+      - Inoperable
+      - Missing
+    PaginatedDto:
       type: object
       properties:
-        tags:
-          type: object
-        assetVisitId:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
           type: string
-          format: uuid
-        code:
+          example: read
+        entity:
           type: string
-        notes:
-          type: string
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        dropAppointmentId:
-          type: string
-          format: uuid
-        pickupAppointmentId:
-          type: string
-          format: uuid
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        companyId:
-          type: string
-          format: uuid
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
     AssetContainer:
       type: object
       properties:
@@ -498,67 +481,31 @@ components:
       - orgId
       - warehouseId
       - pickupAppointmentId
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    CreateAssetContainerEventDto:
+    UpdateAssetContainerDto:
       type: object
       properties:
         tags:
           type: object
-        eventType:
-          type: string
-          enum:
-          - Arrived
-          - Loading
-          - Loading Complete
-          - Unloading
-          - Unloading Complete
-          - Ready for Pickup
-          - Departed
-          - Inoperable
-          - Missing
-        assetContainerId:
-          type: string
-          format: uuid
-          description: The id of the asset container
         assetVisitId:
           type: string
           format: uuid
-          description: The id of the asset visit which this entity is attached to
-      required:
-      - eventType
-      - assetContainerId
+        code:
+          type: string
+        notes:
+          type: string
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        dropAppointmentId:
+          type: string
+          format: uuid
+        pickupAppointmentId:
+          type: string
+          format: uuid
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        companyId:
+          type: string
+          format: uuid
     AssetContainerState:
       type: string
       description: The state of the asset container
@@ -566,6 +513,39 @@ components:
       - Full
       - Empty
       - Partially Loaded
+    CreateAssetContainerDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        code:
+          type: string
+        notes:
+          type: string
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        warehouseId:
+          type: string
+          format: uuid
+        dropAppointmentId:
+          type: string
+          format: uuid
+        pickupAppointmentId:
+          type: string
+          format: uuid
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        companyId:
+          type: string
+          format: uuid
+      required:
+      - assetVisitId
+      - code
+      - type
+      - warehouseId
     AssetContainerType:
       type: string
       description: The type of the asset container
@@ -576,19 +556,39 @@ components:
       - Chassis
       - Reefer
       - Other
-    AssetContainerEventType:
-      type: string
-      description: The type of the event
-      enum:
-      - Arrived
-      - Loading
-      - Loading Complete
-      - Unloading
-      - Unloading Complete
-      - Ready for Pickup
-      - Departed
-      - Inoperable
-      - Missing
+    AssetContainerEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+        createDateTime:
+          type: string
+          description: The date and time when the event was created
+          format: date-time
+        createdBy:
+          type: object
+          format: uuid
+          description: The id of the user who created the event
+        assetContainerId:
+          type: string
+          format: uuid
+          description: The id of the asset container
+        assetVisitId:
+          type: object
+          format: uuid
+          description: The id of the asset visit attached (truck)
+        eventType:
+          $ref: '#/components/schemas/AssetContainerEventType'
+      required:
+      - id
+      - orgId
+      - createDateTime
+      - assetContainerId
+      - eventType
   securitySchemes:
     bearer:
       scheme: bearer

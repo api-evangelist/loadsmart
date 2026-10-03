@@ -596,6 +596,225 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AppointmentRequirementsSuccessResponseDto:
+      type: object
+      properties:
+        notes:
+          type: string
+          description: Integrator-facing hints (e.g. external ref validation). Not the same as `fields.notes` on the appointment create payload.
+        fields:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldsDto'
+        example:
+          $ref: '#/components/schemas/AppointmentRequirementsExamplePayloadDto'
+      required:
+      - fields
+      - example
+    RecurringAppointmentCreateSuccess:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+          format: uuid
+          example: 3ca0e68f-8fc4-4e5d-b08a-b5ffefe2ebce
+        start:
+          format: date-time
+          type: string
+          example: '2026-03-30T05:30:00.000Z'
+      required:
+      - appointmentId
+      - start
+    CreateRecurringAppointmentsDto:
+      type: object
+      properties:
+        numWeeks:
+          type: number
+          example: 3
+          description: Number of weeks to repeat pattern
+        weekDays:
+          type: array
+          example:
+          - Monday
+          items:
+            type: string
+            enum:
+            - Sunday
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday
+            - Saturday
+        copyFields:
+          type: array
+          example:
+          - customFields
+          description: Copy appointment fields to the series. Copying refNumber will not work if unique ref number setting is on
+          items:
+            type: string
+            enum:
+            - refNumber
+            - customFields
+            - notes
+            - tags
+        customFormsDataToCopy:
+          description: Load-type custom form data rows from the parent appointment to copy into each child. Pass the full row objects returned by the customformdata API (formFieldId, triggerId, label, type, value). Array-valued fields (multidoc, dropdownmultiselect) are serialised correctly for each child.
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringCustomFormDataItemDto'
+        startingStatus:
+          type: string
+          enum:
+          - Scheduled
+          - Requested
+          example: Requested
+          default: Scheduled
+          description: Starting status for recurring children. Defaults to Scheduled
+      required:
+      - numWeeks
+      - weekDays
+    AppointmentMetadataDto:
+      type: object
+      properties:
+        unitLimitBreached:
+          type: boolean
+          example: false
+        externalValidationFailed:
+          type: boolean
+          example: false
+        externalValidationErrorMessage:
+          type:
+          - object
+          - 'null'
+          example: null
+        unitLimitOverrideReason:
+          type:
+          - object
+          - 'null'
+          example: null
+        clonedFromId:
+          type:
+          - object
+          - 'null'
+          format: uuid
+          example: null
+    AppointmentRequirementsSemanticLabelDto:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      required:
+      - slug
+      - name
+      - description
+    EtaDto:
+      type: object
+      properties:
+        eta:
+          format: date-time
+          type: string
+          example: '2026-03-19T18:30:00.000Z'
+          description: Estimated time of arrival
+        reason:
+          type: string
+          example: on time
+          description: Reason for the ETA update (required for carriers)
+      required:
+      - eta
+    AppointmentRequirementsExamplePayloadDto:
+      type: object
+      properties:
+        customFields:
+          type: array
+          items:
+            type: object
+          description: Present when the warehouse exposes custom appointment fields to carriers.
+        customFormsData:
+          type: array
+          items:
+            type: object
+          description: Present when custom form fields apply to this load type.
+        units:
+          type: number
+          description: Handling units count when that field is enabled.
+        loadTypeId:
+          type: string
+        dockId:
+          type: string
+        start:
+          type:
+          - object
+          - 'null'
+          description: First available slot as ISO string when slots exist; otherwise null.
+        notes:
+          type: string
+        userId:
+          type: string
+        refNumbers:
+          description: One or more reference numbers; elements are strings or integers depending on warehouse ref mode.
+          type: array
+          items:
+            type: array
+        ccEmails:
+          type: array
+          items:
+            type: string
+      required:
+      - loadTypeId
+      - dockId
+      - start
+      - notes
+      - userId
+      - refNumbers
+      - ccEmails
+    StatusTimelineDto:
+      type: object
+      properties:
+        NoShow:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
+        Arrived:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
+        Cancelled:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
+        Completed:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
+        Requested:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: '2026-03-18T18:14:00.000Z'
+        Scheduled:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
+        InProgress:
+          type:
+          - object
+          - 'null'
+          format: date-time
+          example: null
     UpdateAppointmentDto:
       type: object
       properties:
@@ -654,191 +873,29 @@ components:
           type: object
         isCheckedInByCarrier:
           type: boolean
-    AppointmentRequirementsSuccessResponseDto:
+    AppointmentRequirementsFieldSchemaDto:
       type: object
       properties:
-        notes:
-          type: string
-          description: Integrator-facing hints (e.g. external ref validation). Not the same as `fields.notes` on the appointment create payload.
-        fields:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldsDto'
-        example:
-          $ref: '#/components/schemas/AppointmentRequirementsExamplePayloadDto'
-      required:
-      - fields
-      - example
-    RecurringCustomFormDataItemDto:
-      type: object
-      properties: {}
-    RecurringAppointmentCreateResponse:
-      type: object
-      properties:
-        successes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecurringAppointmentCreateSuccess'
-        failures:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecurringAppointmentCreateFailure'
-      required:
-      - successes
-      - failures
-    CreateReserveDto:
-      type: object
-      properties:
-        dockId:
-          type: string
-          format: uuid
-          example: c9fbc7d2-f9c3-483c-84b4-1215682af6a3
-        start:
-          format: date-time
-          type: string
-          example: '2026-03-23T05:00:00.000Z'
-        notes:
-          type: string
-          example: Reserved
-        duration_min:
-          type: number
-          example: 30
-          description: 'Duration in minutes (default: 30)'
-      required:
-      - dockId
-      - start
-    AppointmentRequirementsCustomFormFieldRowDto:
-      type: object
-      properties:
-        field:
-          $ref: '#/components/schemas/AppointmentRequirementsCustomFormFieldFieldDto'
         type:
           type: string
-          enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
+          description: Human-readable field type label (e.g. uuid, timestamp, string).
         required:
           type: boolean
-          description: Whether this field is required when scheduling.
-        minLengthOrValue:
-          type: number
-          description: Minimum length or value for field types `str`, `bigstr`, and `int`.
-        maxLengthOrValue:
-          type: number
-          description: Maximum length or value for field types `str`, `bigstr`, and `int`.
-        dropDownValues:
-          description: Discrete option strings when the field type is dropdown, dropdownmultiselect, or combobox and the warehouse configured choices.
-          type: array
-          items:
-            type: string
-        formName:
-          type: string
-        label:
-          type: string
+          description: Whether this field is required when creating an appointment.
+        example:
+          type: object
+          description: Example value for this field; shape depends on warehouse, load type, and field type.
+        acceptedValues:
+          type: object
+          description: Allowed or described values (e.g. UUID lists, maps of dock id to slot times, free-text rules).
         description:
-          type:
-          - object
-          - 'null'
-          description: Warehouse-defined form field description; always serialized. Use null or empty string as stored.
-        semanticLabel:
-          allOf:
-          - $ref: '#/components/schemas/AppointmentRequirementsSemanticLabelDto'
+          type: string
+          description: How to supply this field on appointment creation.
       required:
-      - field
       - type
       - required
-      - formName
-      - label
+      - example
       - description
-      - semanticLabel
-    AppointmentNotificationEmailHtmlResponseDto:
-      type: object
-      properties:
-        bodyHtml:
-          type: string
-          example: <html lang="en-US"><body>Html Block Example</body></html>
-        subject:
-          type: string
-          example: Appointment details have changed
-      required:
-      - bodyHtml
-      - subject
-    StatusTimelineDto:
-      type: object
-      properties:
-        NoShow:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-        Arrived:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-        Cancelled:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-        Completed:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-        Requested:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: '2026-03-18T18:14:00.000Z'
-        Scheduled:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-        InProgress:
-          type:
-          - object
-          - 'null'
-          format: date-time
-          example: null
-    AppointmentRequirementsSemanticLabelDto:
-      type: object
-      properties:
-        slug:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-      required:
-      - slug
-      - name
-      - description
-    AddAppointmentTagDto:
-      type: object
-      properties:
-        tag:
-          type: string
-          example: Damaged
-      required:
-      - tag
     CustomFieldDto:
       type: object
       properties:
@@ -878,197 +935,6 @@ components:
       - name
       - type
       - label
-    AppointmentRequirementsExamplePayloadDto:
-      type: object
-      properties:
-        customFields:
-          type: array
-          items:
-            type: object
-          description: Present when the warehouse exposes custom appointment fields to carriers.
-        customFormsData:
-          type: array
-          items:
-            type: object
-          description: Present when custom form fields apply to this load type.
-        units:
-          type: number
-          description: Handling units count when that field is enabled.
-        loadTypeId:
-          type: string
-        dockId:
-          type: string
-        start:
-          type:
-          - object
-          - 'null'
-          description: First available slot as ISO string when slots exist; otherwise null.
-        notes:
-          type: string
-        userId:
-          type: string
-        refNumbers:
-          description: One or more reference numbers; elements are strings or integers depending on warehouse ref mode.
-          type: array
-          items:
-            type: array
-        ccEmails:
-          type: array
-          items:
-            type: string
-      required:
-      - loadTypeId
-      - dockId
-      - start
-      - notes
-      - userId
-      - refNumbers
-      - ccEmails
-    AppointmentRequirementsFieldsDto:
-      type: object
-      properties:
-        customFields:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        customFormsData:
-          $ref: '#/components/schemas/AppointmentRequirementsCustomFormsDataSchemaDto'
-        units:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        loadTypeId:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        dockId:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        start:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        notes:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        userId:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        refNumbers:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-        ccEmails:
-          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
-      required:
-      - loadTypeId
-      - dockId
-      - start
-      - notes
-      - userId
-      - refNumbers
-      - ccEmails
-    DeleteAppointmentDto:
-      type: object
-      properties:
-        hardDelete:
-          type: boolean
-    AppointmentRequirementsCustomFormsDataSchemaDto:
-      type: object
-      properties:
-        type:
-          type: string
-        required:
-          type: boolean
-        children:
-          description: Rows describing each custom form field for this load type (`field` holds formFieldId, triggerId, value placeholder).
-          type: array
-          items:
-            $ref: '#/components/schemas/AppointmentRequirementsCustomFormFieldRowDto'
-        description:
-          type: string
-      required:
-      - type
-      - required
-      - children
-      - description
-    AppointmentRequirementsFieldSchemaDto:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Human-readable field type label (e.g. uuid, timestamp, string).
-        required:
-          type: boolean
-          description: Whether this field is required when creating an appointment.
-        example:
-          type: object
-          description: Example value for this field; shape depends on warehouse, load type, and field type.
-        acceptedValues:
-          type: object
-          description: Allowed or described values (e.g. UUID lists, maps of dock id to slot times, free-text rules).
-        description:
-          type: string
-          description: How to supply this field on appointment creation.
-      required:
-      - type
-      - required
-      - example
-      - description
-    CreateAppointmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        status:
-          type: string
-          enum:
-          - NoShow
-          - Cancelled
-          - Requested
-          - Scheduled
-          - Arrived
-          - InProgress
-          - Completed
-        userId:
-          type: object
-        loadTypeId:
-          type: string
-        dockId:
-          type: string
-        start:
-          format: date-time
-          type: string
-        end:
-          format: date-time
-          type: string
-        refNumbers:
-          type: array
-          items:
-            type: string
-        refNumber:
-          type: string
-        customFields:
-          type: array
-          items:
-            type: string
-        notes:
-          type: string
-        ccEmails:
-          type: array
-          items:
-            type: string
-        muteNotifications:
-          type: boolean
-        metadata:
-          type: object
-        units:
-          type: object
-      required:
-      - loadTypeId
-      - dockId
-      - start
-    RecurringAppointmentCreateSuccess:
-      type: object
-      properties:
-        appointmentId:
-          type: string
-          format: uuid
-          example: 3ca0e68f-8fc4-4e5d-b08a-b5ffefe2ebce
-        start:
-          format: date-time
-          type: string
-          example: '2026-03-30T05:30:00.000Z'
-      required:
-      - appointmentId
-      - start
     AppointmentRequirementsCustomFormFieldFieldDto:
       type: object
       properties:
@@ -1082,101 +948,23 @@ components:
       - formFieldId
       - triggerId
       - value
-    RecurringAppointmentCreateFailure:
+    RecurringAppointmentCreateResponse:
       type: object
       properties:
-        start:
-          format: date-time
-          type: string
-          example: '2026-04-20T05:30:00.000Z'
-        reason:
-          type: string
-          example: Appointment does not fit into combined Dock and Warehouse availability
+        successes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringAppointmentCreateSuccess'
+        failures:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringAppointmentCreateFailure'
       required:
-      - start
-      - reason
-    CreateRecurringAppointmentsDto:
+      - successes
+      - failures
+    RecurringCustomFormDataItemDto:
       type: object
-      properties:
-        numWeeks:
-          type: number
-          example: 3
-          description: Number of weeks to repeat pattern
-        weekDays:
-          type: array
-          example:
-          - Monday
-          items:
-            type: string
-            enum:
-            - Sunday
-            - Monday
-            - Tuesday
-            - Wednesday
-            - Thursday
-            - Friday
-            - Saturday
-        copyFields:
-          type: array
-          example:
-          - customFields
-          description: Copy appointment fields to the series. Copying refNumber will not work if unique ref number setting is on
-          items:
-            type: string
-            enum:
-            - refNumber
-            - customFields
-            - notes
-            - tags
-        customFormsDataToCopy:
-          description: Load-type custom form data rows from the parent appointment to copy into each child. Pass the full row objects returned by the customformdata API (formFieldId, triggerId, label, type, value). Array-valued fields (multidoc, dropdownmultiselect) are serialised correctly for each child.
-          type: array
-          items:
-            $ref: '#/components/schemas/RecurringCustomFormDataItemDto'
-        startingStatus:
-          type: string
-          enum:
-          - Scheduled
-          - Requested
-          example: Requested
-          default: Scheduled
-          description: Starting status for recurring children. Defaults to Scheduled
-      required:
-      - numWeeks
-      - weekDays
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
+      properties: {}
     AppointmentListItemDto:
       type: object
       properties:
@@ -1349,45 +1137,257 @@ components:
       - confirmationNumber
       - muteNotifications
       - isCheckedInByCarrier
-    AppointmentMetadataDto:
+    AppointmentRequirementsFieldsDto:
       type: object
       properties:
-        unitLimitBreached:
-          type: boolean
-          example: false
-        externalValidationFailed:
-          type: boolean
-          example: false
-        externalValidationErrorMessage:
-          type:
-          - object
-          - 'null'
-          example: null
-        unitLimitOverrideReason:
-          type:
-          - object
-          - 'null'
-          example: null
-        clonedFromId:
-          type:
-          - object
-          - 'null'
-          format: uuid
-          example: null
-    EtaDto:
+        customFields:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        customFormsData:
+          $ref: '#/components/schemas/AppointmentRequirementsCustomFormsDataSchemaDto'
+        units:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        loadTypeId:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        dockId:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        start:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        notes:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        userId:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        refNumbers:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+        ccEmails:
+          $ref: '#/components/schemas/AppointmentRequirementsFieldSchemaDto'
+      required:
+      - loadTypeId
+      - dockId
+      - start
+      - notes
+      - userId
+      - refNumbers
+      - ccEmails
+    CreateAppointmentDto:
       type: object
       properties:
-        eta:
+        tags:
+          type: object
+        status:
+          type: string
+          enum:
+          - NoShow
+          - Cancelled
+          - Requested
+          - Scheduled
+          - Arrived
+          - InProgress
+          - Completed
+        userId:
+          type: object
+        loadTypeId:
+          type: string
+        dockId:
+          type: string
+        start:
           format: date-time
           type: string
-          example: '2026-03-19T18:30:00.000Z'
-          description: Estimated time of arrival
+        end:
+          format: date-time
+          type: string
+        refNumbers:
+          type: array
+          items:
+            type: string
+        refNumber:
+          type: string
+        customFields:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+        ccEmails:
+          type: array
+          items:
+            type: string
+        muteNotifications:
+          type: boolean
+        metadata:
+          type: object
+        units:
+          type: object
+      required:
+      - loadTypeId
+      - dockId
+      - start
+    AddAppointmentTagDto:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: Damaged
+      required:
+      - tag
+    RecurringAppointmentCreateFailure:
+      type: object
+      properties:
+        start:
+          format: date-time
+          type: string
+          example: '2026-04-20T05:30:00.000Z'
         reason:
           type: string
-          example: on time
-          description: Reason for the ETA update (required for carriers)
+          example: Appointment does not fit into combined Dock and Warehouse availability
       required:
-      - eta
+      - start
+      - reason
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    DeleteAppointmentDto:
+      type: object
+      properties:
+        hardDelete:
+          type: boolean
+    AppointmentRequirementsCustomFormFieldRowDto:
+      type: object
+      properties:
+        field:
+          $ref: '#/components/schemas/AppointmentRequirementsCustomFormFieldFieldDto'
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+        required:
+          type: boolean
+          description: Whether this field is required when scheduling.
+        minLengthOrValue:
+          type: number
+          description: Minimum length or value for field types `str`, `bigstr`, and `int`.
+        maxLengthOrValue:
+          type: number
+          description: Maximum length or value for field types `str`, `bigstr`, and `int`.
+        dropDownValues:
+          description: Discrete option strings when the field type is dropdown, dropdownmultiselect, or combobox and the warehouse configured choices.
+          type: array
+          items:
+            type: string
+        formName:
+          type: string
+        label:
+          type: string
+        description:
+          type:
+          - object
+          - 'null'
+          description: Warehouse-defined form field description; always serialized. Use null or empty string as stored.
+        semanticLabel:
+          allOf:
+          - $ref: '#/components/schemas/AppointmentRequirementsSemanticLabelDto'
+      required:
+      - field
+      - type
+      - required
+      - formName
+      - label
+      - description
+      - semanticLabel
+    CreateReserveDto:
+      type: object
+      properties:
+        dockId:
+          type: string
+          format: uuid
+          example: c9fbc7d2-f9c3-483c-84b4-1215682af6a3
+        start:
+          format: date-time
+          type: string
+          example: '2026-03-23T05:00:00.000Z'
+        notes:
+          type: string
+          example: Reserved
+        duration_min:
+          type: number
+          example: 30
+          description: 'Duration in minutes (default: 30)'
+      required:
+      - dockId
+      - start
+    AppointmentRequirementsCustomFormsDataSchemaDto:
+      type: object
+      properties:
+        type:
+          type: string
+        required:
+          type: boolean
+        children:
+          description: Rows describing each custom form field for this load type (`field` holds formFieldId, triggerId, value placeholder).
+          type: array
+          items:
+            $ref: '#/components/schemas/AppointmentRequirementsCustomFormFieldRowDto'
+        description:
+          type: string
+      required:
+      - type
+      - required
+      - children
+      - description
+    AppointmentNotificationEmailHtmlResponseDto:
+      type: object
+      properties:
+        bodyHtml:
+          type: string
+          example: <html lang="en-US"><body>Html Block Example</body></html>
+        subject:
+          type: string
+          example: Appointment details have changed
+      required:
+      - bodyHtml
+      - subject
   securitySchemes:
     bearer:
       scheme: bearer

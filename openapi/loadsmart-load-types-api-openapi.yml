@@ -318,54 +318,6 @@ components:
     AvailabilityResponseDto:
       type: object
       properties: {}
-    ScheduleDto:
-      type: object
-      properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
-          type: number
-          example: 1
-        closedIntervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeInterval'
-      required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
     LoadType:
       type: object
       properties:
@@ -433,6 +385,52 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
+    UpdateLoadTypeDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        orgId:
+          type: string
+        warehouseId:
+          type: string
+        direction:
+          type: string
+          enum:
+          - Inbound
+          - Outbound
+          - Inbound/Outbound
+        operation:
+          type: string
+          enum:
+          - Live
+          - Drop
+          - Other
+        equipmentType:
+          type: string
+          enum:
+          - Dry Van
+          - Flatbed
+          - Reefer
+          - Other
+        transportationMode:
+          type: string
+          enum:
+          - FTL
+          - PTL
+          - Other
+        allowCarrierScheduling:
+          type: boolean
+        description:
+          type: object
+        settings:
+          type: object
+        schedule:
+          $ref: '#/components/schemas/ScheduleDto'
+        name:
+          type: string
+        duration_min:
+          type: number
     PaginatedDto:
       type: object
       properties:
@@ -480,52 +478,18 @@ components:
       required:
       - start
       - end
-    UpdateLoadTypeDto:
+    ClockSpan:
       type: object
       properties:
-        tags:
-          type: object
-        orgId:
+        end:
           type: string
-        warehouseId:
+          example: '18:00'
+        start:
           type: string
-        direction:
-          type: string
-          enum:
-          - Inbound
-          - Outbound
-          - Inbound/Outbound
-        operation:
-          type: string
-          enum:
-          - Live
-          - Drop
-          - Other
-        equipmentType:
-          type: string
-          enum:
-          - Dry Van
-          - Flatbed
-          - Reefer
-          - Other
-        transportationMode:
-          type: string
-          enum:
-          - FTL
-          - PTL
-          - Other
-        allowCarrierScheduling:
-          type: boolean
-        description:
-          type: object
-        settings:
-          type: object
-        schedule:
-          $ref: '#/components/schemas/ScheduleDto'
-        name:
-          type: string
-        duration_min:
-          type: number
+          example: 06:00
+      required:
+      - end
+      - start
     AppointmentCountResponseDto:
       type: object
       properties: {}
@@ -585,18 +549,54 @@ components:
       required:
       - end
       - start
-    ClockSpan:
+    ScheduleDto:
       type: object
       properties:
-        end:
-          type: string
-          example: '18:00'
-        start:
-          type: string
-          example: 06:00
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
       required:
-      - end
-      - start
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
   securitySchemes:
     bearer:
       scheme: bearer

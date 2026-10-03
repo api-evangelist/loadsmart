@@ -56,22 +56,6 @@ paths:
       - General
 components:
   schemas:
-    AppEnvironmentDto:
-      type: object
-      properties:
-        S3_BUCKET:
-          type: string
-          example: bucket-name
-        S3_BASE:
-          type: string
-          example: s3base.name
-        S3_DOWNLOAD_URL:
-          type: string
-          example: files.opendock.com
-      required:
-      - S3_BUCKET
-      - S3_BASE
-      - S3_DOWNLOAD_URL
     VersionDto:
       type: object
       properties:
@@ -92,6 +76,22 @@ components:
       - minor
       - patch
       - commit
+    AppEnvironmentDto:
+      type: object
+      properties:
+        S3_BUCKET:
+          type: string
+          example: bucket-name
+        S3_BASE:
+          type: string
+          example: s3base.name
+        S3_DOWNLOAD_URL:
+          type: string
+          example: files.opendock.com
+      required:
+      - S3_BUCKET
+      - S3_BASE
+      - S3_DOWNLOAD_URL
   securitySchemes:
     bearer:
       scheme: bearer

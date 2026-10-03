@@ -360,104 +360,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateWarehouseDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        facilityNumber:
-          type: string
-        country:
-          type: string
-        timezone:
-          type: string
-        schedule:
-          $ref: '#/components/schemas/ScheduleDto'
-        contactName:
-          type: object
-        phone:
-          type: string
-        email:
-          type: object
-        notes:
-          type: object
-        instructions:
-          type: object
-        customApptFieldsTemplate:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomFieldTemplateDto'
-        refNumberValidationVersion:
-          type: string
-          enum:
-          - V1
-          - V2
-        refNumberValidationUrl:
-          type: string
-        refNumberValidationPasscode:
-          type: string
-        settings:
-          type: object
-        allowCarrierScheduling:
-          type: boolean
-        ccEmails:
-          type: array
-          items:
-            type: string
-        amenities:
-          type: array
-          example:
-          - Lumper services
-          - Drivers restroom
-          - Overnight parking
-          - Free Wi-Fi
-          items:
-            type: string
-            enum:
-            - Lumper services
-            - Drivers restroom
-            - Overnight parking
-            - Free Wi-Fi
-        ppeRequirements:
-          type: array
-          example:
-          - Face Mask
-          - Safety Glasses
-          - Hard Hat
-          - Safety Boots
-          - Gloves
-          - High Visibility Vest
-          - Long Pants
-          - Long Sleeves
-          - No Smoking
-          - Hair and Beard Net
-          items:
-            type: string
-            enum:
-            - Face Mask
-            - Safety Glasses
-            - Hard Hat
-            - Safety Boots
-            - Gloves
-            - High Visibility Vest
-            - Long Pants
-            - Long Sleeves
-            - No Smoking
-            - Hair and Beard Net
-        intervalTrimForCarriers:
-          type: number
-        customBookingUrl:
-          type: string
-        street:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zip:
-          type: string
     GetHoursOfOperationDto:
       type: object
       properties:
@@ -564,54 +466,15 @@ components:
           type: string
       required:
       - name
-    ScheduleDto:
+    DockHoursOfOperation:
       type: object
       properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
-          type: number
-          example: 1
-        closedIntervals:
+        openIntervals:
           type: array
           items:
             $ref: '#/components/schemas/TimeInterval'
       required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
+      - openIntervals
     CustomFieldTemplateDto:
       type: object
       properties:
@@ -638,39 +501,6 @@ components:
           - action
       required:
       - type
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
     UpdateLoadTypesCustomFormsDto:
       type: object
       properties:
@@ -692,27 +522,6 @@ components:
           example: Load Type Form
       required:
       - parentCode
-    CreateLoadTypesCustomFormsDto:
-      type: object
-      properties:
-        loadTypeIds:
-          description: The list of load type ids that this form will be used for
-          example:
-          - a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          type: array
-          items:
-            type: array
-        formName:
-          type: string
-          description: The name of the form
-          example: Load Type Form
-        formDescription:
-          type: string
-          description: Extra description of the form
-          example: This form is used to collect information about the load type
-      required:
-      - loadTypeIds
-      - formName
     Warehouse:
       type: object
       properties:
@@ -837,27 +646,39 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    DockHoursOfOperation:
+    PaginatedDto:
       type: object
       properties:
-        openIntervals:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/TimeInterval'
+            type: string
       required:
-      - openIntervals
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
     ClockSpan:
       type: object
       properties:
@@ -870,6 +691,185 @@ components:
       required:
       - end
       - start
+    ScheduleDto:
+      type: object
+      properties:
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
+    UpdateWarehouseDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        facilityNumber:
+          type: string
+        country:
+          type: string
+        timezone:
+          type: string
+        schedule:
+          $ref: '#/components/schemas/ScheduleDto'
+        contactName:
+          type: object
+        phone:
+          type: string
+        email:
+          type: object
+        notes:
+          type: object
+        instructions:
+          type: object
+        customApptFieldsTemplate:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldTemplateDto'
+        refNumberValidationVersion:
+          type: string
+          enum:
+          - V1
+          - V2
+        refNumberValidationUrl:
+          type: string
+        refNumberValidationPasscode:
+          type: string
+        settings:
+          type: object
+        allowCarrierScheduling:
+          type: boolean
+        ccEmails:
+          type: array
+          items:
+            type: string
+        amenities:
+          type: array
+          example:
+          - Lumper services
+          - Drivers restroom
+          - Overnight parking
+          - Free Wi-Fi
+          items:
+            type: string
+            enum:
+            - Lumper services
+            - Drivers restroom
+            - Overnight parking
+            - Free Wi-Fi
+        ppeRequirements:
+          type: array
+          example:
+          - Face Mask
+          - Safety Glasses
+          - Hard Hat
+          - Safety Boots
+          - Gloves
+          - High Visibility Vest
+          - Long Pants
+          - Long Sleeves
+          - No Smoking
+          - Hair and Beard Net
+          items:
+            type: string
+            enum:
+            - Face Mask
+            - Safety Glasses
+            - Hard Hat
+            - Safety Boots
+            - Gloves
+            - High Visibility Vest
+            - Long Pants
+            - Long Sleeves
+            - No Smoking
+            - Hair and Beard Net
+        intervalTrimForCarriers:
+          type: number
+        customBookingUrl:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+    CreateLoadTypesCustomFormsDto:
+      type: object
+      properties:
+        loadTypeIds:
+          description: The list of load type ids that this form will be used for
+          example:
+          - a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          type: array
+          items:
+            type: array
+        formName:
+          type: string
+          description: The name of the form
+          example: Load Type Form
+        formDescription:
+          type: string
+          description: Extra description of the form
+          example: This form is used to collect information about the load type
+      required:
+      - loadTypeIds
+      - formName
   securitySchemes:
     bearer:
       scheme: bearer
