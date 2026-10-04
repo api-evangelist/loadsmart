@@ -134,6 +134,32 @@ paths:
       - bearer: []
 components:
   schemas:
+    Sort:
+      type: object
+      properties:
+        field:
+          type: string
+        order:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: ASC
+      required:
+      - field
+      - order
+    DocumentListDto:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+        meta:
+          $ref: '#/components/schemas/QueryResultMeta'
+      required:
+      - items
+      - meta
     QueryResultMeta:
       type: object
       properties:
@@ -158,32 +184,6 @@ components:
       - offset
       - sorts
       - page
-    DocumentListDto:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: string
-        meta:
-          $ref: '#/components/schemas/QueryResultMeta'
-      required:
-      - items
-      - meta
-    Sort:
-      type: object
-      properties:
-        field:
-          type: string
-        order:
-          type: string
-          enum:
-          - ASC
-          - DESC
-          default: ASC
-      required:
-      - field
-      - order
   securitySchemes:
     bearer:
       scheme: bearer

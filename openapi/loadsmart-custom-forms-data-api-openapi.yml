@@ -251,6 +251,15 @@ paths:
       - bearer: []
 components:
   schemas:
+    UpdateCustomFormDataDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        value:
+          type: string
+      required:
+      - value
     CreateSingleCustomFormDataDto:
       type: object
       properties:
@@ -280,22 +289,6 @@ components:
       - value
       - formFieldId
       - triggerId
-    CustomFormDataEntitiesEnum:
-      type: string
-      description: The entity name of the object that this data belongs to
-      enum:
-      - appointment
-      - assetvisit
-      - assetcontainer
-    CreateManyCustomFormDataDto:
-      type: object
-      properties:
-        bulk:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomFormData'
-      required:
-      - bulk
     CustomFormData:
       type: object
       properties:
@@ -362,6 +355,13 @@ components:
       - formFieldId
       - triggerId
       - warehouseId
+    CustomFormDataEntitiesEnum:
+      type: string
+      description: The entity name of the object that this data belongs to
+      enum:
+      - appointment
+      - assetvisit
+      - assetcontainer
     CustomFieldType:
       type: string
       description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
@@ -380,15 +380,15 @@ components:
       - combobox
       - timestamp
       - action
-    UpdateCustomFormDataDto:
+    CreateManyCustomFormDataDto:
       type: object
       properties:
-        tags:
-          type: object
-        value:
-          type: string
+        bulk:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormData'
       required:
-      - value
+      - bulk
   securitySchemes:
     bearer:
       scheme: bearer

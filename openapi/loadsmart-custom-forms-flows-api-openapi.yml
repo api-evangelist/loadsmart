@@ -294,6 +294,27 @@ components:
       - createdBy
       - lastChangedDateTime
       - formFromId
+    GetManyFlowResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flow'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
     CreateFlowDto:
       type: object
       properties:
@@ -333,27 +354,6 @@ components:
       - <=
       - '='
       - <>
-    GetManyFlowResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Flow'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
   securitySchemes:
     bearer:
       scheme: bearer

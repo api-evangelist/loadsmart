@@ -215,57 +215,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Org:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        warehouses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Warehouse'
-        reportSearches:
-          type: object
-        customTags:
-          type: array
-          items:
-            type: string
-        samlConfig:
-          type: object
-        orgType:
-          type: string
-          enum:
-          - Trial
-          - Test
-          - Client
-        expiresAt:
-          format: date-time
-          type: string
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
     CustomFieldTemplateDto:
       type: object
       properties:
@@ -292,6 +241,46 @@ components:
           - action
       required:
       - type
+    UpdateReportSearchDto:
+      type: object
+      properties: {}
+    UpdateOrgDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        settings:
+          type: object
+        favoriteCarrierIds:
+          type: array
+          items:
+            type: string
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+    ClockSpan:
+      type: object
+      properties:
+        end:
+          type: string
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
+      required:
+      - end
+      - start
     Warehouse:
       type: object
       properties:
@@ -416,27 +405,12 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    CreateReportSearchDto:
-      type: object
-      properties: {}
     UpdateCustomTagsDto:
       type: object
       properties: {}
-    UpdateReportSearchDto:
+    CreateReportSearchDto:
       type: object
       properties: {}
-    ClockSpan:
-      type: object
-      properties:
-        end:
-          type: string
-          example: '18:00'
-        start:
-          type: string
-          example: 06:00
-      required:
-      - end
-      - start
     ReportSearchResponseDto:
       type: object
       properties: {}
@@ -488,31 +462,57 @@ components:
       - saturday
       - version
       - closedIntervals
-    TimeInterval:
+    Org:
       type: object
       properties:
-        end:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
           format: date-time
           type: string
-        start:
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
           format: date-time
           type: string
-      required:
-      - end
-      - start
-    UpdateOrgDto:
-      type: object
-      properties:
-        tags:
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        warehouses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warehouse'
+        reportSearches:
           type: object
-        name:
-          type: string
-        settings:
-          type: object
-        favoriteCarrierIds:
+        customTags:
           type: array
           items:
             type: string
+        samlConfig:
+          type: object
+        orgType:
+          type: string
+          enum:
+          - Trial
+          - Test
+          - Client
+        expiresAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
   securitySchemes:
     bearer:
       scheme: bearer

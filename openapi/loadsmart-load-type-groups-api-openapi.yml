@@ -118,14 +118,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    ResponseLoadTypeGroupDto:
-      type: object
-      properties: {}
-    UpdateLoadTypeGroupDto:
-      type: object
-      properties:
-        tags:
-          type: object
     CreateLoadTypeGroupDto:
       type: object
       properties:
@@ -136,6 +128,14 @@ components:
       properties:
         tags:
           type: object
+    UpdateLoadTypeGroupDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    ResponseLoadTypeGroupDto:
+      type: object
+      properties: {}
   securitySchemes:
     bearer:
       scheme: bearer

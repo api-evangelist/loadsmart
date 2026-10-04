@@ -228,27 +228,13 @@ paths:
       - bearer: []
 components:
   schemas:
-    GetManySpotAreaResponseDto:
+    UpdateSpotAreaDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotArea'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
+        tags:
+          type: object
+        name:
+          type: string
     SpotArea:
       type: object
       properties:
@@ -284,13 +270,27 @@ components:
       - createdBy
       - lastChangedDateTime
       - name
-    UpdateSpotAreaDto:
+    GetManySpotAreaResponseDto:
       type: object
       properties:
-        tags:
-          type: object
-        name:
-          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotArea'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
     CreateSpotAreaDto:
       type: object
       properties:

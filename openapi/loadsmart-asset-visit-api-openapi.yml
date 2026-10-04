@@ -465,60 +465,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CreateAssetVisitEventDto:
-      type: object
-      properties:
-        tags:
-          type: object
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    AssetVisitType:
-      type: string
-      description: The type of the asset visit
-      enum:
-      - LiveUnload
-      - LiveLoad
-      - Live
-      - Drop
-      - PickUp
-      - DropHook
-      - Unknown
-    UpdateAssetVisitAcknowledgmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
     AssetContainer:
       type: object
       properties:
@@ -598,6 +544,54 @@ components:
       - orgId
       - warehouseId
       - pickupAppointmentId
+    AssetContainerDetailsDto:
+      type: object
+      properties: {}
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    UpdateAssetVisitAcknowledgmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    AssetContainerState:
+      type: string
+      description: The state of the asset container
+      enum:
+      - Full
+      - Empty
+      - Partially Loaded
     CreateAssetVisitDto:
       type: object
       properties:
@@ -645,46 +639,6 @@ components:
       - warehouseId
       - phone
       - useWhatsApp
-    UnlinkAssetFromAppointmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        appointmentId:
-          type: string
-        assetVisitId:
-          type: string
-      required:
-      - appointmentId
-      - assetVisitId
-    UpdateAssetVisitDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        appointmentId:
-          type: string
-          format: uuid
-        companyId:
-          type: object
-          format: uuid
-        licensePlate:
-          type: string
-        dotNumber:
-          type: string
-        companyHint:
-          type: string
-          maxLength: 128
-          description: Free-text carrier name when no companyId is selected
-        visitType:
-          $ref: '#/components/schemas/AssetVisitType'
-    AssetContainerState:
-      type: string
-      description: The state of the asset container
-      enum:
-      - Full
-      - Empty
-      - Partially Loaded
     LinkUnplannedCheckinToAppointmentDto:
       type: object
       properties:
@@ -701,16 +655,17 @@ components:
       required:
       - appointmentId
       - assetVisitId
-    AssetContainerType:
+    AssetVisitType:
       type: string
-      description: The type of the asset container
+      description: The type of the asset visit
       enum:
-      - Trailer
-      - Container
-      - Oversized
-      - Chassis
-      - Reefer
-      - Other
+      - LiveUnload
+      - LiveLoad
+      - Live
+      - Drop
+      - PickUp
+      - DropHook
+      - Unknown
     AssetVisit:
       type: object
       properties:
@@ -799,9 +754,54 @@ components:
       - warehouseId
       - phone
       - isPlanned
-    AssetContainerDetailsDto:
+    UpdateAssetVisitDto:
       type: object
-      properties: {}
+      properties:
+        tags:
+          type: object
+        appointmentId:
+          type: string
+          format: uuid
+        companyId:
+          type: object
+          format: uuid
+        licensePlate:
+          type: string
+        dotNumber:
+          type: string
+        companyHint:
+          type: string
+          maxLength: 128
+          description: Free-text carrier name when no companyId is selected
+        visitType:
+          $ref: '#/components/schemas/AssetVisitType'
+    CreateAssetVisitEventDto:
+      type: object
+      properties:
+        tags:
+          type: object
+    AssetContainerType:
+      type: string
+      description: The type of the asset container
+      enum:
+      - Trailer
+      - Container
+      - Oversized
+      - Chassis
+      - Reefer
+      - Other
+    UnlinkAssetFromAppointmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        appointmentId:
+          type: string
+        assetVisitId:
+          type: string
+      required:
+      - appointmentId
+      - assetVisitId
   securitySchemes:
     bearer:
       scheme: bearer

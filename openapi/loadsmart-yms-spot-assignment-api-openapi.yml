@@ -284,90 +284,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    DepartTypeEnum:
-      type: string
-      enum:
-      - All
-      - AssetVisit
-      - AssetContainer
-    GetManySpotAssignmentResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotAssignment'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
-      required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
-    DepartSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        departType:
-          $ref: '#/components/schemas/DepartTypeEnum'
-      required:
-      - departType
-    UpdateSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        observation:
-          type: string
-        assetVisitId:
-          type: string
-          format: uuid
-        assetContainerId:
-          type: string
-          format: uuid
-    ReassignSpotDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        spotId:
-          type: string
-          format: uuid
-        reason:
-          type: string
-        observation:
-          type: string
-        moveContainer:
-          type: boolean
-          description: When set to true, it moves only the asset container
-      required:
-      - spotId
-    CreateSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        assetVisitId:
-          type: string
-          format: uuid
-        assetContainerId:
-          type: string
-          format: uuid
-        spotId:
-          type: string
-          format: uuid
-        observation:
-          type: string
-      required:
-      - spotId
     SpotAssignment:
       type: object
       properties:
@@ -420,6 +336,90 @@ components:
       - spotId
       - assetVisitId
       - assetContainerId
+    UpdateSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        observation:
+          type: string
+        assetVisitId:
+          type: string
+          format: uuid
+        assetContainerId:
+          type: string
+          format: uuid
+    CreateSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        assetContainerId:
+          type: string
+          format: uuid
+        spotId:
+          type: string
+          format: uuid
+        observation:
+          type: string
+      required:
+      - spotId
+    DepartSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        departType:
+          $ref: '#/components/schemas/DepartTypeEnum'
+      required:
+      - departType
+    ReassignSpotDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        spotId:
+          type: string
+          format: uuid
+        reason:
+          type: string
+        observation:
+          type: string
+        moveContainer:
+          type: boolean
+          description: When set to true, it moves only the asset container
+      required:
+      - spotId
+    DepartTypeEnum:
+      type: string
+      enum:
+      - All
+      - AssetVisit
+      - AssetContainer
+    GetManySpotAssignmentResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotAssignment'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
   securitySchemes:
     bearer:
       scheme: bearer

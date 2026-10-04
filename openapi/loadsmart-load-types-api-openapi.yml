@@ -315,7 +315,78 @@ paths:
       - bearer: []
 components:
   schemas:
-    AvailabilityResponseDto:
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    AvailabilityFromLoadTypeDto:
+      type: object
+      properties:
+        start:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+        end:
+          format: date-time
+          type: string
+          example: '2026-05-24T19:16:46.221Z'
+      required:
+      - start
+      - end
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+    ClockSpan:
+      type: object
+      properties:
+        end:
+          type: string
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
+      required:
+      - end
+      - start
+    AppointmentCountResponseDto:
       type: object
       properties: {}
     LoadType:
@@ -431,66 +502,7 @@ components:
           type: string
         duration_min:
           type: number
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    AvailabilityFromLoadTypeDto:
-      type: object
-      properties:
-        start:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-        end:
-          format: date-time
-          type: string
-          example: '2026-05-24T19:16:46.221Z'
-      required:
-      - start
-      - end
-    ClockSpan:
-      type: object
-      properties:
-        end:
-          type: string
-          example: '18:00'
-        start:
-          type: string
-          example: 06:00
-      required:
-      - end
-      - start
-    AppointmentCountResponseDto:
+    AvailabilityResponseDto:
       type: object
       properties: {}
     CreateLoadTypeDto:
@@ -537,18 +549,6 @@ components:
           $ref: '#/components/schemas/ScheduleDto'
       required:
       - direction
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
     ScheduleDto:
       type: object
       properties:

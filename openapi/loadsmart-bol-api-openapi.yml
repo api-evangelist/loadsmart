@@ -81,6 +81,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CreateBolResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+      - id
+    CreateBolRequestDto:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+          format: uuid
+        documentUrl:
+          type: string
+      required:
+      - appointmentId
+      - documentUrl
     GetBolResponseDto:
       type: object
       properties:
@@ -114,25 +133,6 @@ components:
       - originalDoc
       - signedDoc
       - signedAt
-    CreateBolRequestDto:
-      type: object
-      properties:
-        appointmentId:
-          type: string
-          format: uuid
-        documentUrl:
-          type: string
-      required:
-      - appointmentId
-      - documentUrl
-    CreateBolResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-      required:
-      - id
   securitySchemes:
     bearer:
       scheme: bearer

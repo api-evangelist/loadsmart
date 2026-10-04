@@ -229,34 +229,6 @@ paths:
       - bearer: []
 components:
   schemas:
-    CreateFieldDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        label:
-          type: string
-        type:
-          $ref: '#/components/schemas/CustomFieldType'
-        description:
-          type: string
-        placeholder:
-          type: string
-        extraFields:
-          example:
-            dropDownValues:
-            - Option 1
-            - Option 2
-            - Option 3
-            minLengthOrValue: 1
-            maxLengthOrValue: 10
-          allOf:
-          - $ref: '#/components/schemas/FieldExtraFields'
-      required:
-      - label
-      - type
-      - description
-      - placeholder
     Field:
       type: object
       properties:
@@ -317,24 +289,30 @@ components:
       - lastChangedDateTime
       - label
       - type
-    CustomFieldType:
-      type: string
-      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
-      enum:
-      - str
-      - bigstr
-      - date
-      - bool
-      - doc
-      - multidoc
-      - int
-      - email
-      - phone
-      - dropdown
-      - dropdownmultiselect
-      - combobox
-      - timestamp
-      - action
+    FieldExtraFields:
+      type: object
+      properties: {}
+    GetManyFieldResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        count:
+          type: number
+        total:
+          type: number
+        page:
+          type: number
+        pageCount:
+          type: number
+      required:
+      - data
+      - count
+      - total
+      - page
+      - pageCount
     UpdateFieldDto:
       type: object
       properties:
@@ -359,30 +337,52 @@ components:
           - $ref: '#/components/schemas/FieldExtraFields'
         formId:
           type: string
-    GetManyFieldResponseDto:
+    CustomFieldType:
+      type: string
+      description: The type of the field used at the moment of the data submission, used to render the field in the UI and validate the data on the API level
+      enum:
+      - str
+      - bigstr
+      - date
+      - bool
+      - doc
+      - multidoc
+      - int
+      - email
+      - phone
+      - dropdown
+      - dropdownmultiselect
+      - combobox
+      - timestamp
+      - action
+    CreateFieldDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Field'
-        count:
-          type: number
-        total:
-          type: number
-        page:
-          type: number
-        pageCount:
-          type: number
+        tags:
+          type: object
+        label:
+          type: string
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
+        description:
+          type: string
+        placeholder:
+          type: string
+        extraFields:
+          example:
+            dropDownValues:
+            - Option 1
+            - Option 2
+            - Option 3
+            minLengthOrValue: 1
+            maxLengthOrValue: 10
+          allOf:
+          - $ref: '#/components/schemas/FieldExtraFields'
       required:
-      - data
-      - count
-      - total
-      - page
-      - pageCount
-    FieldExtraFields:
-      type: object
-      properties: {}
+      - label
+      - type
+      - description
+      - placeholder
   securitySchemes:
     bearer:
       scheme: bearer

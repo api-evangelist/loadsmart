@@ -218,7 +218,10 @@ paths:
       - bearer: []
 components:
   schemas:
-    UpdateLoadTypeGroupDto:
+    ResponseLoadTypeGroupDto:
+      type: object
+      properties: {}
+    CreateLoadTypeGroupDto:
       type: object
       properties:
         tags:
@@ -253,7 +256,7 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    UnitLimitConfigurationWriteDTO:
+    DeleteLoadTypeGroupDto:
       type: object
       properties:
         tags:
@@ -293,9 +296,6 @@ components:
       - loadTypeId
       - start
       - end
-    ResponseLoadTypeGroupDto:
-      type: object
-      properties: {}
     UnitLimit:
       type: object
       properties:
@@ -326,12 +326,12 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    DeleteLoadTypeGroupDto:
+    UpdateLoadTypeGroupDto:
       type: object
       properties:
         tags:
           type: object
-    CreateLoadTypeGroupDto:
+    UnitLimitConfigurationWriteDTO:
       type: object
       properties:
         tags:

@@ -83,9 +83,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ObservationCreateAssetVisitResponse:
-      type: object
-      properties: {}
     VehicleObservation:
       type: object
       properties:
@@ -116,6 +113,9 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
+    ObservationCreateAssetVisitResponse:
+      type: object
+      properties: {}
     ObservationCreateAssetVisitDto:
       type: object
       properties:

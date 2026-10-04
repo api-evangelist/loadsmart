@@ -394,10 +394,105 @@ paths:
       - bearer: []
 components:
   schemas:
-    RemoveCarrierFavoriteWarehouseDto:
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
+    AddCarrierFavoriteWarehouseDto:
       type: object
       properties: {}
-    AddCarrierFavoriteWarehouseDto:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        role:
+          type: string
+          enum:
+          - role_owner
+          - role_admin
+          - role_operator
+          - role_attendant
+          - role_spectator
+          - role_yard_driver
+          - role_carrier_admin
+          - role_carrier
+          - role_base
+        appointments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        company:
+          type: Company
+        orgCarrierSettings:
+          type: array
+          items:
+            type: OrgCarrierSettings
+        org:
+          type: Org
+        warehouseAccessList:
+          type: UUID
+        tcConfirmedAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+    GetPreviewAsCarrierResponseDto:
+      type: object
+      properties: {}
+    OrgCarrierSettingsDto:
       type: object
       properties: {}
     Appointment:
@@ -497,39 +592,9 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    PaginatedDto:
+    RemoveCarrierFavoriteWarehouseDto:
       type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
+      properties: {}
     CreateCarrierDto:
       type: object
       properties:
@@ -539,71 +604,6 @@ components:
           $ref: '#/components/schemas/OrgCarrierSettingsDto'
         tags:
           type: object
-    OrgCarrierSettingsDto:
-      type: object
-      properties: {}
-    GetPreviewAsCarrierResponseDto:
-      type: object
-      properties: {}
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        role:
-          type: string
-          enum:
-          - role_owner
-          - role_admin
-          - role_operator
-          - role_attendant
-          - role_spectator
-          - role_yard_driver
-          - role_carrier_admin
-          - role_carrier
-          - role_base
-        appointments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Appointment'
-        company:
-          type: Company
-        orgCarrierSettings:
-          type: array
-          items:
-            type: OrgCarrierSettings
-        org:
-          type: Org
-        warehouseAccessList:
-          type: UUID
-        tcConfirmedAt:
-          format: date-time
-          type: string
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
   securitySchemes:
     bearer:
       scheme: bearer
