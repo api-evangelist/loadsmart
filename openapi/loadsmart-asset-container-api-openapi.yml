@@ -328,19 +328,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AssetContainerEventType:
-      type: string
-      description: The type of the event
-      enum:
-      - Arrived
-      - Loading
-      - Loading Complete
-      - Unloading
-      - Unloading Complete
-      - Ready for Pickup
-      - Departed
-      - Inoperable
-      - Missing
     AssetContainerState:
       type: string
       description: The state of the asset container
@@ -427,39 +414,29 @@ components:
       - orgId
       - warehouseId
       - pickupAppointmentId
-    PaginatedDto:
-      type: object
-      properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
-          type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
+    AssetContainerType:
+      type: string
+      description: The type of the asset container
+      enum:
+      - Trailer
+      - Container
+      - Oversized
+      - Chassis
+      - Reefer
+      - Other
+    AssetContainerEventType:
+      type: string
+      description: The type of the event
+      enum:
+      - Arrived
+      - Loading
+      - Loading Complete
+      - Unloading
+      - Unloading Complete
+      - Ready for Pickup
+      - Departed
+      - Inoperable
+      - Missing
     CreateAssetContainerDto:
       type: object
       properties:
@@ -493,6 +470,31 @@ components:
       - code
       - type
       - warehouseId
+    UpdateAssetContainerDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        code:
+          type: string
+        notes:
+          type: string
+        type:
+          $ref: '#/components/schemas/AssetContainerType'
+        dropAppointmentId:
+          type: string
+          format: uuid
+        pickupAppointmentId:
+          type: string
+          format: uuid
+        state:
+          $ref: '#/components/schemas/AssetContainerState'
+        companyId:
+          type: string
+          format: uuid
     AssetContainerEvent:
       type: object
       properties:
@@ -526,16 +528,39 @@ components:
       - createDateTime
       - assetContainerId
       - eventType
-    AssetContainerType:
-      type: string
-      description: The type of the asset container
-      enum:
-      - Trailer
-      - Container
-      - Oversized
-      - Chassis
-      - Reefer
-      - Other
+    PaginatedDto:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
+          type: string
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
     CreateAssetContainerEventDto:
       type: object
       properties:
@@ -564,31 +589,6 @@ components:
       required:
       - eventType
       - assetContainerId
-    UpdateAssetContainerDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        assetVisitId:
-          type: string
-          format: uuid
-        code:
-          type: string
-        notes:
-          type: string
-        type:
-          $ref: '#/components/schemas/AssetContainerType'
-        dropAppointmentId:
-          type: string
-          format: uuid
-        pickupAppointmentId:
-          type: string
-          format: uuid
-        state:
-          $ref: '#/components/schemas/AssetContainerState'
-        companyId:
-          type: string
-          format: uuid
   securitySchemes:
     bearer:
       scheme: bearer

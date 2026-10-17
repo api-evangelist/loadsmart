@@ -215,33 +215,19 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomFieldTemplateDto:
+    ClockSpan:
       type: object
       properties:
-        semanticLabelId:
-          type: object
-          format: uuid
-          description: Semantic label id (FK to semanticlabel)
-        type:
+        end:
           type: string
-          enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
       required:
-      - type
-    UpdateReportSearchDto:
+      - end
+      - start
+    ReportSearchResponseDto:
       type: object
       properties: {}
     UpdateOrgDto:
@@ -257,30 +243,6 @@ components:
           type: array
           items:
             type: string
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
-    ClockSpan:
-      type: object
-      properties:
-        end:
-          type: string
-          example: '18:00'
-        start:
-          type: string
-          example: 06:00
-      required:
-      - end
-      - start
     Warehouse:
       type: object
       properties:
@@ -405,63 +367,21 @@ components:
       - schedule
       - amenities
       - ppeRequirements
+    TimeInterval:
+      type: object
+      properties:
+        end:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
     UpdateCustomTagsDto:
       type: object
       properties: {}
-    CreateReportSearchDto:
-      type: object
-      properties: {}
-    ReportSearchResponseDto:
-      type: object
-      properties: {}
-    ScheduleDto:
-      type: object
-      properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
-          type: number
-          example: 1
-        closedIntervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeInterval'
-      required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
     Org:
       type: object
       properties:
@@ -513,6 +433,86 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
+    CreateReportSearchDto:
+      type: object
+      properties: {}
+    CustomFieldTemplateDto:
+      type: object
+      properties:
+        semanticLabelId:
+          type: object
+          format: uuid
+          description: Semantic label id (FK to semanticlabel)
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+      required:
+      - type
+    UpdateReportSearchDto:
+      type: object
+      properties: {}
+    ScheduleDto:
+      type: object
+      properties:
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
   securitySchemes:
     bearer:
       scheme: bearer

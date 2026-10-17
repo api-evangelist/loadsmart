@@ -284,6 +284,46 @@ paths:
       - bearer: []
 components:
   schemas:
+    UpdateSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        observation:
+          type: string
+        assetVisitId:
+          type: string
+          format: uuid
+        assetContainerId:
+          type: string
+          format: uuid
+    CreateSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        assetVisitId:
+          type: string
+          format: uuid
+        assetContainerId:
+          type: string
+          format: uuid
+        spotId:
+          type: string
+          format: uuid
+        observation:
+          type: string
+      required:
+      - spotId
+    DepartSpotAssignmentDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        departType:
+          $ref: '#/components/schemas/DepartTypeEnum'
+      required:
+      - departType
     SpotAssignment:
       type: object
       properties:
@@ -336,46 +376,6 @@ components:
       - spotId
       - assetVisitId
       - assetContainerId
-    UpdateSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        observation:
-          type: string
-        assetVisitId:
-          type: string
-          format: uuid
-        assetContainerId:
-          type: string
-          format: uuid
-    CreateSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        assetVisitId:
-          type: string
-          format: uuid
-        assetContainerId:
-          type: string
-          format: uuid
-        spotId:
-          type: string
-          format: uuid
-        observation:
-          type: string
-      required:
-      - spotId
-    DepartSpotAssignmentDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        departType:
-          $ref: '#/components/schemas/DepartTypeEnum'
-      required:
-      - departType
     ReassignSpotDto:
       type: object
       properties:

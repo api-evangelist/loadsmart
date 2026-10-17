@@ -234,6 +234,20 @@ paths:
       - bearer: []
 components:
   schemas:
+    UpdateWarehouseGroupDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        warehouseIds:
+          type: array
+          items:
+            type: string
+      required:
+      - name
+      - warehouseIds
     CreateWarehouseGroupDto:
       type: object
       properties:
@@ -278,20 +292,6 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    UpdateWarehouseGroupDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        warehouseIds:
-          type: array
-          items:
-            type: string
-      required:
-      - name
-      - warehouseIds
   securitySchemes:
     bearer:
       scheme: bearer

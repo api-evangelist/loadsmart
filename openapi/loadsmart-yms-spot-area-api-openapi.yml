@@ -235,6 +235,21 @@ components:
           type: object
         name:
           type: string
+    CreateSpotAreaDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        name:
+          type: string
+        observation:
+          type: string
+        warehouseId:
+          type: string
+          format: uuid
+      required:
+      - name
+      - warehouseId
     SpotArea:
       type: object
       properties:
@@ -291,21 +306,6 @@ components:
       - total
       - page
       - pageCount
-    CreateSpotAreaDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        name:
-          type: string
-        observation:
-          type: string
-        warehouseId:
-          type: string
-          format: uuid
-      required:
-      - name
-      - warehouseId
   securitySchemes:
     bearer:
       scheme: bearer

@@ -479,132 +479,20 @@ paths:
       - bearer: []
 components:
   schemas:
-    AppointmentMetricsDto:
+    MetricsAppointmentVolumeByCarrierResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            Raphael: '5'
+            Josh: '7'
+            Mike: '3'
+      required:
+      - data
+    YardExportDataDto:
       type: object
       properties: {}
-    MetricsAppointmentVolumeByLoadTypeResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            MyLoadType:
-              sunday: 0
-              monday: 3
-              tuesday: 2
-              wednesday: 5
-              thursday: 7
-              friday: 5
-              saturday: 0
-            AnotherLoadType:
-              sunday: 0
-              monday: 2
-              tuesday: 3
-              wednesday: 2
-              thursday: 5
-              friday: 4
-              saturday: 0
-      required:
-      - data
-    MetricsDockDwellTimeResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            day:
-              Dock2:
-                Tuesday: 45
-                Friday: 30
-              MyDock:
-                Monday: 30
-                Tuesday: 45
-            all:
-              Dock2: 45
-              MyDock: 45
-      required:
-      - data
-    MetricsCountsReserveCountForUserResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            reserveCount: 3
-      required:
-      - data
-    MetricsAppointmentListResponse:
-      type: object
-      properties: {}
-    MetricsAppointmentVolumeByStatusResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            Scheduled: '6'
-            Arrived: '2'
-            Completed: '5'
-            NoShow: '1'
-            Cancelled: '0'
-      required:
-      - data
-    MetricsAppointmentVolumeByTimeOfDayResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            '8': '1'
-            '9': '1'
-            '10': '2'
-            '11': '2'
-            '13': '4'
-            '14': '4'
-            '15': '3'
-            '16': '3'
-      required:
-      - data
-    AssetVisitMetricsListDto:
-      type: object
-      properties:
-        warehouseIds:
-          type: array
-          items:
-            type: string
-        carrierIds:
-          type: array
-          items:
-            type: string
-        statuses:
-          type: array
-          items:
-            type: string
-            enum:
-            - Arrived
-            - Docked
-            - Departed
-            - Canceled
-        fromDate:
-          type: string
-        toDate:
-          type: string
-        dateField:
-          type: string
-          enum:
-          - checkInDate
-          - checkOutDate
-        page:
-          type: number
-        pageSize:
-          type: number
-        exportFields:
-          type: array
-          items:
-            type: string
-      required:
-      - page
-      - pageSize
     AppointmentMetricsListDto:
       type: object
       properties:
@@ -640,6 +528,129 @@ components:
             type: string
         skipCustomFields:
           type: boolean
+    MetricsAppointmentVolumeByStatusResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            Scheduled: '6'
+            Arrived: '2'
+            Completed: '5'
+            NoShow: '1'
+            Cancelled: '0'
+      required:
+      - data
+    MetricsAppointmentVolumeByLoadTypeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyLoadType:
+              sunday: 0
+              monday: 3
+              tuesday: 2
+              wednesday: 5
+              thursday: 7
+              friday: 5
+              saturday: 0
+            AnotherLoadType:
+              sunday: 0
+              monday: 2
+              tuesday: 3
+              wednesday: 2
+              thursday: 5
+              friday: 4
+              saturday: 0
+      required:
+      - data
+    AppointmentMetricsListV2Dto:
+      type: object
+      properties:
+        dockIds:
+          type: array
+          items:
+            type: string
+        loadTypeIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        dateField:
+          type: object
+        appointmentTypes:
+          type: array
+          items:
+            type: string
+        allCarriers:
+          type: boolean
+        exportFields:
+          type: array
+          items:
+            type: string
+        skipCustomFields:
+          type: boolean
+    MetricsAppointmentVolumeByDateResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            05/16/2023: '1'
+            05/30/2023: '1'
+            06/02/2023: '1'
+            06/09/2023: '2'
+      required:
+      - data
+    AppointmentMetricsDto:
+      type: object
+      properties: {}
+    MetricsCountsAppointmentCountForDocksResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+          - dock_id: c09e393a-0916-444a-a1a8-4e605a07618e
+            count: 72
+      required:
+      - data
+    MetricsDockDwellTimeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            day:
+              Dock2:
+                Tuesday: 45
+                Friday: 30
+              MyDock:
+                Monday: 30
+                Tuesday: 45
+            all:
+              Dock2: 45
+              MyDock: 45
+      required:
+      - data
+    MetricsAverageDurationByLoadTypeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyLoadType: 36
+            AnotherLoadType: 20
+      required:
+      - data
     MetricsCarrierStatusPercentageResponse:
       type: object
       properties:
@@ -704,73 +715,18 @@ components:
               avgCancelLeadTimeInMinutes: -75
       required:
       - data
-    MetricsCountsAppointmentCountForDocksResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-          - dock_id: c09e393a-0916-444a-a1a8-4e605a07618e
-            count: 72
-      required:
-      - data
-    MetricsCountsAppointmentCountForCarrierResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-          - org_name: My carrier org name
-            appointmentCount: 45
-      required:
-      - data
-    MetricsAppointmentVolumeByCarrierResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            Raphael: '5'
-            Josh: '7'
-            Mike: '3'
-      required:
-      - data
-    WarehouseMetricsDto:
+    MetricsAppointmentListResponse:
       type: object
       properties: {}
-    MetricsAppointmentVolumeByStatusByDockResponse:
+    MetricsCountsReserveCountForUserResponse:
       type: object
       properties:
         data:
           type: object
           example:
-            MyDock:
-              Scheduled: '6'
-              Arrived: '2'
-              Completed: '5'
-              NoShow: '1'
-              Cancelled: '0'
-            AlternativeDock:
-              Scheduled: '1'
-              Arrived: '2'
-              Completed: '2'
-              NoShow: '1'
-              Cancelled: '0'
+            reserveCount: 3
       required:
       - data
-    MetricsAverageDurationByLoadTypeResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            MyLoadType: 36
-            AnotherLoadType: 20
-      required:
-      - data
-    LoadTypeMetricsDto:
-      type: object
-      properties: {}
     AppointmentMetricsCapacityDto:
       type: object
       properties:
@@ -778,52 +734,7 @@ components:
           type: array
           items:
             type: string
-    MetricsAppointmentVolumeByDateResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          example:
-            05/16/2023: '1'
-            05/30/2023: '1'
-            06/02/2023: '1'
-            06/09/2023: '2'
-      required:
-      - data
-    AppointmentMetricsListV2Dto:
-      type: object
-      properties:
-        dockIds:
-          type: array
-          items:
-            type: string
-        loadTypeIds:
-          type: array
-          items:
-            type: string
-        carrierIds:
-          type: array
-          items:
-            type: string
-        tags:
-          type: array
-          items:
-            type: string
-        dateField:
-          type: object
-        appointmentTypes:
-          type: array
-          items:
-            type: string
-        allCarriers:
-          type: boolean
-        exportFields:
-          type: array
-          items:
-            type: string
-        skipCustomFields:
-          type: boolean
-    YardExportDataDto:
+    WarehouseMetricsDto:
       type: object
       properties: {}
     MetricsAppointmentVolumeByDayOfWeekResponse:
@@ -848,6 +759,95 @@ components:
               thursday: 3
               friday: 2
               saturday: 0
+      required:
+      - data
+    AssetVisitMetricsListDto:
+      type: object
+      properties:
+        warehouseIds:
+          type: array
+          items:
+            type: string
+        carrierIds:
+          type: array
+          items:
+            type: string
+        statuses:
+          type: array
+          items:
+            type: string
+            enum:
+            - Arrived
+            - Docked
+            - Departed
+            - Canceled
+        fromDate:
+          type: string
+        toDate:
+          type: string
+        dateField:
+          type: string
+          enum:
+          - checkInDate
+          - checkOutDate
+        page:
+          type: number
+        pageSize:
+          type: number
+        exportFields:
+          type: array
+          items:
+            type: string
+      required:
+      - page
+      - pageSize
+    MetricsCountsAppointmentCountForCarrierResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+          - org_name: My carrier org name
+            appointmentCount: 45
+      required:
+      - data
+    LoadTypeMetricsDto:
+      type: object
+      properties: {}
+    MetricsAppointmentVolumeByTimeOfDayResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            '8': '1'
+            '9': '1'
+            '10': '2'
+            '11': '2'
+            '13': '4'
+            '14': '4'
+            '15': '3'
+            '16': '3'
+      required:
+      - data
+    MetricsAppointmentVolumeByStatusByDockResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          example:
+            MyDock:
+              Scheduled: '6'
+              Arrived: '2'
+              Completed: '5'
+              NoShow: '1'
+              Cancelled: '0'
+            AlternativeDock:
+              Scheduled: '1'
+              Arrived: '2'
+              Completed: '2'
+              NoShow: '1'
+              Cancelled: '0'
       required:
       - data
     AssetVisitExcelExportDto:

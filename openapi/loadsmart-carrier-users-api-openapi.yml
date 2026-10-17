@@ -394,40 +394,16 @@ paths:
       - bearer: []
 components:
   schemas:
-    PaginatedDto:
+    CreateCarrierDto:
       type: object
       properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
+        phone:
           type: string
-          example: read
-        entity:
-          type: string
-          example: Appointment
-        data:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
-    AddCarrierFavoriteWarehouseDto:
+        orgCarrierSettings:
+          $ref: '#/components/schemas/OrgCarrierSettingsDto'
+        tags:
+          type: object
+    GetPreviewAsCarrierResponseDto:
       type: object
       properties: {}
     User:
@@ -489,7 +465,10 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    GetPreviewAsCarrierResponseDto:
+    AddCarrierFavoriteWarehouseDto:
+      type: object
+      properties: {}
+    RemoveCarrierFavoriteWarehouseDto:
       type: object
       properties: {}
     OrgCarrierSettingsDto:
@@ -592,18 +571,39 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    RemoveCarrierFavoriteWarehouseDto:
-      type: object
-      properties: {}
-    CreateCarrierDto:
+    PaginatedDto:
       type: object
       properties:
-        phone:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
+          type: number
+          example: 1
+        pageCount:
+          type: number
+          example: 1
+        action:
           type: string
-        orgCarrierSettings:
-          $ref: '#/components/schemas/OrgCarrierSettingsDto'
-        tags:
-          type: object
+          example: read
+        entity:
+          type: string
+          example: Appointment
+        data:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
   securitySchemes:
     bearer:
       scheme: bearer

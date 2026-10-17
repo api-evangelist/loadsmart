@@ -89,17 +89,6 @@ components:
           format: uuid
       required:
       - id
-    CreateBolRequestDto:
-      type: object
-      properties:
-        appointmentId:
-          type: string
-          format: uuid
-        documentUrl:
-          type: string
-      required:
-      - appointmentId
-      - documentUrl
     GetBolResponseDto:
       type: object
       properties:
@@ -133,6 +122,17 @@ components:
       - originalDoc
       - signedDoc
       - signedAt
+    CreateBolRequestDto:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+          format: uuid
+        documentUrl:
+          type: string
+      required:
+      - appointmentId
+      - documentUrl
   securitySchemes:
     bearer:
       scheme: bearer

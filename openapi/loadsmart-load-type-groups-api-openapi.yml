@@ -118,12 +118,12 @@ paths:
       - bearer: []
 components:
   schemas:
-    CreateLoadTypeGroupDto:
+    DeleteLoadTypeGroupDto:
       type: object
       properties:
         tags:
           type: object
-    DeleteLoadTypeGroupDto:
+    CreateLoadTypeGroupDto:
       type: object
       properties:
         tags:

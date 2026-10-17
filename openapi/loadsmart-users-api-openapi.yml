@@ -297,68 +297,60 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ChangePasswordDto:
-      type: object
-      properties: {}
-    CustomFieldTemplateDto:
+    ClockSpan:
       type: object
       properties:
-        semanticLabelId:
-          type: object
-          format: uuid
-          description: Semantic label id (FK to semanticlabel)
-        type:
+        end:
           type: string
-          enum:
-          - str
-          - bigstr
-          - date
-          - bool
-          - doc
-          - multidoc
-          - int
-          - email
-          - phone
-          - dropdown
-          - dropdownmultiselect
-          - combobox
-          - timestamp
-          - action
+          example: '18:00'
+        start:
+          type: string
+          example: 06:00
       required:
-      - type
-    PaginatedDto:
+      - end
+      - start
+    OrgCarrierSettings:
       type: object
       properties:
-        count:
-          type: number
-          example: 2
-        total:
-          type: number
-          example: 2
-        page:
-          type: number
-          example: 1
-        pageCount:
-          type: number
-          example: 1
-        action:
+        id:
           type: string
-          example: read
-        entity:
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
           type: string
-          example: Appointment
-        data:
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        org:
+          $ref: '#/components/schemas/Org'
+        orgId:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        userId:
+          type: string
+        favoriteWarehouseIds:
           type: array
           items:
             type: string
       required:
-      - count
-      - total
-      - page
-      - pageCount
-      - action
-      - entity
-      - data
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
     User:
       type: object
       properties:
@@ -413,60 +405,6 @@ components:
         tcConfirmedAt:
           format: date-time
           type: string
-      required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
-    TimeInterval:
-      type: object
-      properties:
-        end:
-          format: date-time
-          type: string
-        start:
-          format: date-time
-          type: string
-      required:
-      - end
-      - start
-    OrgCarrierSettings:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        org:
-          $ref: '#/components/schemas/Org'
-        orgId:
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
-        userId:
-          type: string
-        favoriteWarehouseIds:
-          type: array
-          items:
-            type: string
       required:
       - id
       - createDateTime
@@ -596,18 +534,182 @@ components:
       - schedule
       - amenities
       - ppeRequirements
-    ClockSpan:
+    TimeInterval:
       type: object
       properties:
         end:
+          format: date-time
           type: string
-          example: '18:00'
         start:
+          format: date-time
           type: string
-          example: 06:00
       required:
       - end
       - start
+    ChangePasswordDto:
+      type: object
+      properties: {}
+    InviteDto:
+      type: object
+      properties: {}
+    UpdateUserDto:
+      type: object
+      properties:
+        tags:
+          type: object
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+          enum:
+          - role_owner
+          - role_admin
+          - role_operator
+          - role_attendant
+          - role_spectator
+          - role_yard_driver
+          - role_carrier_admin
+          - role_carrier
+          - role_base
+        orgCarrierSettings:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgCarrierSettings'
+        orgId:
+          type: string
+        warehouseAccessList:
+          type: UUID
+    Org:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        createDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was created
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        createdBy:
+          type: object
+          description: The ID of the user who created the record
+          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
+          readOnly: true
+        lastChangedDateTime:
+          format: date-time
+          type: string
+          description: The date and time when the record was last changed
+          example: '2023-10-01T12:00:00Z'
+          readOnly: true
+        warehouses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warehouse'
+        reportSearches:
+          type: object
+        customTags:
+          type: array
+          items:
+            type: string
+        samlConfig:
+          type: object
+        orgType:
+          type: string
+          enum:
+          - Trial
+          - Test
+          - Client
+        expiresAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - createDateTime
+      - createdBy
+      - lastChangedDateTime
+    CustomFieldTemplateDto:
+      type: object
+      properties:
+        semanticLabelId:
+          type: object
+          format: uuid
+          description: Semantic label id (FK to semanticlabel)
+        type:
+          type: string
+          enum:
+          - str
+          - bigstr
+          - date
+          - bool
+          - doc
+          - multidoc
+          - int
+          - email
+          - phone
+          - dropdown
+          - dropdownmultiselect
+          - combobox
+          - timestamp
+          - action
+      required:
+      - type
+    ScheduleDto:
+      type: object
+      properties:
+        sunday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        monday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        tuesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        wednesday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        thursday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        friday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        saturday:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClockSpan'
+        version:
+          type: number
+          example: 1
+        closedIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - version
+      - closedIntervals
     Appointment:
       type: object
       properties:
@@ -705,141 +807,39 @@ components:
       - createDateTime
       - createdBy
       - lastChangedDateTime
-    InviteDto:
-      type: object
-      properties: {}
-    ScheduleDto:
+    PaginatedDto:
       type: object
       properties:
-        sunday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        monday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        tuesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        wednesday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        thursday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        friday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        saturday:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClockSpan'
-        version:
+        count:
+          type: number
+          example: 2
+        total:
+          type: number
+          example: 2
+        page:
           type: number
           example: 1
-        closedIntervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeInterval'
-      required:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      - version
-      - closedIntervals
-    UpdateUserDto:
-      type: object
-      properties:
-        tags:
-          type: object
-        email:
+        pageCount:
+          type: number
+          example: 1
+        action:
           type: string
-        firstName:
+          example: read
+        entity:
           type: string
-        lastName:
-          type: string
-        phone:
-          type: string
-        role:
-          type: string
-          enum:
-          - role_owner
-          - role_admin
-          - role_operator
-          - role_attendant
-          - role_spectator
-          - role_yard_driver
-          - role_carrier_admin
-          - role_carrier
-          - role_base
-        orgCarrierSettings:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrgCarrierSettings'
-        orgId:
-          type: string
-        warehouseAccessList:
-          type: UUID
-    Org:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        createDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was created
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        createdBy:
-          type: object
-          description: The ID of the user who created the record
-          example: a0e1f2c3-d4e5-6f7g-8h9i-j0k1l2m3n4o5
-          readOnly: true
-        lastChangedDateTime:
-          format: date-time
-          type: string
-          description: The date and time when the record was last changed
-          example: '2023-10-01T12:00:00Z'
-          readOnly: true
-        warehouses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Warehouse'
-        reportSearches:
-          type: object
-        customTags:
+          example: Appointment
+        data:
           type: array
           items:
             type: string
-        samlConfig:
-          type: object
-        orgType:
-          type: string
-          enum:
-          - Trial
-          - Test
-          - Client
-        expiresAt:
-          format: date-time
-          type: string
       required:
-      - id
-      - createDateTime
-      - createdBy
-      - lastChangedDateTime
+      - count
+      - total
+      - page
+      - pageCount
+      - action
+      - entity
+      - data
   securitySchemes:
     bearer:
       scheme: bearer
