@@ -6239,3 +6239,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: "Authorize the request with an user context. A payload example\nwould be:\n\n```\n{\n  \"sub\": \"usr:87127882-d1db-4e50-8f7c-c792a80d7c49\",\n  \"iss\": \"token-issuer\",\n  \"iat\": 1517239022,\n  \"exp\": 1626239022\n}\n```\n"
+x-provenance:
+  method: harvested
+  publisher: Loadsmart
+  source: https://developer.loadsmart.com/api/openapi.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
